@@ -4,11 +4,14 @@
 // Purpose: Provide the login page for the application
 import * as React from 'react';
 import { Text, SafeAreaView } from "react-native";
+import { SmartTextInput } from '../components/textInputs';
 
 export default function HomeScreen() {
   return (
     <SafeAreaView>
-      <Text>Login Page</Text>
+      <SmartTextInput>
+
+      </SmartTextInput>
     </SafeAreaView>
   );
 }
