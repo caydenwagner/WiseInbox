@@ -6,7 +6,9 @@ import * as React from 'react';
 import MainNavigator from './navigation/StackNavigator';
 
 function App() {
-  return <MainNavigator />;
+  return (
+    <MainNavigator/>
+  )
 }
 
 export default App;
