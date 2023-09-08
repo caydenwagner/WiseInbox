@@ -3,36 +3,30 @@
 // Date: 05/9/23
 // Purpose: Create some custom text inputs
 import React from "react";
-import { TouchableOpacity, useColorScheme, Text, TextInput, StyleSheet, ScrollView } from 'react-native';
+import { useColorScheme, TextInput, StyleSheet, ScrollView } from 'react-native';
 import { moderateScale, moderateVerticalScale, scale } from "../functions/helpers";
 import { light, dark } from "../globalStyles/colors";
 import { MEDIUM_TEXT } from "../globalStyles/sizes";
 
 const LightTextInput = (props) => {
   return (
-    <ScrollView contentContainerStyle={{flexGrow: 1}}
-      keyboardShouldPersistTaps='handled'
-    >
-      <TextInput 
-        style={styles.lightTextInput}
-        placeholderTextColor= {light.accent.color}
-        {...props}
-      />
-    </ScrollView>
+    <TextInput 
+      ref={props.forwardRef ? props.forwardRef : null}
+      style={styles.lightTextInput}
+      placeholderTextColor= {light.accent.color}
+      {...props}
+    />
   )
 }
 
 const DarkTextInput = (props) => {
   return (
-    <ScrollView contentContainerStyle={{flexGrow: 1}}
-      keyboardShouldPersistTaps='handled'
-    >
-      <TextInput 
-        style={styles.darkTextInput}
-        placeholderTextColor= {dark.accent.color}
-        {...props}
-      />
-    </ScrollView>
+    <TextInput 
+      ref={props.forwardRef ? props.forwardRef : null}
+      style={styles.darkTextInput}
+      placeholderTextColor= {dark.accent.color}
+      {...props}
+    />
   )
 }
 
@@ -55,6 +49,7 @@ const styles = StyleSheet.create({
     height: moderateVerticalScale(35),
     borderRadius: scale(4),
     marginHorizontal: moderateScale(15),
+    marginBottom: moderateScale(15),
     paddingHorizontal: moderateScale(15),
     fontSize: MEDIUM_TEXT,
   },  
@@ -64,6 +59,7 @@ const styles = StyleSheet.create({
     height: moderateVerticalScale(35),
     borderRadius: scale(4),
     marginHorizontal: moderateScale(15),
+    marginBottom: moderateScale(15),
     paddingHorizontal: moderateScale(15),
     fontSize: MEDIUM_TEXT,
   }
