@@ -3,10 +3,13 @@ const light = {
     color: "#F8F8F8"
   },
   secondary: {
-    color: "#C6C3C3"
+    color: "#EBEBEB"
   },
   accent: {
-    color: "#020202"
+    color: "#989898"
+  },
+  black: {
+    color: "black"
   }
 }
 
@@ -19,6 +22,9 @@ const dark = {
   },
   accent: {
     color: "#878C89"
+  },
+  white: {
+    color: "white"
   }
 }
 

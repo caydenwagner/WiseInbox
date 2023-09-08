@@ -3,27 +3,36 @@
 // Date: 05/9/23
 // Purpose: Create some custom text inputs
 import React from "react";
-import { TouchableOpacity, useColorScheme, Text, TextInput, StyleSheet } from 'react-native';
+import { TouchableOpacity, useColorScheme, Text, TextInput, StyleSheet, ScrollView } from 'react-native';
 import { moderateScale, moderateVerticalScale, scale } from "../functions/helpers";
 import { light, dark } from "../globalStyles/colors";
+import { MEDIUM_TEXT } from "../globalStyles/sizes";
 
 const LightTextInput = (props) => {
   return (
-    <TextInput 
-      style={styles.lightTextInput}
-      placeholderTextColor= {light.accent.color}
-      {...props}
-    />
+    <ScrollView contentContainerStyle={{flexGrow: 1}}
+      keyboardShouldPersistTaps='handled'
+    >
+      <TextInput 
+        style={styles.lightTextInput}
+        placeholderTextColor= {light.accent.color}
+        {...props}
+      />
+    </ScrollView>
   )
 }
 
 const DarkTextInput = (props) => {
   return (
-    <TextInput 
-      style={styles.darkTextInput}
-      placeholderTextColor= {dark.accent.color}
-      {...props}
-    />
+    <ScrollView contentContainerStyle={{flexGrow: 1}}
+      keyboardShouldPersistTaps='handled'
+    >
+      <TextInput 
+        style={styles.darkTextInput}
+        placeholderTextColor= {dark.accent.color}
+        {...props}
+      />
+    </ScrollView>
   )
 }
 
@@ -41,15 +50,21 @@ export {LightTextInput, DarkTextInput, SmartTextInput}
 
 const styles = StyleSheet.create({
   darkTextInput: {
-    backgroundColor: dark.primary.color,
-    color: dark.accent.color,
-    height: moderateVerticalScale(40),
-    borderRadius: scale(10),
+    backgroundColor: dark.secondary.color,
+    color: dark.white.color,
+    height: moderateVerticalScale(35),
+    borderRadius: scale(4),
+    marginHorizontal: moderateScale(15),
+    paddingHorizontal: moderateScale(15),
+    fontSize: MEDIUM_TEXT,
   },  
   lightTextInput: {
-    backgroundColor: light.primary.color,
-    color: light.accent.color,
-    height: moderateVerticalScale(40),
-    borderRadius: scale(10),
+    backgroundColor: light.secondary.color,
+    color: light.black.color,
+    height: moderateVerticalScale(35),
+    borderRadius: scale(4),
+    marginHorizontal: moderateScale(15),
+    paddingHorizontal: moderateScale(15),
+    fontSize: MEDIUM_TEXT,
   }
 })
