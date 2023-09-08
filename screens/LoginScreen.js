@@ -4,7 +4,7 @@
 // Purpose: Provide the login page for the application
 import React, {useState, useRef} from 'react';
 import * as Keychain from 'react-native-keychain';
-import { Text, ScrollView, StyleSheet, useColorScheme, View } from "react-native";
+import { Text, ScrollView, StyleSheet, useColorScheme, View, Keyboard } from "react-native";
 import { SmartTextInput } from '../components/textInputs';
 import { light, dark } from "../globalStyles/colors";
 import { moderateVerticalScale } from '../functions/helpers';
@@ -19,6 +19,7 @@ export default function LoginScreen() {
   async function onSubmitPassword() 
   {
     // Store the email and password securely in the native keychain
+    console.log("credentials stored", userEmail, userPassword)
     await Keychain.setGenericPassword(userEmail, userPassword)
   }
 
@@ -47,7 +48,7 @@ export default function LoginScreen() {
           value={userPassword}
           returnKeyType="go"
           onChangeText={(val) => setUserPassword(val)}
-          onSubmitEditing={() => onSubmitPassword()}
+          onSubmitEditing={() => {onSubmitPassword(); Keyboard.dismiss()}}
           blurOnSubmit={false}
         />
       </View>
