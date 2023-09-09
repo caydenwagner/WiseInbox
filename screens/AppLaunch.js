@@ -5,7 +5,6 @@
 import React, {useState, useEffect} from 'react';
 import { SafeAreaView, Text } from "react-native";
 import * as Keychain from 'react-native-keychain';
-import LoginScreen from './LoginScreen';
 
 export default function AppLaunch({navigation}) {
   const [credentials, setCredentials] = useState(null)
