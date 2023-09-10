@@ -2,12 +2,47 @@
 // Author: Cayden Wagner
 // Date: 09/8/23
 // Purpose: Redirect the user to the correct page when the app launches
-import React, {useState, useEffect} from 'react';
-import { SafeAreaView, Text } from "react-native";
+import React, {useState, useEffect, useRef} from 'react';
+import { AppState, SafeAreaView, Text, TouchableOpacity } from "react-native";
 import * as Keychain from 'react-native-keychain';
+import LoginScreen from './LoginScreen';
+import LoadingScreen from './LoadingScreen';
 
 export default function AppLaunch({navigation}) {
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
+  const [appScreen, setAppScreen] = useState("Loading")
   const [credentials, setCredentials] = useState(null)
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === 'active'
+      ) {
+        console.log('App has come to the foreground!');
+      }
+
+      appState.current = nextAppState;
+
+      // Sets app state to the current appstate with a slight delay to make it look more smooth
+      if (appState.current === "active")
+      {
+        setAppStateVisible(appState.current);
+      }
+      else
+      {
+        setTimeout(() => {
+          setAppStateVisible(appState.current);
+        }, 500);
+      }
+      
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
   
   useEffect(() => {
     const fetchUser = async () => {
@@ -16,9 +51,10 @@ export default function AppLaunch({navigation}) {
         if (user) {
           console.log('Credentials successfully loaded for user ' + user.username)
           setCredentials(user)
+          setAppScreen("LoggedIn")
         } else {
           console.log('No credentials stored');
-          navigation.navigate('LoginScreen')
+          setAppScreen("LoggedOut")
         }
       } catch (error) {
         console.log("Keychain couldn't be accessed!", error);
@@ -27,14 +63,47 @@ export default function AppLaunch({navigation}) {
     fetchUser()
   }, [])
 
-  return (
-    <SafeAreaView>
-      {
-        credentials ? 
-          <Text>{credentials.username} logged in</Text> 
-          : 
-          <Text>Loading</Text>
-      }
-    </SafeAreaView>
-  )
+
+  if (appState.current === "active")
+  {
+    switch (appScreen) {
+      case "Loading":
+        return (
+          <LoadingScreen/>
+        )
+      case "LoggedIn":
+        return (
+          <SafeAreaView>
+            <Text>logged in</Text>
+            <TouchableOpacity onPress={() => {
+              Keychain.resetGenericPassword(); 
+              setCredentials(null); 
+              setAppScreen("LoggedOut")
+              }
+            }>
+              <Text>Log Out</Text>
+            </TouchableOpacity>
+          </SafeAreaView>
+        )
+      case "LoggedOut":
+        return (
+          <LoginScreen
+            setAppScreen={setAppScreen}
+            setCredentials={setCredentials}
+          />
+        )
+      default:
+        return (
+          <SafeAreaView>
+            <Text>DEFAULT</Text>
+          </SafeAreaView>
+        )
+    }
+  }
+  else
+  {
+    return (
+      <LoadingScreen/>
+    )
+  }
 }

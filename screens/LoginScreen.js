@@ -10,7 +10,7 @@ import { light, dark } from "../globalStyles/colors";
 import { moderateVerticalScale } from '../functions/helpers';
 import { EXTRA_LARGE_TEXT } from '../globalStyles/sizes';
 
-export default function LoginScreen() {
+export default function LoginScreen(props) {
   const [userEmail, setUserEmail] = useState("")
   const [userPassword, setUserPassword] = useState("")
   const isDarkMode = useColorScheme() === "dark"
@@ -19,8 +19,8 @@ export default function LoginScreen() {
   async function onSubmitPassword() 
   {
     // Store the email and password securely in the native keychain
-    console.log("credentials stored", userEmail, userPassword)
-    await Keychain.setGenericPassword(userEmail, userPassword)
+    props.setCredentials(await Keychain.setGenericPassword(userEmail, userPassword))
+    props.setAppScreen("LoggedIn")
   }
 
   return ( 

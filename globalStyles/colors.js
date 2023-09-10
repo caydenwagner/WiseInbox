@@ -18,7 +18,7 @@ const dark = {
     color: "#020202"
   },
   secondary: {
-    color: "#181D1A"
+    color: "#1D273D"
   },
   accent: {
     color: "#878C89"
