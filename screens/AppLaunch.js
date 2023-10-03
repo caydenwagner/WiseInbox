@@ -7,6 +7,7 @@ import { AppState, SafeAreaView, Text, TouchableOpacity } from "react-native";
 import * as Keychain from 'react-native-keychain';
 import LoginScreen from './LoginScreen';
 import LoadingScreen from './LoadingScreen';
+import { getContent } from '../functions/apiHelpers';
 
 export default function AppLaunch({navigation}) {
   const appState = useRef(AppState.currentState);
@@ -82,6 +83,13 @@ export default function AppLaunch({navigation}) {
               }
             }>
               <Text>Log Out</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={async() => {
+              const data = await getContent()
+              console.log(data)
+            }
+            }>
+              <Text>Get Content From Server</Text>
             </TouchableOpacity>
           </SafeAreaView>
         )
