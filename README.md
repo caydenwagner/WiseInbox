@@ -5,7 +5,7 @@ This repository contains a React Native front end in the root directory, along w
 To get started, follow these steps:
 
 # Clone the repository:
-git clone [https://git hub.com/yourusername/your-repository.git](https://github.com/cwagner2325/WiseInbox.git)
+git clone https://github.com/cwagner2325/WiseInbox.git
 
 # Navigate to the project directory:
 cd WiseInbox
