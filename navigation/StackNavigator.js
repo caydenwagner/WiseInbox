@@ -7,6 +7,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 import LoginScreen from '../screens/LoginScreen';
 import AppLaunch from '../screens/AppLaunch';
+import ViewEmailScreen from '../screens/ViewEmailScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +26,10 @@ export default function MainNavigator() {
         <Stack.Screen
           name="LoginScreen"
           component={LoginScreen}
+        />
+        <Stack.Screen
+          name="ViewEmailScreen"
+          component={ViewEmailScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

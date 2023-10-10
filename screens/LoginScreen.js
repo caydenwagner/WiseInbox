@@ -4,11 +4,12 @@
 // Purpose: Provide the login page for the application
 import React, {useState, useRef} from 'react';
 import * as Keychain from 'react-native-keychain';
-import { Text, ScrollView, StyleSheet, useColorScheme, View, Keyboard } from "react-native";
+import { Text, ScrollView, StyleSheet, useColorScheme, View, Keyboard, TouchableOpacity, SafeAreaView } from "react-native";
 import { SmartTextInput } from '../components/textInputs';
 import { light, dark } from "../globalStyles/colors";
-import { moderateVerticalScale } from '../functions/helpers';
+import { moderateVerticalScale, moderateScale } from '../functions/helpers';
 import { EXTRA_LARGE_TEXT } from '../globalStyles/sizes';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function LoginScreen(props) {
   const [userEmail, setUserEmail] = useState("")
@@ -28,6 +29,14 @@ export default function LoginScreen(props) {
       style={{...styles.background, backgroundColor: isDarkMode ? dark.primary.color : light.primary.color}}
       contentContainerStyle={{flexGrow: 1}}
       keyboardShouldPersistTaps='handled'>
+
+      <SafeAreaView style={styles.iconContainer}>
+        <MaterialCommunityIcons 
+          name="owl"
+          color={isDarkMode ? dark.white.color : dark.secondary.color} 
+          size={moderateScale(120)}
+        />
+      </SafeAreaView>
 
       <Text style={{...styles.headerText, color: isDarkMode ? dark.white.color : light.black.color}}>Add an Account</Text>
       <View>
@@ -51,6 +60,12 @@ export default function LoginScreen(props) {
           onSubmitEditing={() => {onSubmitPassword(); Keyboard.dismiss()}}
           blurOnSubmit={false}
         />
+
+        <TouchableOpacity 
+          style={styles.button} 
+          onPress={() => {onSubmitPassword(); Keyboard.dismiss()}}>
+          <Text>Login</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -61,11 +76,23 @@ const styles = StyleSheet.create({
     width: "100%", 
     height: "100%"
   },
+  iconContainer: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   headerText: {
     fontSize: EXTRA_LARGE_TEXT,
     fontWeight: "700",
     alignSelf: 'center',
-    marginTop: moderateVerticalScale(60),
+    marginTop: moderateVerticalScale(20),
     marginBottom: moderateVerticalScale(8)
-  }
+  },
+  button: {
+    backgroundColor: light.accent.color,
+    paddingVertical: moderateVerticalScale(8),
+    marginHorizontal: moderateVerticalScale(15),
+    paddingHorizontal: moderateScale(15),
+    borderRadius: moderateVerticalScale(8),
+    alignSelf: 'flex-end',
+  },
 })
