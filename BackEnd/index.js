@@ -10,5 +10,5 @@ app.listen(3000,() => console.log("Server listening at port 3000"));
 
 app.get("/", (req, res) => {
   console.log("Entered Get");
-  res.json({response: "Hello World"});
+  res.json({"response": "Hello World"});
 });
