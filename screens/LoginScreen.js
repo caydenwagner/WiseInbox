@@ -4,7 +4,9 @@
 // Purpose: Provide the login page for the application
 import React, {useState, useRef} from 'react';
 import * as Keychain from 'react-native-keychain';
-import { Text, ScrollView, StyleSheet, useColorScheme, View, Keyboard, TouchableOpacity, SafeAreaView } from "react-native";
+import { Text, ScrollView, StyleSheet, useColorScheme, View, Keyboard, TouchableOpacity, SafeAreaView, Platform } from "react-native";
+import SafariView from "react-native-safari-view";
+import { WebView } from "react-native-webview";
 import { SmartTextInput } from '../components/textInputs';
 import { light, dark } from "../globalStyles/colors";
 import { moderateVerticalScale, moderateScale } from '../functions/helpers';
@@ -23,6 +25,18 @@ export default function LoginScreen(props) {
     props.setCredentials(await Keychain.setGenericPassword(userEmail, userPassword))
     props.setAppScreen("LoggedIn")
   }
+
+  const openUrl = (url) => {
+    // // Use SafariView on iOS
+    if (Platform.OS === "ios") {
+      SafariView.show({
+        url,
+        fromBottom: true,
+      });
+    } else {
+      setURL(url);
+    }
+  };
 
   return ( 
     <ScrollView 
@@ -66,6 +80,13 @@ export default function LoginScreen(props) {
           onPress={() => {onSubmitPassword(); Keyboard.dismiss()}}>
           <Text>Login</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity 
+          style={styles.button} 
+          onPress={() => openUrl(`http://localhost:3000/user/login/google`)}>
+          <Text>Login</Text>
+        </TouchableOpacity>
+
       </View>
     </ScrollView>
   );
