@@ -15,7 +15,7 @@ app.get("/user/login/google", passport.authenticate(
   "google", { scope: ["profile", "email"] }
 )); //define this scope to have access to the email
 
-app.get("/user/login/google/callback", passport.authenticate("google", { failureRedirect: "/auth/google" }),
+app.get("/oauth2callback", passport.authenticate("google"),
   // Redirect user back to the mobile app using deep linking
   (req, res) => {
     res.redirect(
