@@ -2,30 +2,19 @@
 // Author: Cayden Wagner
 // Date: 09/7/23
 // Purpose: Provide the login page for the application
-import React, {useState, useRef, useEffect} from 'react';
-import * as Keychain from 'react-native-keychain';
-import { Text, ScrollView, StyleSheet, useColorScheme, View, Keyboard, TouchableOpacity, SafeAreaView, Platform, Linking } from "react-native";
+import React, {useState, useEffect} from 'react';
+import { Text, ScrollView, StyleSheet, useColorScheme, View, TouchableOpacity, SafeAreaView, Platform, Linking } from "react-native";
 import SafariView from "react-native-safari-view";
-import { WebView } from "react-native-webview";
-import { SmartTextInput } from '../components/textInputs';
 import { light, dark } from "../globalStyles/colors";
 import { moderateVerticalScale, moderateScale } from '../functions/helpers';
 import { EXTRA_LARGE_TEXT } from '../globalStyles/sizes';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNavigation } from '@react-navigation/native';
 
-export default function LoginScreen(props) {
-  const [userEmail, setUserEmail] = useState("")
-  const [userPassword, setUserPassword] = useState("")
+export default function LoginScreen() {
+  const navigation = useNavigation();
   const [uri, setURL] = useState("");
   const isDarkMode = useColorScheme() === "dark"
-  const password_input = useRef();
-
-  async function onSubmitPassword() 
-  {
-    // Store the email and password securely in the native keychain
-    props.setCredentials(await Keychain.setGenericPassword(userEmail, userPassword))
-    props.setAppScreen("LoggedIn")
-  }
 
   const openUrl = (url) => {
     // // Use SafariView on iOS
@@ -52,22 +41,21 @@ export default function LoginScreen(props) {
   }, []);
 
   const handleOpenURL = (url) => {
-    const status = decodeURI(url).match(
-      /status=([^#]+)/
-    );
+    const decodedUrl = decodeURI(url);
+    const status = decodedUrl.match(/status=([^/]+)/);
     
-    if (status === "Success")
+    if (status && status[1] === "Success")
     {
-      const user = decodeURI(url).match(
+      const user = decodedUrl.match(
         /firstName=([^#]+)\/email=([^#]+)/
       );
-  
       console.log(user)
+      navigation.navigate("ViewEmailScreen", {name: user[1], email: user[2]})
     }
     else
     {
       //TODO: Handle Failure
-      console.log(status)
+      console.log("F")
     }
 
     if (Platform.OS === "ios") {
@@ -99,17 +87,6 @@ export default function LoginScreen(props) {
           <Text>Login With Google</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity 
-          style={styles.button} 
-          onPress={() => {
-            fetch(`http://localhost:3000/user/logout`)
-            .catch(function(error) {
-              console.log('There has been a problem with your fetch operation: ' + error.message);
-            });
-          }}>
-          <Text>Logout</Text>
-        </TouchableOpacity>
-
       </View>
     </ScrollView>
   );
@@ -135,8 +112,9 @@ const styles = StyleSheet.create({
     backgroundColor: light.accent.color,
     paddingVertical: moderateVerticalScale(8),
     marginHorizontal: moderateVerticalScale(15),
+    marginVertical: moderateVerticalScale(10),
     paddingHorizontal: moderateScale(15),
     borderRadius: moderateVerticalScale(8),
-    alignSelf: 'flex-end',
+    alignSelf: 'center',
   },
 })

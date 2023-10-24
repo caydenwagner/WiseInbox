@@ -14,3 +14,15 @@ export const getContent = async () => {
     console.error(error);
   }
 };
+
+export const logOut = async () => {
+  try {
+    const response = await fetch(
+      'http://localhost:3000/user/logout'
+    );
+    const json = await response.json();
+    return json
+  } catch (error) {
+    console.error(error);
+  }
+};

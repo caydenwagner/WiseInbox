@@ -2,29 +2,38 @@
 // Author: Cayden Wagner
 // Date: 10/9/23
 // Purpose: Provide the page for the user to view emails
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { StyleSheet, SafeAreaView, Text, TouchableOpacity } from "react-native";
-import * as Keychain from 'react-native-keychain';
 import { EXTRA_LARGE_TEXT, MEDIUM_TEXT } from '../globalStyles/sizes';
 import { moderateScale, moderateVerticalScale } from '../functions/helpers';
 import { getContent } from '../functions/apiHelpers';
 import { dark, light } from '../globalStyles/colors';
+import { useNavigation } from '@react-navigation/native';
+import { logOut } from '../functions/apiHelpers';
 
-export default function ViewEmailScreen(props) {
+export default function ViewEmailScreen({route}) {
+  const navigation = useNavigation();
   const [data, setData] = useState(null)
-
-  console.log(props.username)
   
   return (
     <SafeAreaView>
-      <Text style={styles.headerText}>Hello {props.username}!</Text>
-      
-      <TouchableOpacity style={styles.button} onPress={() => {
-        Keychain.resetGenericPassword(); 
-        props.setCredentials(null); 
-        props.setAppScreen("LoggedOut")
-        }
-      }>
+      <Text style={styles.headerText}>Hello {route.params.name}, {route.params.email}!</Text>
+
+      <TouchableOpacity 
+        style={styles.button} 
+        onPress={async() => {
+          navigation.navigate("LoginScreen")
+          // res = await logOut()
+
+          // if (res.status === "Success")
+          // {  
+            
+          // }
+          // else
+          // {
+          //   // Implement error check
+          // }
+        }}>
         <Text style={styles.buttonText}>Log Out</Text>
       </TouchableOpacity>
       
