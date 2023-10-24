@@ -24,7 +24,7 @@ app.get("/oauth2callback", passport.authenticate("google", {
 app.get('/auth/google/success', (req, res) => {
   console.log("SUCCESS")
   res.redirect(
-    `WiseInbox://app/ViewEmailScreen?status=${"Success"}firstName=${req.user.firstName}/email=${req.user.email}`
+    `WiseInbox://app/ViewEmailScreen?status=${"Success"}/firstName=${req.user.firstName}/email=${req.user.email}`
   );
 })
 
@@ -37,9 +37,9 @@ app.get('/auth/google/failure', (req, res) => {
 
 app.get("/user/logout", function (req, res) {
   console.log("here");
-  res.redirect(
-    `WiseInbox://app/ViewEmailScreen?status=${"LoggedOut"}`
-  );
+  req.session.destroy(function () {
+    res.json({status: "Success"});
+  });
 });
 
 app.get("/", (req, res) => {
