@@ -23,7 +23,7 @@ passport.use(
     google,
     async (accessToken, refreshToken, profile, done) => {
       console.log(profile);
-      //done(err, user) will return the user we got from fb
+
       done(null, formatGoogle(profile._json));
     }
   )
@@ -42,7 +42,6 @@ passport.deserializeUser((user, done) => done(null, user));
 const formatGoogle = (profile) => {
   return {
     firstName: profile.given_name,
-    lastName: profile.family_name,
-    email: profile.emaiL
+    email: profile.email
   };
 };

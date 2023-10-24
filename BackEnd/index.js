@@ -15,20 +15,31 @@ app.get("/user/login/google", passport.authenticate(
   "google", { scope: ["profile", "email"] }
 )); //define this scope to have access to the email
 
-app.get("/oauth2callback", passport.authenticate("google"),
-  // Redirect user back to the mobile app using deep linking
-  (req, res) => {
-    res.redirect(
-      `WiseInbox://app/ViewEmailScreen?firstName=${req.user.firstName}/lastName=${req.user.lastName}/email=${req.user.email}`
-    );
-  }
+app.get("/oauth2callback", passport.authenticate("google", { 
+    successRedirect: '/auth/google/success',
+    failureRedirect: '/auth/google/failure'
+  })
 );
 
-app.get("/logout", function (req, res) {
+app.get('/auth/google/success', (req, res) => {
+  console.log("SUCCESS")
+  res.redirect(
+    `WiseInbox://app/ViewEmailScreen?status=${"Success"}firstName=${req.user.firstName}/email=${req.user.email}`
+  );
+})
+
+app.get('/auth/google/failure', (req, res) => {
+  // TODO: Implement error handling function
+  res.redirect(
+    `WiseInbox://app/ViewEmailScreen?status=${"Failure"}`
+  );
+})
+
+app.get("/user/logout", function (req, res) {
   console.log("here");
-  req.session.destroy(function () {
-    res.redirect("/login");
-  });
+  res.redirect(
+    `WiseInbox://app/ViewEmailScreen?status=${"LoggedOut"}`
+  );
 });
 
 app.get("/", (req, res) => {
