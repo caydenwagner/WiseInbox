@@ -49,19 +49,16 @@ export default function LoginScreen() {
       const user = decodedUrl.match(
         /firstName=([^#]+)\/email=([^#]+)/
       );
-      console.log(user)
+      if (Platform.OS === "ios") {
+        SafariView.dismiss();
+      } else {
+        setURL("");
+      }
       navigation.navigate("ViewEmailScreen", {name: user[1], email: user[2]})
     }
     else
     {
       //TODO: Handle Failure
-      console.log("F")
-    }
-
-    if (Platform.OS === "ios") {
-      SafariView.dismiss();
-    } else {
-      setURL("");
     }
   };
 

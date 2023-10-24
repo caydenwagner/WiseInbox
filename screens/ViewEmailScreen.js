@@ -22,7 +22,7 @@ export default function ViewEmailScreen({route}) {
       <TouchableOpacity 
         style={styles.button} 
         onPress={async() => {
-          navigation.navigate("LoginScreen")
+          navigation.goBack()
           // res = await logOut()
 
           // if (res.status === "Success")
