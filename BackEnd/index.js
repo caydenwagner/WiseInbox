@@ -12,7 +12,7 @@ const port = 3000
 
 // will go access 3rd party to get permission to access the data
 app.get("/user/login/google", passport.authenticate(
-  "google", { scope: ["profile", "email"] }
+  "google", { scope: ["profile", "email"]/*, prompt: "select_account"*/}
 )); //define this scope to have access to the email
 
 app.get("/oauth2callback", passport.authenticate("google", { 
@@ -36,9 +36,12 @@ app.get('/auth/google/failure', (req, res) => {
 
 app.get("/user/logout", function (req, res) {
   console.log("here");
-  req.session.destroy(function () {
+  req.logout(function(err) {
+    if (err) { 
+      res.json({status: "Failure"}); 
+    }
     res.json({status: "Success"});
-  });
+  })
 });
 
 app.get("/", (req, res) => {
