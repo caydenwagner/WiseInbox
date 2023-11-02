@@ -2,6 +2,8 @@
 // Author: Cayden Wagner
 // Date: 10/2/23
 // Purpose: Provide some helper function to interact with the back end through its API
+import { getLastLogin } from "./helpers";
+import { useNavigation } from '@react-navigation/native';
 
 export const getContent = async () => {
   try {

@@ -10,23 +10,13 @@ import { moderateVerticalScale, moderateScale } from '../functions/helpers';
 import { EXTRA_LARGE_TEXT } from '../globalStyles/sizes';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getLastLogin } from '../functions/helpers';
 
 export default function LoginScreen() {
   const navigation = useNavigation();
   const [uri, setURL] = useState("");
   const isDarkMode = useColorScheme() === "dark"
-
-  const openUrl = (url) => {
-    // // Use SafariView on iOS
-    if (Platform.OS === "ios") {
-      SafariView.show({
-        url,
-        fromBottom: true,
-      });
-    } else {
-      setURL(url);
-    }
-  };
 
   useEffect(() => {
     Linking.addEventListener("url", (url) => handleOpenURL(url.url));
@@ -40,25 +30,57 @@ export default function LoginScreen() {
     };
   }, []);
 
+  useEffect(() => {
+    const onMount = async () => {
+      const lastLogin = await getLastLogin()
+
+      if (lastLogin != null) {
+        openUrl(`http://localhost:3000/user/login/google`)
+      }
+    }
+
+    onMount()
+  }, []);
+
+  const openUrl = (url) => {
+    // // Use SafariView on iOS
+    if (Platform.OS === "ios") {
+      SafariView.show({
+        url,
+        fromBottom: true,
+      });
+    } else {
+      setURL(url);
+    }
+  };
+
   const handleOpenURL = (url) => {
     const decodedUrl = decodeURI(url);
     const status = decodedUrl.match(/status=([^/]+)/);
     
     if (status && status[1] === "Success")
     {
+      const d = new Date();
+      AsyncStorage.setItem('LastLogin', d.toString());
       const user = decodedUrl.match(
         /firstName=([^#]+)\/email=([^#]+)/
       );
+      // Set some global state using user email and first name
       if (Platform.OS === "ios") {
         SafariView.dismiss();
       } else {
         setURL("");
       }
-      navigation.navigate("ViewEmailScreen", {name: user[1], email: user[2]})
+      navigation.navigate("ViewEmailScreen")
     }
     else
     {
       //TODO: Handle Failure
+      if (Platform.OS === "ios") {
+        SafariView.dismiss();
+      } else {
+        setURL("");
+      }
     }
   };
 
@@ -78,6 +100,7 @@ export default function LoginScreen() {
 
       <Text style={{...styles.headerText, color: isDarkMode ? dark.white.color : light.black.color}}>Add an Account</Text>
       <View>
+        
         <TouchableOpacity 
           style={styles.button} 
           onPress={() => openUrl(`http://localhost:3000/user/login/google`)}>

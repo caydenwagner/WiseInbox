@@ -9,30 +9,31 @@ import { moderateScale, moderateVerticalScale } from '../functions/helpers';
 import { getContent } from '../functions/apiHelpers';
 import { dark, light } from '../globalStyles/colors';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { logOut } from '../functions/apiHelpers';
 
-export default function ViewEmailScreen({route}) {
+export default function ViewEmailScreen() {
   const navigation = useNavigation();
   const [data, setData] = useState(null)
   
   return (
     <SafeAreaView>
-      <Text style={styles.headerText}>Hello {route.params.name}, {route.params.email}!</Text>
+      <Text style={styles.headerText}>Hello!</Text>
 
       <TouchableOpacity 
         style={styles.button} 
-        onPress={async() => {
-          navigation.goBack()
-          // res = await logOut()
+        onPress={ async () => {
+          res = await logOut()
+          console.log(res)
 
-          // if (res.status === "Success")
-          // {  
-            
-          // }
-          // else
-          // {
-          //   // Implement error check
-          // }
+          if (res.status === "Success") {  
+            await AsyncStorage.removeItem('LastLogin');
+
+            navigation.navigate("LoginScreen")
+          }
+          else {
+            // Implement error check
+          }
         }}>
         <Text style={styles.buttonText}>Log Out</Text>
       </TouchableOpacity>
