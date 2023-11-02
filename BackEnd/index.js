@@ -24,16 +24,15 @@ app.get("/oauth2callback", passport.authenticate("google", {
 app.get('/auth/google/success', (req, res) => {
   console.log("SUCCESS")
   res.redirect(
-    `WiseInbox://app/ViewEmailScreen?status=${"Success"}/firstName=${req.user.firstName}/email=${req.user.email}`
+    `WiseInbox://app/LoginScreen?status=${"Success"}/firstName=${req.user.firstName}/email=${req.user.email}`
   );
 })
 
 app.get('/auth/google/failure', (req, res) => {
   // TODO: Implement error handling function
   res.redirect(
-    `WiseInbox://app/ViewEmailScreen?status=${"Failure"}`
-  );
-})
+    `WiseInbox://app/LoginScreen?status=${"Failure"}`
+  );})
 
 app.get("/user/logout", function (req, res) {
   console.log("here");
