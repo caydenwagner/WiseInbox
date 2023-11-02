@@ -24,7 +24,6 @@ export default function ViewEmailScreen() {
         style={styles.button} 
         onPress={ async () => {
           res = await logOut()
-          console.log(res)
 
           if (res.status === "Success") {  
             await AsyncStorage.removeItem('LastLogin');

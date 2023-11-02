@@ -21,6 +21,9 @@ export default function MainNavigator() {
         <Stack.Screen
           name="LoginScreen"
           component={LoginScreen}
+          options={{
+            animationEnabled: false,
+          }}
         />
         <Stack.Screen
           name="ViewEmailScreen"
