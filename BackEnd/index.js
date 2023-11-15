@@ -80,7 +80,7 @@ app.post('/gmail/messages', async (req, res) => {
       const messageDetails = await gmail.users.messages.get({
         userId: 'me',
         id: message.id,
-        format: 'full', // Requesting full message details
+        format: 'minimal', // Requesting full message details
       });
       return messageDetails.data;
     }));

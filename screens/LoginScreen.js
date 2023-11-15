@@ -72,8 +72,6 @@ export default function LoginScreen() {
         lastLogin: currentTime.toString(),
       }]
 
-      console.log(user)
-
       AsyncStorage.setItem('User', JSON.stringify(user));
 
       // Set some global state using user email and first name
