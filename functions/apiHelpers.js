@@ -17,6 +17,18 @@ export const getContent = async () => {
   }
 };
 
+export const getMail = async () => {
+  try {
+    const response = await fetch(
+      'http://localhost:3000/gmail/messages',
+    );
+    const json = await response.json();
+    return json;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const logOut = async () => {
   try {
     const response = await fetch(

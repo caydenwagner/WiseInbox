@@ -5,6 +5,8 @@
 import express from "express";
 import { initPassport } from "./initPassport.js";
 import passport from "passport";
+import { google } from "googleapis"
+import "dotenv/config";
 
 const app = express();
 initPassport(app);
@@ -12,7 +14,7 @@ const port = 3000
 
 // will go access 3rd party to get permission to access the data
 app.get("/user/login/google", passport.authenticate(
-  "google", { scope: ["profile", "email"]}
+  "google", { scope: ["profile", "email", "https://www.googleapis.com/auth/gmail.readonly"]}
 )); //define this scope to have access to the email
 
 app.get("/oauth2callback", passport.authenticate("google", { 
@@ -23,7 +25,6 @@ app.get("/oauth2callback", passport.authenticate("google", {
 
 app.get('/auth/google/success', (req, res) => {
   console.log("SUCCESS")
-  console.log(req.user.accessToken)
   res.redirect(
     `WiseInbox://app/LoginScreen?status=${"Success"}/firstName=${req.user.firstName}/email=${req.user.email}/accessToken=${req.user.accessToken}/refreshToken=${req.user.refreshToken}`
   );
@@ -47,9 +48,36 @@ app.get("/user/logout", function (req, res) {
 
 app.get("/", (req, res) => {
   console.log("Entered Get");
-  console.log(req.user)
-  console.log(req.user.accessToken)
+
   res.json({"response": "Hello World"});
+});
+  
+app.get('/gmail/messages', async (req, res) => {
+  const oAuth2Client = new google.auth.OAuth2(
+    process.env.GOOGLE_APP_ID,
+    process.env.GOOGLE_APP_SECRET,
+    process.env.REDIRECT_URI
+  )
+
+  oAuth2Client.setCredentials({
+    access_token: "ya29.a0AfB_byDZ0RTUu7kTDIyp0KNjFi7B5Ry4fAJp1qcjhwx2Nx4tTjtg9EpM1oonLbIfoAwME-JrUXxBTkNXTIJBVnkEpo1DPui-bgT3TpAAVae4UJJSaiIBjKrdVepSqiV6XCkiiIo5IXq_vADynttMrzxGig7ZPyhohgaCgYKAecSARMSFQHGX2MiEAhEBGKJvYS-Dg6E71L_dA0169", 
+  })
+
+  console.log("reached")
+
+  const gmail = google.gmail({ version: 'v1', auth: oAuth2Client });
+
+  try {
+    const response = await gmail.users.messages.list({
+      userId: 'me',
+    });
+
+    const messages = response.data.messages;
+    res.json(messages);
+  } catch (error) {
+    console.error('Error fetching messages:', error);
+    res.status(500).json({ error: 'Error fetching messages' });
+  }
 });
 
 app.listen(port,() => console.log("Server listening at port" + port));

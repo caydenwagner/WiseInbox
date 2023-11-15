@@ -26,7 +26,7 @@ export default function LoginScreen() {
       }
     });
     return () => {
-      Linking.removeAllListeners("url");
+      Linking.removeAllListeners("url"); 
     };
   }, []);
 
@@ -71,6 +71,8 @@ export default function LoginScreen() {
         accessToken: accessToken[1],
         lastLogin: currentTime.toString(),
       }]
+
+      console.log(user)
 
       AsyncStorage.setItem('User', JSON.stringify(user));
 

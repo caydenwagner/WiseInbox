@@ -6,11 +6,10 @@ import React, {useState} from 'react';
 import { StyleSheet, SafeAreaView, Text, TouchableOpacity } from "react-native";
 import { EXTRA_LARGE_TEXT, MEDIUM_TEXT } from '../globalStyles/sizes';
 import { moderateScale, moderateVerticalScale } from '../functions/helpers';
-import { getContent } from '../functions/apiHelpers';
+import { getContent, logOut, getMail } from '../functions/apiHelpers';
 import { dark, light } from '../globalStyles/colors';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { logOut } from '../functions/apiHelpers';
 
 export default function ViewEmailScreen() {
   const navigation = useNavigation();
@@ -38,7 +37,7 @@ export default function ViewEmailScreen() {
       </TouchableOpacity>
       
       <TouchableOpacity style={styles.button} onPress={async() => {
-        await getContent()
+        await getMail()
           .then((res) => JSON.stringify(res))
           .then((resJson) => setData(resJson))
       }}>
