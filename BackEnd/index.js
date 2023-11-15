@@ -52,7 +52,9 @@ app.get("/", (req, res) => {
   res.json({"response": "Hello World"});
 });
   
-app.get('/gmail/messages', async (req, res) => {
+app.post('/gmail/messages', async (req, res) => {
+  const authToken = req.headers['authorization'];
+
   const oAuth2Client = new google.auth.OAuth2(
     process.env.GOOGLE_APP_ID,
     process.env.GOOGLE_APP_SECRET,
@@ -60,10 +62,8 @@ app.get('/gmail/messages', async (req, res) => {
   )
 
   oAuth2Client.setCredentials({
-    access_token: "ya29.a0AfB_byDuVHcpwQLErWH4nJkBXOUIBy_8pf2VYhPu9qnEhuhzdE8I9OdP2rTgHPrFcdKY8VRjQ2b_zDEcbsa9_xUczE_etUtlGy-UPmyMFVcCVh9XSoQHH-VDiMmUZwesf-w-SCXAaokXOpvSF_gruHOrdIM-ViqIoAaCgYKASESARMSFQHGX2MirZs7WyiRwyFPOxeoMGfzXg0169", 
+    access_token: authToken
   })
-
-  console.log("reached")
 
   const gmail = google.gmail({ version: 'v1', auth: oAuth2Client });
 
