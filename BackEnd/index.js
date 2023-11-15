@@ -60,7 +60,7 @@ app.get('/gmail/messages', async (req, res) => {
   )
 
   oAuth2Client.setCredentials({
-    access_token: "ya29.a0AfB_byDZ0RTUu7kTDIyp0KNjFi7B5Ry4fAJp1qcjhwx2Nx4tTjtg9EpM1oonLbIfoAwME-JrUXxBTkNXTIJBVnkEpo1DPui-bgT3TpAAVae4UJJSaiIBjKrdVepSqiV6XCkiiIo5IXq_vADynttMrzxGig7ZPyhohgaCgYKAecSARMSFQHGX2MiEAhEBGKJvYS-Dg6E71L_dA0169", 
+    access_token: "ya29.a0AfB_byDuVHcpwQLErWH4nJkBXOUIBy_8pf2VYhPu9qnEhuhzdE8I9OdP2rTgHPrFcdKY8VRjQ2b_zDEcbsa9_xUczE_etUtlGy-UPmyMFVcCVh9XSoQHH-VDiMmUZwesf-w-SCXAaokXOpvSF_gruHOrdIM-ViqIoAaCgYKASESARMSFQHGX2MirZs7WyiRwyFPOxeoMGfzXg0169", 
   })
 
   console.log("reached")
