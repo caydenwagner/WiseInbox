@@ -70,10 +70,23 @@ app.post('/gmail/messages', async (req, res) => {
   try {
     const response = await gmail.users.messages.list({
       userId: 'me',
+      maxResults: 5,
     });
 
     const messages = response.data.messages;
-    res.json(messages);
+
+     // Fetch the details of a maximum of 5 messages
+     const fullMessages = await Promise.all(messages.map(async (message) => {
+      const messageDetails = await gmail.users.messages.get({
+        userId: 'me',
+        id: message.id,
+        format: 'full', // Requesting full message details
+      });
+      return messageDetails.data;
+    }));
+
+    res.json(fullMessages);
+
   } catch (error) {
     console.error('Error fetching messages:', error);
     res.status(500).json({ error: 'Error fetching messages' });
