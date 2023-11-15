@@ -24,7 +24,7 @@ passport.use(
     async (accessToken, refreshToken, profile, done) => {
       console.log(profile);
 
-      done(null, formatGoogle(profile._json));
+      done(null, formatGoogle(profile._json, accessToken, refreshToken));
     }
   )
 );
@@ -39,9 +39,11 @@ passport.deserializeUser((user, done) => done(null, user));
 
 ////////// Format data//////////
 
-const formatGoogle = (profile) => {
+const formatGoogle = (profile, accessToken, refreshToken) => {
   return {
     firstName: profile.given_name,
-    email: profile.email
+    email: profile.email,
+    accessToken: accessToken,
+    refreshToken: refreshToken
   };
 };

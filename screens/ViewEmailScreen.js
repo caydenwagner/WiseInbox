@@ -18,7 +18,7 @@ export default function ViewEmailScreen() {
   
   return (
     <SafeAreaView>
-      <Text style={styles.headerText}>Hello!</Text>
+      <Text style={styles.headerText}>Logged in!</Text>
 
       <TouchableOpacity 
         style={styles.button} 
@@ -45,6 +45,9 @@ export default function ViewEmailScreen() {
         <Text style={styles.buttonText}>Get Content From Server</Text>
       </TouchableOpacity>
       { data ? <Text style={styles.buttonText}>{data}</Text> : null}
+      
+      <Text style={styles.headerText}>Emails will go here</Text>
+
     </SafeAreaView>
   )
 }

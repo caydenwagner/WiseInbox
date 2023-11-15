@@ -31,15 +31,15 @@ export default function LoginScreen() {
   }, []);
 
   useEffect(() => {
-    const onMount = async () => {
+    const onLaunch = async () => {
       const lastLogin = await getLastLogin()
 
       if (lastLogin != null) {
         openUrl(`http://localhost:3000/user/login/google`)
-      }
+      } 
     }
 
-    onMount()
+    onLaunch() 
   }, []);
 
   const openUrl = (url) => {
@@ -60,11 +60,20 @@ export default function LoginScreen() {
     
     if (status && status[1] === "Success")
     {
-      const d = new Date();
-      AsyncStorage.setItem('LastLogin', d.toString());
-      const user = decodedUrl.match(
-        /firstName=([^#]+)\/email=([^#]+)/
-      );
+      const currentTime = new Date()
+      const firstName = decodedUrl.match(/firstName=([^/]+)/)
+      const email = decodedUrl.match(/email=([^/]+)/)
+      const accessToken = decodedUrl.match(/accessToken=([^/]+)/)
+
+      const user = [{
+        firstName: firstName[1],
+        email: email[1],
+        accessToken: accessToken[1],
+        lastLogin: currentTime.toString(),
+      }]
+
+      AsyncStorage.setItem('User', JSON.stringify(user));
+
       // Set some global state using user email and first name
       if (Platform.OS === "ios") {
         SafariView.dismiss();

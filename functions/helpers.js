@@ -16,9 +16,10 @@ export const moderateVerticalScale = (size, factor = 0.5) => size + (verticalSca
 export const getLastLogin = () => {
   const getData = async () => {
     try {
-      const value = await AsyncStorage.getItem('LastLogin');
+      const value = await AsyncStorage.getItem('User');
       if (value !== null) {
-        return value
+        const user = JSON.parse(value)
+        return user[0].lastLogin
       }
       return null
     } catch (e) {

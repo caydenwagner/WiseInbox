@@ -12,7 +12,7 @@ const port = 3000
 
 // will go access 3rd party to get permission to access the data
 app.get("/user/login/google", passport.authenticate(
-  "google", { scope: ["profile", "email"]/*, prompt: "select_account"*/}
+  "google", { scope: ["profile", "email"]}
 )); //define this scope to have access to the email
 
 app.get("/oauth2callback", passport.authenticate("google", { 
@@ -23,8 +23,9 @@ app.get("/oauth2callback", passport.authenticate("google", {
 
 app.get('/auth/google/success', (req, res) => {
   console.log("SUCCESS")
+  console.log(req.user.accessToken)
   res.redirect(
-    `WiseInbox://app/LoginScreen?status=${"Success"}/firstName=${req.user.firstName}/email=${req.user.email}`
+    `WiseInbox://app/LoginScreen?status=${"Success"}/firstName=${req.user.firstName}/email=${req.user.email}/accessToken=${req.user.accessToken}/refreshToken=${req.user.refreshToken}`
   );
 })
 
@@ -46,6 +47,8 @@ app.get("/user/logout", function (req, res) {
 
 app.get("/", (req, res) => {
   console.log("Entered Get");
+  console.log(req.user)
+  console.log(req.user.accessToken)
   res.json({"response": "Hello World"});
 });
 
