@@ -2,7 +2,7 @@
 // Author: Cayden Wagner
 // Date: 10/9/23
 // Purpose: Provide the page for the user to view emails
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { StyleSheet, SafeAreaView, Text, TouchableOpacity } from "react-native";
 import { EXTRA_LARGE_TEXT, MEDIUM_TEXT } from '../globalStyles/sizes';
 import { moderateScale, moderateVerticalScale } from '../functions/helpers';
@@ -10,10 +10,21 @@ import { getContent, logOut, getMail } from '../functions/apiHelpers';
 import { dark, light } from '../globalStyles/colors';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { EmailDisplayer } from '../components/emailDisplayer';
 
 export default function ViewEmailScreen() {
   const navigation = useNavigation();
   const [data, setData] = useState(null)
+
+  const fetchMail = async () => {
+    await getMail()
+      .then((res) => setData(res))
+  }
+
+  useEffect(() => {
+    console.log("hit")
+    fetchMail()
+  }, [])
   
   return (
     <SafeAreaView>
@@ -37,15 +48,16 @@ export default function ViewEmailScreen() {
       </TouchableOpacity>
       
       <TouchableOpacity style={styles.button} onPress={async() => {
-        await getMail()
-          .then((res) => JSON.stringify(res))
-          .then((resJson) => setData(resJson))
+        fetchMail()
       }}>
         <Text style={styles.buttonText}>Get Content From Server</Text>
       </TouchableOpacity>
-      { data ? <Text style={styles.buttonText}>{data}</Text> : null}
-      
+             
       <Text style={styles.headerText}>Emails will go here</Text>
+
+      <EmailDisplayer
+        data={data}
+      />
 
     </SafeAreaView>
   )
