@@ -7,18 +7,25 @@ import { StyleSheet, SafeAreaView, View, useColorScheme } from "react-native";
 import { logOut, getMail } from '../functions/apiHelpers';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { EmailDisplayer } from '../components/emailDisplayer';
+import { EmailDisplayer } from '../components/EmailDisplayer';
 import { EmailScreenHeader } from '../components/EmailScreenHeader';
 import { dark, light } from '../globalStyles/colors';
 
 export default function ViewEmailScreen() {
   const navigation = useNavigation();
   const [data, setData] = useState(null)
+  const [refreshing, setRefreshing] = useState(false)
 
   const fetchMail = async () => {
     console.log("fetching")
     await getMail()
       .then((res) => setData(res))
+    setRefreshing(false)
+  }
+
+  const handleRefresh = () => {
+    setRefreshing(true)
+    fetchMail()
   }
 
   const logOut = async () => {
@@ -42,6 +49,8 @@ export default function ViewEmailScreen() {
         />
     
         <EmailDisplayer
+          refreshing={refreshing}
+          handleRefresh={handleRefresh}
           data={data}
         />
 
