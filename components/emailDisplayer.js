@@ -4,17 +4,17 @@ import { EmailPreview } from './emailPreview';
 
 export const EmailDisplayer = (props) => {
   return (
-    <FlatList
-      data={props.data}
-      renderItem={renderMessage}
-      keyExtractor={(item, index) => `${index}`}
-    />
+    <View style={{height: "100%"}}>
+      <FlatList
+        data={props.data}
+        renderItem={renderMessage}
+        keyExtractor={(item, index) => `${index}`}
+      />
+    </View>
   )
 }
 
 const renderMessage = ({ item }) => {
-  console.log(item)
-  
   return (
     <EmailPreview 
       message={item}
