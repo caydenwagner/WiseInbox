@@ -7,7 +7,6 @@ import { initPassport } from "./initPassport.js";
 import passport from "passport";
 import { google } from "googleapis"
 import { formatDate } from "./formatDate.js";
-import * as he from 'he';
 import "dotenv/config";
 
 const app = express();
