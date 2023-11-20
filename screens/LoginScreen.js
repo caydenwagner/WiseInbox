@@ -42,6 +42,21 @@ export default function LoginScreen() {
     onLaunch() 
   }, []);
 
+  const logIn = () => {
+    const onLaunch = async () => {
+      const lastLogin = await getLastLogin()
+
+      if (lastLogin != null) {
+        openUrl(`http://localhost:3000/user/login/google`)
+      } 
+      else {
+        openUrl(`http://localhost:3000/user/login/google/newuser`)
+      }
+    }
+
+    onLaunch() 
+  }
+
   const openUrl = (url) => {
     // // Use SafariView on iOS
     if (Platform.OS === "ios") {
@@ -112,7 +127,7 @@ export default function LoginScreen() {
         
         <TouchableOpacity 
           style={styles.button} 
-          onPress={() => openUrl(`http://localhost:3000/user/login/google`)}>
+          onPress={() => logIn()}>
           <Text>Login With Google</Text>
         </TouchableOpacity>
 

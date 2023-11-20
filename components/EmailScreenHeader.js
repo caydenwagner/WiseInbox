@@ -9,9 +9,19 @@ export const EmailScreenHeader = (props) => {
   const isDarkMode = useColorScheme() === "dark"
 
   if (isDarkMode) {
-    return <DarkHeader handleRefresh={props.handleRefresh}/>
+    return (
+      <DarkHeader 
+        handleRefresh={props.handleRefresh} 
+        handleLogOut={props.handleLogOut}
+      />
+    )
   }
-  return <LightHeader handleRefresh={props.handleRefresh}/>
+  return (
+    <LightHeader 
+      handleRefresh={props.handleRefresh}
+      handleLogOut={props.handleLogOut}
+    />
+  )
 }
 
 const DarkHeader = (props) => {
@@ -24,12 +34,17 @@ const DarkHeader = (props) => {
           size={moderateScale(30)}
         />
       </TouchableOpacity>
+
       <Text style={styles.darkHeader}>Inbox</Text>
-      <MaterialCommunityIcons 
-        name="account-circle"
-        color={dark.white.color} 
-        size={moderateScale(30)}
-      />
+
+      <TouchableOpacity onPress={() => props.handleLogOut()}>
+        <MaterialCommunityIcons 
+          name="account-circle"
+          color={dark.white.color} 
+          size={moderateScale(30)}
+        />
+      </TouchableOpacity>
+      
     </View>
   )
 }
@@ -45,11 +60,15 @@ const LightHeader = (props) => {
         />
       </TouchableOpacity>
       <Text style={styles.lightHeader}>Inbox</Text>
-      <MaterialCommunityIcons 
-        name="account-circle"
-        color={light.black.color} 
-        size={moderateScale(30)}
-      />
+
+      <TouchableOpacity onPress={() => props.handleLogOut()}>
+        <MaterialCommunityIcons 
+          name="account-circle"
+          color={light.black.color} 
+          size={moderateScale(30)}
+        />
+      </TouchableOpacity>
+
     </View>
   )
 }

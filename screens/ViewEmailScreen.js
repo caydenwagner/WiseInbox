@@ -27,8 +27,8 @@ export default function ViewEmailScreen() {
     fetchMail()
   }
 
-  const logOut = async () => {
-    await AsyncStorage.removeItem('LastLogin');
+  const logOutUser = () => {
+    logOut()
 
     navigation.navigate("LoginScreen")
   }
@@ -45,6 +45,7 @@ export default function ViewEmailScreen() {
 
         <EmailScreenHeader 
           handleRefresh={fetchMail}
+          handleLogOut={logOutUser}
         />
     
         <EmailDisplayer

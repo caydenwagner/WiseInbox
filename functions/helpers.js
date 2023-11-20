@@ -42,3 +42,41 @@ export const openUrl = (url) => {
     setURL(url);
   }
 };
+
+export const updateLastLogin = () => {
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('User');
+      const user = JSON.parse(value);
+
+      if (value !== null) {
+        user[0].lastLogin = new Date();
+
+        AsyncStorage.setItem('User', JSON.stringify(user))
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  };
+
+  getData()
+}
+
+export const removeLastLogin = () => {
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('User');
+      const user = JSON.parse(value);
+
+      if (value !== null) {
+        user[0].lastLogin = null;
+
+        AsyncStorage.setItem('User', JSON.stringify(user))
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  };
+
+  getData()
+}

@@ -21,8 +21,24 @@ let decode = str => {
 
 // will go access 3rd party to get permission to access the data
 app.get("/user/login/google", passport.authenticate(
-  "google", { scope: ["profile", "email", "https://www.googleapis.com/auth/gmail.readonly"]}
-)); //define this scope to have access to the email
+  "google", { 
+    scope: 
+      ["profile", "email", 
+      "https://www.googleapis.com/auth/gmail.readonly"
+    ], 
+  })
+); //define this scope to have access to the email
+
+// will go access 3rd party to get permission to access the data
+app.get("/user/login/google/newuser", passport.authenticate(
+  "google", { 
+    scope: 
+      ["profile", "email", 
+      "https://www.googleapis.com/auth/gmail.readonly"
+    ], 
+    prompt: 'select_account'
+  })
+); //define this scope to have access to the email
 
 app.get("/oauth2callback", passport.authenticate("google", { 
     successRedirect: '/auth/google/success',
