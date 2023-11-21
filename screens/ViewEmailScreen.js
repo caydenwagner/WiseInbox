@@ -16,6 +16,7 @@ export default function ViewEmailScreen() {
   const [refreshing, setRefreshing] = useState(false)
 
   const fetchMail = async () => {
+    console.log("fetching mail")
     await getMail()
       .then((res) => setData(res))
     setRefreshing(false)

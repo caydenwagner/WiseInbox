@@ -7,17 +7,12 @@ import { initPassport } from "./initPassport.js";
 import passport from "passport";
 import { google } from "googleapis"
 import { formatDate } from "./formatDate.js";
+import { decode } from 'html-entities';
 import "dotenv/config";
 
 const app = express();
 initPassport(app);
 const port = 3000
-
-let decode = str => {
-  return str.replace(/&#(\d+);/g, function(match, dec) {
-    return String.fromCharCode(dec);
-  });
-}
 
 // will go access 3rd party to get permission to access the data
 app.get("/user/login/google", passport.authenticate(
@@ -93,7 +88,7 @@ app.post('/gmail/messages', async (req, res) => {
   try {
     const response = await gmail.users.messages.list({
       userId: 'me',
-      maxResults: 5,
+      maxResults: 20,
     });
 
     const messages = response.data.messages;

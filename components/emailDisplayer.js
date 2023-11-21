@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, FlatList } from 'react-native';
 import { EmailPreview } from './EmailPreview';
+import { moderateVerticalScale } from '../functions/helpers';
 
 export const EmailDisplayer = (props) => {
   return (
@@ -11,9 +12,10 @@ export const EmailDisplayer = (props) => {
         data={props.data}
         renderItem={renderMessage}
         keyExtractor={(item, index) => `${index}`}
+        contentContainerStyle={{paddingBottom: moderateVerticalScale(200)}}
       />
-    </View>
-  )
+    </View> 
+  ) 
 }
 
 const renderMessage = ({ item }) => {

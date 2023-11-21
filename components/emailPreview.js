@@ -19,7 +19,7 @@ const LightEmailPreview = (props) => {
       <View style={styles.headerContainer}>
         <Text 
           style={styles.lightDate}
-          numberOfLines={1}>
+          numberOfLines={2}>
             {props.message.date}
         </Text>
 
@@ -38,7 +38,7 @@ const LightEmailPreview = (props) => {
 
       <Text 
         style={styles.lightSnippet}
-        numberOfLines={1}>
+        numberOfLines={2}>
           {props.message.snippet}
       </Text>
     </View>
@@ -82,14 +82,14 @@ const styles = StyleSheet.create({
     backgroundColor: dark.primary.color,
     paddingHorizontal: moderateScale(20),
     paddingVertical: moderateVerticalScale(15),
-    borderBottomWidth: .2,
+    borderTopWidth: .2,
     borderBlockColor: dark.accent.color
   },
   lightBackgroud: {
     backgroundColor: light.primary.color,
     paddingHorizontal: moderateScale(20),
     paddingVertical: moderateVerticalScale(15),
-    borderBottomWidth: .2,
+    borderTopWidth: .2,
     borderBlockColor: light.accent.color
   },
   headerContainer: {
