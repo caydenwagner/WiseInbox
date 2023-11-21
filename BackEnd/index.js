@@ -6,16 +6,39 @@ import express from "express";
 import { initPassport } from "./initPassport.js";
 import passport from "passport";
 import { google } from "googleapis"
+import { formatDate } from "./formatDate.js";
 import "dotenv/config";
 
 const app = express();
 initPassport(app);
 const port = 3000
 
+let decode = str => {
+  return str.replace(/&#(\d+);/g, function(match, dec) {
+    return String.fromCharCode(dec);
+  });
+}
+
 // will go access 3rd party to get permission to access the data
 app.get("/user/login/google", passport.authenticate(
-  "google", { scope: ["profile", "email", "https://www.googleapis.com/auth/gmail.readonly"]}
-)); //define this scope to have access to the email
+  "google", { 
+    scope: 
+      ["profile", "email", 
+      "https://www.googleapis.com/auth/gmail.readonly"
+    ], 
+  })
+); //define this scope to have access to the email
+
+// will go access 3rd party to get permission to access the data
+app.get("/user/login/google/newuser", passport.authenticate(
+  "google", { 
+    scope: 
+      ["profile", "email", 
+      "https://www.googleapis.com/auth/gmail.readonly"
+    ], 
+    prompt: 'select_account'
+  })
+); //define this scope to have access to the email
 
 app.get("/oauth2callback", passport.authenticate("google", { 
     successRedirect: '/auth/google/success',
@@ -80,10 +103,37 @@ app.post('/gmail/messages', async (req, res) => {
       const messageDetails = await gmail.users.messages.get({
         userId: 'me',
         id: message.id,
-        format: 'minimal', // Requesting full message details
+        format: 'full', // Requesting full message details
       });
-      return messageDetails.data;
-    }));
+
+      const { payload } = messageDetails.data;
+      const headers = payload.headers;
+      const fromHeader = headers.find(header => header.name === 'From');
+      const sender = fromHeader ? fromHeader.value : 'Sender information not available';
+      const body = payload.parts && payload.parts.length > 0 && payload.parts[0].body.data ?
+      Buffer.from(payload.parts[0].body.data, 'base64').toString('utf-8') :
+      '';
+      const dateHeader = headers.find(header => header.name === 'Date');
+      const emailDate = dateHeader ? new Date(dateHeader.value) : null;
+      const subjectHeader = headers.find(header => header.name === 'Subject');
+      const subject = subjectHeader ? subjectHeader.value : 'No Subject';
+      const snippet = decode(messageDetails.data.snippet);
+      const isInbox = messageDetails.data.labelIds.includes('INBOX');
+      const isRead = !messageDetails.data.labelIds.includes('UNREAD');
+      const formattedDate = formatDate(emailDate)
+
+      const email = {
+        sender: sender,
+        body: body, 
+        date: formattedDate,
+        subject: subject,
+        snippet: snippet,
+        isInbox: isInbox,
+        isRead: isRead,
+      }
+
+      return email;
+    }))
 
     res.json(fullMessages);
 

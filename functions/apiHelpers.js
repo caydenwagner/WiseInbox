@@ -3,6 +3,7 @@
 // Date: 10/2/23
 // Purpose: Provide some helper function to interact with the back end through its API
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { removeLastLogin } from './helpers';
 
 
 export const getContent = async () => {
@@ -40,6 +41,8 @@ export const getMail = async () => {
 
 export const logOut = async () => {
   try {
+    removeLastLogin();
+
     const response = await fetch(
       'http://localhost:3000/user/logout'
     );
