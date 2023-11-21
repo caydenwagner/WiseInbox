@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList } from 'react-native';
+import React from 'react';
+import { View, FlatList } from 'react-native';
 import { EmailPreview } from './EmailPreview';
 
 export const EmailDisplayer = (props) => {

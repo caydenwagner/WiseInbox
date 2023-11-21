@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, useColorScheme } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, useColorScheme } from 'react-native';
 import { dark, light } from '../globalStyles/colors';
 import { moderateScale, moderateVerticalScale } from '../functions/helpers';
 import { LARGE_TEXT, MEDIUM_TEXT, SMALL_TEXT } from '../globalStyles/sizes';

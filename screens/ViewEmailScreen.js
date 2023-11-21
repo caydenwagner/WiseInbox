@@ -6,7 +6,6 @@ import React, {useEffect, useState} from 'react';
 import { StyleSheet, SafeAreaView, View, useColorScheme } from "react-native";
 import { logOut, getMail } from '../functions/apiHelpers';
 import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { EmailDisplayer } from '../components/EmailDisplayer';
 import { EmailScreenHeader } from '../components/EmailScreenHeader';
 import { dark, light } from '../globalStyles/colors';

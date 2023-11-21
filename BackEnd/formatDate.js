@@ -9,9 +9,9 @@ export const formatDate = (emailDate) => {
 
   const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
   if (diffHours > 0) {
-    return `${diffHours} hours ago`;
+    return diffHours === 1 ? `${diffHours} hour ago` : `${diffHours} hour ago`;
   }
 
   const diffMinutes = Math.floor(diffMs / (1000 * 60));
-  return `${diffMinutes} minutes ago`;
+  return diffMinutes === 1 ? `${diffMinutes} minute ago` : `${diffMinutes} minutes ago`;
 };
