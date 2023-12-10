@@ -1,4 +1,8 @@
 export const formatDate = (emailDate) => {
+  if (!emailDate) {
+    return ""
+  }
+
   const now = new Date();
   const diffMs = now - emailDate;
 
@@ -9,7 +13,7 @@ export const formatDate = (emailDate) => {
 
   const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
   if (diffHours > 0) {
-    return diffHours === 1 ? `${diffHours} hour ago` : `${diffHours} hour ago`;
+    return diffHours === 1 ? `${diffHours} hour ago` : `${diffHours} hours ago`;
   }
 
   const diffMinutes = Math.floor(diffMs / (1000 * 60));
