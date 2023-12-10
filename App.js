@@ -4,10 +4,13 @@
 // Purpose: Launches a MainNavigator component
 import * as React from 'react';
 import MainNavigator from './navigation/StackNavigator';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 function App() {
   return (
-    <MainNavigator/>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <MainNavigator/>
+    </GestureHandlerRootView>
   )
 }
 
