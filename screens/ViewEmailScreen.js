@@ -16,6 +16,7 @@ export default function ViewEmailScreen() {
   const [data, setData] = useState(null)
   const [currentDisplayedEmail, setCurrentDisplayEmail] = useState(null)
   const [refreshing, setRefreshing] = useState(false)
+  const [isFullScreenModalVisibile, setVisible] = useState(false)
 
   const bottomSheetRef = useRef();
 
@@ -41,11 +42,12 @@ export default function ViewEmailScreen() {
     fetchMail()
   }, []) 
 
-  useEffect(() => {
-    if (currentDisplayedEmail) {
-      bottomSheetRef.current.expand()
+  function openFullScreenMail(mail) {
+    if (mail) {
+      setCurrentDisplayEmail(mail)
+      bottomSheetRef.current.snapToIndex(0)
     }
-  }, [currentDisplayedEmail])
+  }
 
   const isDarkMode = useColorScheme() === "dark"
   
@@ -62,12 +64,13 @@ export default function ViewEmailScreen() {
           refreshing={refreshing}
           handleRefresh={handleRefresh}
           data={data}
-          setCurrentDisplayEmail={setCurrentDisplayEmail}
+          setCurrentDisplayEmail={openFullScreenMail}
         />
 
         <FullScreenEmailModal 
           forwardRef={bottomSheetRef}
           email={currentDisplayedEmail}
+          setVisible={setVisible}
         />
 
       </SafeAreaView>
@@ -77,6 +80,7 @@ export default function ViewEmailScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%"
+    width: "100%",
+    height: '100%'
   },
 })
