@@ -5,12 +5,15 @@
 import * as React from 'react';
 import MainNavigator from './navigation/StackNavigator';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 function App() {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <MainNavigator/>
-    </GestureHandlerRootView>
+    <SafeAreaProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <MainNavigator/>
+      </GestureHandlerRootView>
+    </SafeAreaProvider>
   )
 }
 

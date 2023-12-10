@@ -70,7 +70,7 @@ const DarkEmailPreview = (props) => {
 
       <Text 
         style={styles.darkSnippet}
-        numberOfLines={1}>
+        numberOfLines={2}>
           {props.message.snippet}
       </Text>
     </View>

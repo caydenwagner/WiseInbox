@@ -5927,10 +5927,10 @@
   "resolved" "https://registry.npmjs.org/react-native-safari-view/-/react-native-safari-view-2.1.0.tgz"
   "version" "2.1.0"
 
-"react-native-safe-area-context@^4.7.2", "react-native-safe-area-context@>= 3.0.0":
-  "integrity" "sha512-5fy/hRNJ7bI/U2SliOeKf0D80J4lXPc1NsRiNS7Xaz8YTnqlzWib1ViItkwKPfufe54YKzVBMmM32RpdzvO2gg=="
-  "resolved" "https://registry.npmjs.org/react-native-safe-area-context/-/react-native-safe-area-context-4.7.2.tgz"
-  "version" "4.7.2"
+"react-native-safe-area-context@^4.8.0", "react-native-safe-area-context@>= 3.0.0":
+  "integrity" "sha512-UTmn0jvikcA8LeCQuEV4/bQ1ZLODSaaEXKSK3wUskNwmtIgHFzT3lLXOBucFnyDYIxviJSWJeVc77eeBXc0UCA=="
+  "resolved" "https://registry.npmjs.org/react-native-safe-area-context/-/react-native-safe-area-context-4.8.0.tgz"
+  "version" "4.8.0"
 
 "react-native-screens@^3.25.0", "react-native-screens@>= 3.0.0":
   "integrity" "sha512-TSC2Ad0hh763I8QT6XxMsPXAagQ+RawDSdFtKRvIz9fCYr96AjRwwaqmYivbqlDywOgcRBkIVynkFtp0ThmlYw=="
