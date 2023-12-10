@@ -5,6 +5,7 @@
 import React, {useState, useEffect} from 'react';
 import { Text, ScrollView, StyleSheet, useColorScheme, View, TouchableOpacity, SafeAreaView, Platform, Linking } from "react-native";
 import SafariView from "react-native-safari-view";
+import { WebView } from "react-native-webview";
 import { light, dark } from "../globalStyles/colors";
 import { moderateVerticalScale, moderateScale } from '../functions/helpers';
 import { EXTRA_LARGE_TEXT } from '../globalStyles/sizes';
@@ -109,30 +110,45 @@ export default function LoginScreen() {
   };
 
   return ( 
-    <ScrollView 
-      style={{...styles.background, backgroundColor: isDarkMode ? dark.primary.color : light.primary.color}}
-      contentContainerStyle={{flexGrow: 1}}
-      keyboardShouldPersistTaps='handled'>
+    <>
+      { uri !== "" ? (
+        <SafeAreaView style={{ flex: 1 }}>
+          <WebView
+            userAgent={
+              Platform.OS === "android"
+                ? "Chrome/18.0.1025.133 Mobile Safari/535.19"
+                : "AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75"
+            }
+            source={{ uri }}
+          />
+        </SafeAreaView>
+      ) : (
+        <ScrollView 
+          style={{...styles.background, backgroundColor: isDarkMode ? dark.primary.color : light.primary.color}}
+          contentContainerStyle={{flexGrow: 1}}
+          keyboardShouldPersistTaps='handled'>
 
-      <SafeAreaView style={styles.iconContainer}>
-        <MaterialCommunityIcons 
-          name="owl"
-          color={isDarkMode ? dark.white.color : dark.secondary.color} 
-          size={moderateScale(120)}
-        />
-      </SafeAreaView>
+          <SafeAreaView style={styles.iconContainer}>
+            <MaterialCommunityIcons 
+              name="owl"
+              color={isDarkMode ? dark.white.color : dark.secondary.color} 
+              size={moderateScale(120)}
+            />
+          </SafeAreaView>
 
-      <Text style={{...styles.headerText, color: isDarkMode ? dark.white.color : light.black.color}}>Add an Account</Text>
-      <View>
-        
-        <TouchableOpacity 
-          style={styles.button} 
-          onPress={() => logIn()}>
-          <Text>Login With Google</Text>
-        </TouchableOpacity>
+          <Text style={{...styles.headerText, color: isDarkMode ? dark.white.color : light.black.color}}>Add an Account</Text>
+          <View>
+            
+            <TouchableOpacity 
+              style={styles.button} 
+              onPress={() => logIn()}>
+              <Text>Login With Google</Text>
+            </TouchableOpacity>
 
-      </View>
-    </ScrollView>
+          </View>
+        </ScrollView>
+      )}
+    </>
   );
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, TouchableOpacity } from 'react-native';
 import { EmailPreview } from './EmailPreview';
 import { moderateVerticalScale } from '../functions/helpers';
 
@@ -10,18 +10,16 @@ export const EmailDisplayer = (props) => {
         refreshing={props.refreshing}
         onRefresh={() => props.handleRefresh()}
         data={props.data}
-        renderItem={renderMessage}
+        renderItem={({item}) => (
+          <TouchableOpacity onPress={() => props.setCurrentDisplayEmail(item)}>
+            <EmailPreview 
+              message={item}
+            />
+          </TouchableOpacity>
+        )}
         keyExtractor={(item, index) => `${index}`}
         contentContainerStyle={{paddingBottom: moderateVerticalScale(200)}}
       />
     </View> 
   ) 
 }
-
-const renderMessage = ({ item }) => {
-  return (
-    <EmailPreview 
-      message={item}
-    />
-  )
-}; 

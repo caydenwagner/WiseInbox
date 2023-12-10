@@ -2,18 +2,22 @@
 // Author: Cayden Wagner
 // Date: 10/9/23
 // Purpose: Provide the page for the user to view emails
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import { StyleSheet, SafeAreaView, View, useColorScheme } from "react-native";
 import { logOut, getMail } from '../functions/apiHelpers';
 import { useNavigation } from '@react-navigation/native';
 import { EmailDisplayer } from '../components/EmailDisplayer';
 import { EmailScreenHeader } from '../components/EmailScreenHeader';
 import { dark, light } from '../globalStyles/colors';
+import { FullScreenEmailModal } from '../components/FullScreenEmailModal';
 
 export default function ViewEmailScreen() {
   const navigation = useNavigation();
   const [data, setData] = useState(null)
+  const [currentDisplayedEmail, setCurrentDisplayEmail] = useState(null)
   const [refreshing, setRefreshing] = useState(false)
+
+  const bottomSheetRef = useRef();
 
   const fetchMail = async () => {
     console.log("fetching mail")
@@ -37,6 +41,12 @@ export default function ViewEmailScreen() {
     fetchMail()
   }, []) 
 
+  useEffect(() => {
+    if (currentDisplayedEmail) {
+      bottomSheetRef.current.expand()
+    }
+  }, [currentDisplayedEmail])
+
   const isDarkMode = useColorScheme() === "dark"
   
   return (
@@ -52,6 +62,12 @@ export default function ViewEmailScreen() {
           refreshing={refreshing}
           handleRefresh={handleRefresh}
           data={data}
+          setCurrentDisplayEmail={setCurrentDisplayEmail}
+        />
+
+        <FullScreenEmailModal 
+          forwardRef={bottomSheetRef}
+          email={currentDisplayedEmail}
         />
 
       </SafeAreaView>
