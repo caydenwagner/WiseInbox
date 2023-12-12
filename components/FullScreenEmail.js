@@ -22,7 +22,15 @@ export const FullScreenEmail = (props) => {
 const LightFullScreenEmail = (props) => {
   return (
     <View style={styles.lightContentContainer}>
-      <Text>Light - {props.email.body}</Text>
+      <Text style={styles.lightHeaderText}>From:</Text>
+      <Text style={styles.lightInfoText}>{props.email.sender}</Text>
+      <View style={styles.lightDivider}></View>
+      <Text style={styles.lightHeaderText}>Subject:</Text>
+      <Text style={styles.lightInfoText}>{props.email.subject}</Text>
+      <View style={styles.lightDivider}></View>
+      <Text style={styles.lightHeaderText}>Security Scan:</Text>
+      <View style={styles.lightDivider}></View>
+      <Text style={styles.lightHeaderText}>{props.email.body}</Text>
     </View>
   )
 }
@@ -38,12 +46,27 @@ const DarkFullScreenEmail = (props) => {
 const styles = StyleSheet.create({
   lightContentContainer: {
     flex: 1,
-    alignItems: 'center',
     paddingHorizontal: moderateScale(20),
   },
   darkContentContainer: {
     flex: 1,
-    alignItems: 'center',
     paddingHorizontal: moderateScale(20),
   },
+  lightHeaderText: {
+    fontSize: moderateScale(14),
+    color: "#272727"
+  },
+  lightInfoText: {
+    fontSize: moderateScale(16),
+    color: "black",
+    fontWeight: "500",
+    marginTop: moderateVerticalScale(5), 
+  },
+  lightDivider: {
+    borderColor: "#BEBEBE",
+    borderTopWidth: .75,
+    alignSelf: "center",
+    width: "150%",
+    marginVertical: moderateVerticalScale(10)
+  }
 })

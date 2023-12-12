@@ -1,9 +1,9 @@
 import React, { useMemo, useCallback } from 'react';
-import { SafeAreaView, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FullScreenEmail } from './FullScreenEmail';
-import { moderateVerticalScale } from '../functions/helpers';
+import { moderateVerticalScale, moderateScale } from '../functions/helpers';
 
 export const FullScreenEmailModal = (props) => {
   const insets = useSafeAreaInsets();
@@ -32,6 +32,8 @@ export const FullScreenEmailModal = (props) => {
   return (
     <BottomSheet
       ref={props.forwardRef}
+      backgroundStyle={{backgroundColor: "#E7E7E7"}}
+      handleIndicatorStyle={{backgroundColor: "#B5B5B5", height: moderateVerticalScale(9), width: moderateScale(80), borderRadius: moderateScale(20)}}
       index={-1}
       snapPoints={snapPoints}
       enablePanDownToClose={true}
