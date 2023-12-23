@@ -1,31 +1,18 @@
-const light = {
-  primary: {
-    color: "#F8F8F8"
-  },
-  secondary: {
-    color: "#EBEBEB"
-  },
-  accent: {
-    color: "#989898"
-  },
-  black: {
-    color: "black"
-  }
+const lightPallete = {
+  primary: "#F8F8F8",
+  secondary: "#EBEBEB",
+  accent: "#989898",
+  black: "black",
+  safe: "#038528",
+  warning: "#C89D06",
+  unsafe: "#C30000"
 }
 
-const dark = {
-  primary: {
-    color: "#0F0F0F"
-  },
-  secondary: {
-    color: "#1D273D"
-  },
-  accent: {
-    color: "#878C89"
-  },
-  white: {
-    color: "white"
-  }
+const darkPallete = {
+  primary: "#0F0F0F",
+  secondary: "#1D273D",
+  accent: "#878C89",
+  white: "white",
 }
 
-export { light, dark }
+export { lightPallete, darkPallete }

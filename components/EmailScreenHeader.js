@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, useColorScheme } from "react-native";
 import { EXTRA_LARGE_TEXT } from '../globalStyles/sizes';
 import { moderateScale, moderateVerticalScale } from '../functions/helpers';
-import { dark, light } from '../globalStyles/colors';
+import { darkPallete, lightPallete } from '../globalStyles/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const EmailScreenHeader = (props) => {
@@ -30,7 +30,7 @@ const DarkHeader = (props) => {
       <TouchableOpacity onPress={() => props.handleRefresh()}>
         <MaterialCommunityIcons 
           name="refresh"
-          color={dark.white.color} 
+          color={darkPallete.white} 
           size={moderateScale(30)}
         />
       </TouchableOpacity>
@@ -40,7 +40,7 @@ const DarkHeader = (props) => {
       <TouchableOpacity onPress={() => props.handleLogOut()}>
         <MaterialCommunityIcons 
           name="account-circle"
-          color={dark.white.color} 
+          color={darkPallete.white} 
           size={moderateScale(30)}
         />
       </TouchableOpacity>
@@ -55,7 +55,7 @@ const LightHeader = (props) => {
       <TouchableOpacity onPress={() => props.handleRefresh()}>
         <MaterialCommunityIcons 
           name="refresh"
-          color={light.black.color} 
+          color={lightPallete.black} 
           size={moderateScale(30)}
         />
       </TouchableOpacity>
@@ -64,7 +64,7 @@ const LightHeader = (props) => {
       <TouchableOpacity onPress={() => props.handleLogOut()}>
         <MaterialCommunityIcons 
           name="account-circle"
-          color={light.black.color} 
+          color={lightPallete.black} 
           size={moderateScale(30)}
         />
       </TouchableOpacity>
@@ -81,13 +81,13 @@ const styles = StyleSheet.create({
     marginBottom: moderateVerticalScale(10),
   },
   darkHeader: {
-    color: dark.white.color,
+    color: darkPallete.white,
     fontSize: EXTRA_LARGE_TEXT,
     fontWeight: "700",
     justifyContent: 'center',
   },
   lightHeader: {
-    color: light.black.color,
+    color: lightPallete.black,
     fontSize: EXTRA_LARGE_TEXT,
     fontWeight: "700",
   }

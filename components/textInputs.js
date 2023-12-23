@@ -5,7 +5,7 @@
 import React from "react";
 import { useColorScheme, TextInput, StyleSheet, ScrollView } from 'react-native';
 import { moderateScale, moderateVerticalScale, scale } from "../functions/helpers";
-import { light, dark } from "../globalStyles/colors";
+import { lightPallete, darkPallete } from "../globalStyles/colors";
 import { MEDIUM_TEXT } from "../globalStyles/sizes";
 
 const LightTextInput = (props) => {
@@ -13,7 +13,7 @@ const LightTextInput = (props) => {
     <TextInput 
       ref={props.forwardRef ? props.forwardRef : null}
       style={styles.lightTextInput}
-      placeholderTextColor= {light.accent.color}
+      placeholderTextColor= {lightPallete.accent}
       {...props}
     />
   )
@@ -24,7 +24,7 @@ const DarkTextInput = (props) => {
     <TextInput 
       ref={props.forwardRef ? props.forwardRef : null}
       style={styles.darkTextInput}
-      placeholderTextColor= {dark.accent.color}
+      placeholderTextColor= {darkPallete.accent}
       {...props}
     />
   )
@@ -44,8 +44,8 @@ export {LightTextInput, DarkTextInput, SmartTextInput}
 
 const styles = StyleSheet.create({
   darkTextInput: {
-    backgroundColor: dark.secondary.color,
-    color: dark.white.color,
+    backgroundColor: darkPallete.secondary,
+    color: darkPallete.white,
     height: moderateVerticalScale(35),
     borderRadius: scale(4),
     marginHorizontal: moderateScale(15),
@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
     fontSize: MEDIUM_TEXT,
   },  
   lightTextInput: {
-    backgroundColor: light.secondary.color,
-    color: light.black.color,
+    backgroundColor: lightPallete.secondary,
+    color: lightPallete.black,
     height: moderateVerticalScale(35),
     borderRadius: scale(4),
     marginHorizontal: moderateScale(15),

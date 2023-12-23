@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, useColorScheme } from 'react-native';
-import { dark, light } from '../globalStyles/colors';
 import { moderateScale, moderateVerticalScale } from '../functions/helpers';
 import { LARGE_TEXT } from '../globalStyles/sizes';
 import { NewIndicator } from './NewIndicator'; 
+import { SecurityLabel } from './SecurityLabel';
 
 export const FullScreenEmail = (props) => {
   const isDarkMode = useColorScheme() === "dark"
@@ -33,7 +33,10 @@ const LightFullScreenEmail = (props) => {
       <Text style={styles.lightHeaderText}>Subject:</Text>
       <Text style={styles.lightInfoText}>{props.email.subject}</Text>
       <View style={styles.lightDivider}></View>
-      <Text style={styles.lightHeaderText}>Security Scan:</Text>
+      <View style={styles.securityScanContainer}>
+        <Text style={styles.lightHeaderText}>Security Scan:</Text>
+        <SecurityLabel securityScore={props.email.securityScore}/>
+      </View>
       <View style={styles.lightDivider}></View>
       <Text style={{...styles.lightHeaderText, color: "black"}}>{props.email.body}</Text>
     </View>
@@ -53,7 +56,10 @@ const DarkFullScreenEmail = (props) => {
       <Text style={styles.darkHeaderText}>Subject:</Text>
       <Text style={styles.darkInfoText}>{props.email.subject}</Text>
       <View style={styles.darkDivider}></View>
-      <Text style={styles.darkHeaderText}>Security Scan:</Text>
+      <View style={styles.securityScanContainer}>
+        <Text style={styles.darkHeaderText}>Security Scan:</Text>
+        <SecurityLabel securityScore={props.email.securityScore}/>
+      </View>
       <View style={styles.darkDivider}></View>
       <Text style={{...styles.darkHeaderText, color: "white"}}>{props.email.body}</Text>
     </View>
@@ -70,12 +76,17 @@ const styles = StyleSheet.create({
     marginBottom: moderateVerticalScale(10), 
     justifyContent: 'space-between'
   },
+  securityScanContainer: {
+    flexDirection: "row",
+  },
   lightHeaderText: {
     fontSize: LARGE_TEXT,
+    marginTop: moderateVerticalScale(10),
     color: "#272727"
   },
   darkHeaderText: {
     fontSize: LARGE_TEXT,
+    marginTop: moderateVerticalScale(10),
     color: "#E8E8E8"
   },
   lightInfoText: {
@@ -95,13 +106,13 @@ const styles = StyleSheet.create({
     borderTopWidth: .75,
     alignSelf: "center",
     width: "150%",
-    marginVertical: moderateVerticalScale(10)
+    marginTop: moderateVerticalScale(10)
   },
   darkDivider: {
     borderColor: "#4B4B4B",
     borderTopWidth: .75,
     alignSelf: "center",
     width: "150%",
-    marginVertical: moderateVerticalScale(10)
+    marginTop: moderateVerticalScale(10)
   }
 })
