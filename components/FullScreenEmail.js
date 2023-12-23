@@ -1,9 +1,9 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, useColorScheme } from 'react-native';
 import { dark, light } from '../globalStyles/colors';
 import { moderateScale, moderateVerticalScale } from '../functions/helpers';
-import { LARGE_TEXT, MEDIUM_TEXT, SMALL_TEXT } from '../globalStyles/sizes';
-import { NewIndicator } from './NewIndicator';
+import { LARGE_TEXT } from '../globalStyles/sizes';
+import { NewIndicator } from './NewIndicator'; 
 
 export const FullScreenEmail = (props) => {
   const isDarkMode = useColorScheme() === "dark"
@@ -71,11 +71,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   lightHeaderText: {
-    fontSize: moderateScale(14),
+    fontSize: LARGE_TEXT,
     color: "#272727"
   },
   darkHeaderText: {
-    fontSize: moderateScale(14),
+    fontSize: LARGE_TEXT,
     color: "#E8E8E8"
   },
   lightInfoText: {
