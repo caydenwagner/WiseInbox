@@ -1,8 +1,9 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, useColorScheme } from 'react-native';
 import { dark, light } from '../globalStyles/colors';
 import { moderateScale, moderateVerticalScale } from '../functions/helpers';
-import { LARGE_TEXT, MEDIUM_TEXT, SMALL_TEXT } from '../globalStyles/sizes';
+import { LARGE_TEXT } from '../globalStyles/sizes';
+import { NewIndicator } from './NewIndicator'; 
 
 export const FullScreenEmail = (props) => {
   const isDarkMode = useColorScheme() === "dark"
@@ -21,29 +22,86 @@ export const FullScreenEmail = (props) => {
 
 const LightFullScreenEmail = (props) => {
   return (
-    <View style={styles.lightContentContainer}>
-      <Text>Light - {props.email.body}</Text>
+    <View style={styles.contentContainer}>
+      <View style={styles.headerContainer}>
+        <Text style={{...styles.lightHeaderText, alignSelf: 'center', alignItems: 'flex-end'}}>{props.email.date}</Text>
+        <NewIndicator isNew={!props.email.isRead}/>
+      </View>
+      <Text style={styles.lightHeaderText}>From:</Text>
+      <Text style={styles.lightInfoText}>{props.email.sender}</Text>
+      <View style={styles.lightDivider}></View>
+      <Text style={styles.lightHeaderText}>Subject:</Text>
+      <Text style={styles.lightInfoText}>{props.email.subject}</Text>
+      <View style={styles.lightDivider}></View>
+      <Text style={styles.lightHeaderText}>Security Scan:</Text>
+      <View style={styles.lightDivider}></View>
+      <Text style={{...styles.lightHeaderText, color: "black"}}>{props.email.body}</Text>
     </View>
   )
 }
 
 const DarkFullScreenEmail = (props) => {
   return (
-    <View style={styles.darkContentContainer}>
-      <Text>Dark - {props.email.body}</Text>
+    <View style={styles.contentContainer}>
+      <View style={styles.headerContainer}>
+        <Text style={{...styles.darkHeaderText, alignSelf: 'center', alignItems: 'flex-end'}}>{props.email.date}</Text>
+        <NewIndicator isNew={!props.email.isRead}/>
+      </View>
+      <Text style={styles.darkHeaderText}>From:</Text>
+      <Text style={styles.darkInfoText}>{props.email.sender}</Text>
+      <View style={styles.darkDivider}></View>
+      <Text style={styles.darkHeaderText}>Subject:</Text>
+      <Text style={styles.darkInfoText}>{props.email.subject}</Text>
+      <View style={styles.darkDivider}></View>
+      <Text style={styles.darkHeaderText}>Security Scan:</Text>
+      <View style={styles.darkDivider}></View>
+      <Text style={{...styles.darkHeaderText, color: "white"}}>{props.email.body}</Text>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  lightContentContainer: {
+  contentContainer: {
     flex: 1,
-    alignItems: 'center',
     paddingHorizontal: moderateScale(20),
   },
-  darkContentContainer: {
-    flex: 1,
-    alignItems: 'center',
-    paddingHorizontal: moderateScale(20),
+  headerContainer: {
+    flexDirection: "row-reverse", 
+    marginBottom: moderateVerticalScale(10), 
+    justifyContent: 'space-between'
   },
+  lightHeaderText: {
+    fontSize: LARGE_TEXT,
+    color: "#272727"
+  },
+  darkHeaderText: {
+    fontSize: LARGE_TEXT,
+    color: "#E8E8E8"
+  },
+  lightInfoText: {
+    fontSize: moderateScale(16),
+    color: "black",
+    fontWeight: "500",
+    marginTop: moderateVerticalScale(5), 
+  },
+  darkInfoText: {
+    fontSize: moderateScale(16),
+    color: "white",
+    fontWeight: "500",
+    marginTop: moderateVerticalScale(5), 
+  },
+  lightDivider: {
+    borderColor: "#BEBEBE",
+    borderTopWidth: .75,
+    alignSelf: "center",
+    width: "150%",
+    marginVertical: moderateVerticalScale(10)
+  },
+  darkDivider: {
+    borderColor: "#4B4B4B",
+    borderTopWidth: .75,
+    alignSelf: "center",
+    width: "150%",
+    marginVertical: moderateVerticalScale(10)
+  }
 })
