@@ -6,7 +6,7 @@ import React, {useState, useEffect} from 'react';
 import { Text, ScrollView, StyleSheet, useColorScheme, View, TouchableOpacity, SafeAreaView, Platform, Linking } from "react-native";
 import SafariView from "react-native-safari-view";
 import { WebView } from "react-native-webview";
-import { light, dark } from "../globalStyles/colors";
+import { lightPallete, darkPallete } from "../globalStyles/colors";
 import { moderateVerticalScale, moderateScale } from '../functions/helpers';
 import { EXTRA_LARGE_TEXT } from '../globalStyles/sizes';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -124,19 +124,19 @@ export default function LoginScreen() {
         </SafeAreaView>
       ) : (
         <ScrollView 
-          style={{...styles.background, backgroundColor: isDarkMode ? dark.primary.color : light.primary.color}}
+          style={{...styles.background, backgroundColor: isDarkMode ? darkPallete.primary : lightPallete.primary}}
           contentContainerStyle={{flexGrow: 1}}
           keyboardShouldPersistTaps='handled'>
 
           <SafeAreaView style={styles.iconContainer}>
             <MaterialCommunityIcons 
               name="owl"
-              color={isDarkMode ? dark.white.color : dark.secondary.color} 
+              color={isDarkMode ? darkPallete.white : darkPallete.secondary} 
               size={moderateScale(120)}
             />
           </SafeAreaView>
 
-          <Text style={{...styles.headerText, color: isDarkMode ? dark.white.color : light.black.color}}>Add an Account</Text>
+          <Text style={{...styles.headerText, color: isDarkMode ? darkPallete.white : lightPallete.black}}>Add an Account</Text>
           <View>
             
             <TouchableOpacity 
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     marginBottom: moderateVerticalScale(8)
   },
   button: {
-    backgroundColor: light.accent.color,
+    backgroundColor: lightPallete.accent,
     paddingVertical: moderateVerticalScale(8),
     marginHorizontal: moderateVerticalScale(15),
     marginVertical: moderateVerticalScale(10),

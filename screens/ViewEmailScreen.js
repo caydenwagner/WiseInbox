@@ -8,7 +8,7 @@ import { logOut, getMail } from '../functions/apiHelpers';
 import { useNavigation } from '@react-navigation/native';
 import { EmailDisplayer } from '../components/EmailDisplayer';
 import { EmailScreenHeader } from '../components/EmailScreenHeader';
-import { dark, light } from '../globalStyles/colors';
+import { darkPallete, lightPallete } from '../globalStyles/colors';
 import { FullScreenEmailModal } from '../components/FullScreenEmailModal';
 
 export default function ViewEmailScreen() {
@@ -51,7 +51,7 @@ export default function ViewEmailScreen() {
   const isDarkMode = useColorScheme() === "dark"
   
   return (
-    <View style={{backgroundColor: isDarkMode ? dark.primary.color : light.primary.color, height: "100%"}}>
+    <View style={{backgroundColor: isDarkMode ? darkPallete.primary : lightPallete.primary, height: "100%"}}>
       <SafeAreaView style={styles.container}>
 
         <EmailScreenHeader 

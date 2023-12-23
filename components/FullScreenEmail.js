@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, StyleSheet, useColorScheme } from 'react-native';
-import { dark, light } from '../globalStyles/colors';
 import { moderateScale, moderateVerticalScale } from '../functions/helpers';
 import { LARGE_TEXT } from '../globalStyles/sizes';
 import { NewIndicator } from './NewIndicator'; 
