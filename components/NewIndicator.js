@@ -22,11 +22,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#0A55C5",
     paddingVertical: moderateScale(4),
     paddingHorizontal: moderateScale(8),
-    borderRadius: 10,
+    borderRadius: moderateScale(10),
     alignSelf: "flex-start",
   },
   newText: {
     fontSize: moderateScale(14), 
+    fontWeight: "500",
     color: "#DBDBDB"
   }
 })

@@ -25,7 +25,7 @@ export const FullScreenEmailModal = (props) => {
     <BottomSheet
       ref={props.forwardRef}
       backgroundStyle={isDarkMode ? {backgroundColor: "#1E1E1E"} : {backgroundColor: "#E7E7E7"}}
-      handleIndicatorStyle={{backgroundColor: "#B5B5B5", height: moderateVerticalScale(9), width: moderateScale(80), borderRadius: moderateScale(20)}}
+      handleIndicatorStyle={{backgroundColor: "#B5B5B5", height: moderateVerticalScale(4), width: moderateScale(40), borderRadius: moderateScale(20)}}
       index={-1}
       snapPoints={snapPoints}
       enablePanDownToClose={true}
