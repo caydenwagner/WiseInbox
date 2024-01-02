@@ -56,10 +56,8 @@ const DarkFullScreenEmail = (props) => {
       <Text style={styles.darkHeaderText}>Subject:</Text>
       <Text style={styles.darkInfoText}>{props.email.subject}</Text>
       <View style={styles.darkDivider}></View>
-      <View style={styles.securityScanContainer}>
-        <Text style={styles.darkHeaderText}>Security Scan:</Text>
-        <SecurityLabel securityScore={props.email.securityScore}/>
-      </View>
+      <Text style={styles.darkHeaderText}>Security Scan:</Text>
+      <SecurityLabel securityScore={props.email.securityScore}/>
       <View style={styles.darkDivider}></View>
       <Text style={{...styles.darkHeaderText, color: "white"}}>{props.email.body}</Text>
     </View>
@@ -75,9 +73,6 @@ const styles = StyleSheet.create({
     flexDirection: "row-reverse", 
     marginBottom: moderateVerticalScale(10), 
     justifyContent: 'space-between'
-  },
-  securityScanContainer: {
-    flexDirection: "column",
   },
   lightHeaderText: {
     fontSize: LARGE_TEXT,
