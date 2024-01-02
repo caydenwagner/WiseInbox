@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   securityScanContainer: {
-    flexDirection: "row",
+    flexDirection: "column",
   },
   lightHeaderText: {
     fontSize: LARGE_TEXT,

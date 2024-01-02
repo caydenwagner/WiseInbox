@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { moderateScale, moderateVerticalScale } from '../functions/helpers';
 import { lightPallete } from '../globalStyles/colors';
+import SecurityIndicator from './SecurityIndicator';
 
 export const SecurityLabel = (props) => {
   if (props.securityScore) {
@@ -20,9 +21,16 @@ export const SecurityLabel = (props) => {
       label = "Unsafe"
     }
     return (
-      <View style={{...styles.container, backgroundColor: color}}>
-        <Text style={styles.securityLabelText}>{label}</Text>
-      </View> 
+      <>
+        <View style={{...styles.container, backgroundColor: color}}>
+          <Text style={styles.securityLabelText}>{label}</Text>
+        </View> 
+
+        <SecurityIndicator 
+          label={label}
+          value={props.securityScore}
+        />
+      </>
     )
   }
   else {

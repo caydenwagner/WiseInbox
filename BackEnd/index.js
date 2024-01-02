@@ -125,7 +125,7 @@ app.post('/gmail/messages', async (req, res) => {
         snippet: snippet,
         isInbox: isInbox,
         isRead: isRead,
-        securityScore: 85,
+        securityScore: 65,
       }
 
       return email;
