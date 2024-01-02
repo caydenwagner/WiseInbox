@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { moderateScale, moderateVerticalScale } from '../functions/helpers';
 import { lightPallete } from '../globalStyles/colors';
@@ -21,7 +21,7 @@ export const SecurityLabel = (props) => {
     }
     return (
       <View style={{...styles.container, backgroundColor: color}}>
-        <Text style={styles.newText}>{label}</Text>
+        <Text style={styles.securityLabelText}>{label}</Text>
       </View> 
     )
   }
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     borderRadius: moderateScale(10),
     alignSelf: "flex-start",
   },
-  newText: {
+  securityLabelText: {
     fontSize: moderateScale(14), 
     fontWeight: "500",
     color: "#DBDBDB"
