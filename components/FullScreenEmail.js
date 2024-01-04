@@ -58,22 +58,33 @@ const LightFullScreenEmail = (props) => {
 
 const DarkFullScreenEmail = (props) => {
   return (
-    <View style={styles.contentContainer}>
-      <View style={styles.headerContainer}>
-        <Text style={{...styles.darkHeaderText, alignSelf: 'center', alignItems: 'flex-end'}}>{props.email.date}</Text>
-        <NewIndicator isNew={!props.email.isRead}/>
+    <>
+      <View style={styles.contentContainer}>
+        <View style={styles.headerContainer}>
+          <Text style={{...styles.darkHeaderText, alignSelf: 'center', alignItems: 'flex-end'}}>{props.email.date}</Text>
+          <NewIndicator isNew={!props.email.isRead}/>
+        </View>
+        <Text style={styles.darkHeaderText}>From:</Text>
+        <Text style={styles.darkInfoText}>{props.email.sender}</Text>
+        <View style={styles.darkDivider}></View>
+        <Text style={styles.darkHeaderText}>Subject:</Text>
+        <Text style={styles.darkInfoText}>{props.email.subject}</Text>
+        <View style={styles.darkDivider}></View>
+        <Text style={styles.darkHeaderText}>Security Scan:</Text>
+        <SecurityLabel securityScore={props.email.securityScore}/>
+        <View style={styles.darkDivider}></View>
       </View>
-      <Text style={styles.darkHeaderText}>From:</Text>
-      <Text style={styles.darkInfoText}>{props.email.sender}</Text>
-      <View style={styles.darkDivider}></View>
-      <Text style={styles.darkHeaderText}>Subject:</Text>
-      <Text style={styles.darkInfoText}>{props.email.subject}</Text>
-      <View style={styles.darkDivider}></View>
-      <Text style={styles.darkHeaderText}>Security Scan:</Text>
-      <SecurityLabel securityScore={props.email.securityScore}/>
-      <View style={styles.darkDivider}></View>
-      <Text style={{...styles.darkHeaderText, color: "white"}}>{props.email.html}</Text>
-    </View>
+      <View style={styles.webViewContainer}>
+        <WebView 
+          source={{ html: props.email.html || '<p>No content available</p>' }}
+          style={{ height: 10000, resizeMode: 'cover', flex: 1 }}
+          scalesPageToFit={false}
+          scrollEnabled={false}
+          showsVerticalScrollIndicator={false}
+          javaScriptEnabled={true}
+        />
+      </View>
+    </>
   )
 }
 
