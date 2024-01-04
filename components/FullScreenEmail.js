@@ -4,6 +4,7 @@ import { moderateScale, moderateVerticalScale } from '../functions/helpers';
 import { LARGE_TEXT } from '../globalStyles/sizes';
 import { NewIndicator } from './NewIndicator'; 
 import { SecurityLabel } from './SecurityLabel';
+import { WebView } from 'react-native-webview';
 
 export const FullScreenEmail = (props) => {
   const isDarkMode = useColorScheme() === "dark"
@@ -22,24 +23,36 @@ export const FullScreenEmail = (props) => {
 
 const LightFullScreenEmail = (props) => {
   return (
-    <View style={styles.contentContainer}>
-      <View style={styles.headerContainer}>
-        <Text style={{...styles.lightHeaderText, alignSelf: 'center', alignItems: 'flex-end'}}>{props.email.date}</Text>
-        <NewIndicator isNew={!props.email.isRead}/>
+    <>
+      <View style={styles.contentContainer}>
+        <View style={styles.headerContainer}>
+          <Text style={{...styles.lightHeaderText, alignSelf: 'center', alignItems: 'flex-end'}}>{props.email.date}</Text>
+          <NewIndicator isNew={!props.email.isRead}/>
+        </View>
+        <Text style={styles.lightHeaderText}>From:</Text>
+        <Text style={styles.lightInfoText}>{props.email.sender}</Text>
+        <View style={styles.lightDivider}></View>
+        <Text style={styles.lightHeaderText}>Subject:</Text>
+        <Text style={styles.lightInfoText}>{props.email.subject}</Text>
+        <View style={styles.lightDivider}></View>
+        <View style={styles.securityScanContainer}>
+          <Text style={styles.lightHeaderText}>Security Scan:</Text>
+          <SecurityLabel securityScore={props.email.securityScore}/>
+        </View>
+        <View style={styles.lightDivider}></View>
+        {/* <Text style={{...styles.lightHeaderText, color: "black"}}>{props.email.html}</Text> */}
       </View>
-      <Text style={styles.lightHeaderText}>From:</Text>
-      <Text style={styles.lightInfoText}>{props.email.sender}</Text>
-      <View style={styles.lightDivider}></View>
-      <Text style={styles.lightHeaderText}>Subject:</Text>
-      <Text style={styles.lightInfoText}>{props.email.subject}</Text>
-      <View style={styles.lightDivider}></View>
-      <View style={styles.securityScanContainer}>
-        <Text style={styles.lightHeaderText}>Security Scan:</Text>
-        <SecurityLabel securityScore={props.email.securityScore}/>
+      <View style={styles.webViewContainer}>
+        <WebView 
+          source={{ html: props.email.html || '<p>No content available</p>' }}
+          style={{ height: 10000, resizeMode: 'cover', flex: 1 }}
+          scalesPageToFit={false}
+          scrollEnabled={false}
+          showsVerticalScrollIndicator={false}
+          javaScriptEnabled={true}
+        />
       </View>
-      <View style={styles.lightDivider}></View>
-      <Text style={{...styles.lightHeaderText, color: "black"}}>{props.email.html}</Text>
-    </View>
+    </>
   )
 }
 
@@ -73,6 +86,9 @@ const styles = StyleSheet.create({
     flexDirection: "row-reverse", 
     marginBottom: moderateVerticalScale(10), 
     justifyContent: 'space-between'
+  },
+  webViewContainer: {
+    marginTop: moderateVerticalScale(10)
   },
   lightHeaderText: {
     fontSize: LARGE_TEXT,

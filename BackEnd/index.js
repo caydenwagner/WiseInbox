@@ -94,7 +94,6 @@ function findContent(parts) {
 
   return { body, html };
 }
-
   
 app.post('/gmail/messages', async (req, res) => {
   const authToken = req.headers['authorization'];
