@@ -38,7 +38,7 @@ const LightFullScreenEmail = (props) => {
         <SecurityLabel securityScore={props.email.securityScore}/>
       </View>
       <View style={styles.lightDivider}></View>
-      <Text style={{...styles.lightHeaderText, color: "black"}}>{props.email.body}</Text>
+      <Text style={{...styles.lightHeaderText, color: "black"}}>{props.email.html}</Text>
     </View>
   )
 }
@@ -59,7 +59,7 @@ const DarkFullScreenEmail = (props) => {
       <Text style={styles.darkHeaderText}>Security Scan:</Text>
       <SecurityLabel securityScore={props.email.securityScore}/>
       <View style={styles.darkDivider}></View>
-      <Text style={{...styles.darkHeaderText, color: "white"}}>{props.email.body}</Text>
+      <Text style={{...styles.darkHeaderText, color: "white"}}>{props.email.html}</Text>
     </View>
   )
 }
