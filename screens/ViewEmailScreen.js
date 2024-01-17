@@ -16,6 +16,7 @@ export default function ViewEmailScreen() {
   const [data, setData] = useState(null)
   const [currentDisplayedEmail, setCurrentDisplayEmail] = useState(null)
   const [refreshing, setRefreshing] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
 
   const bottomSheetRef = useRef();
 
@@ -45,6 +46,7 @@ export default function ViewEmailScreen() {
     if (mail) {
       setCurrentDisplayEmail(mail)
       bottomSheetRef.current.snapToIndex(0)
+      setIsOpen(true)
     }
   }
 
@@ -69,6 +71,8 @@ export default function ViewEmailScreen() {
         <FullScreenEmailModal 
           forwardRef={bottomSheetRef}
           email={currentDisplayedEmail}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
         />
 
       </SafeAreaView>

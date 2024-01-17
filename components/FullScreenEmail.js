@@ -1,87 +1,69 @@
-import React from 'react';
-import { View, Text, StyleSheet, useColorScheme } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, useColorScheme, Dimensions } from 'react-native';
+import AutoHeightWebView from 'react-native-autoheight-webview'
 import { moderateScale, moderateVerticalScale } from '../functions/helpers';
 import { LARGE_TEXT } from '../globalStyles/sizes';
 import { NewIndicator } from './NewIndicator'; 
 import { SecurityLabel } from './SecurityLabel';
-import { WebView } from 'react-native-webview';
 
 export const FullScreenEmail = (props) => {
   const isDarkMode = useColorScheme() === "dark"
 
-  if (!props.email) {
+  if (!props.email || !props.visible) {
     return <></>
   }
 
-  if (isDarkMode) {
-    return <DarkFullScreenEmail email={props.email}/>
-  }
-  else {
-    return <LightFullScreenEmail email={props.email}/>
-  }
+  return <AutoThemeFullScreenEmail email={props.email} isDarkMode={isDarkMode} />
 }
 
-const LightFullScreenEmail = (props) => {
+const AutoThemeFullScreenEmail = (props) => {
   return (
     <>
-      <View style={styles.contentContainer}>
-        <View style={styles.headerContainer}>
-          <Text style={{...styles.lightHeaderText, alignSelf: 'center', alignItems: 'flex-end'}}>{props.email.date}</Text>
-          <NewIndicator isNew={!props.email.isRead}/>
-        </View>
-        <Text style={styles.lightHeaderText}>From:</Text>
-        <Text style={styles.lightInfoText}>{props.email.sender}</Text>
-        <View style={styles.lightDivider}></View>
-        <Text style={styles.lightHeaderText}>Subject:</Text>
-        <Text style={styles.lightInfoText}>{props.email.subject}</Text>
-        <View style={styles.lightDivider}></View>
-        <View style={styles.securityScanContainer}>
-          <Text style={styles.lightHeaderText}>Security Scan:</Text>
+      { props.isDarkMode ?
+        <View style={styles.contentContainer}>
+          <View style={styles.headerContainer}>
+            <Text style={{...styles.darkHeaderText, alignSelf: 'center', alignItems: 'flex-end'}}>{props.email.date}</Text>
+            <NewIndicator isNew={!props.email.isRead}/>
+          </View>
+          <Text style={styles.darkHeaderText}>From:</Text>
+          <Text style={styles.darkInfoText}>{props.email.sender}</Text>
+          <View style={styles.darkDivider}></View>
+          <Text style={styles.darkHeaderText}>Subject:</Text>
+          <Text style={styles.darkInfoText}>{props.email.subject}</Text>
+          <View style={styles.darkDivider}></View>
+          <Text style={styles.darkHeaderText}>Security Scan:</Text>
           <SecurityLabel securityScore={props.email.securityScore}/>
+          <View style={styles.darkDivider}></View>
         </View>
-        <View style={styles.lightDivider}></View>
-        {/* <Text style={{...styles.lightHeaderText, color: "black"}}>{props.email.html}</Text> */}
-      </View>
-      <View style={styles.webViewContainer}>
-        <WebView 
-          source={{ html: props.email.html || '<p>No content available</p>' }}
-          style={{ height: 10000, resizeMode: 'cover', flex: 1 }}
-          scalesPageToFit={false}
-          scrollEnabled={false}
-          showsVerticalScrollIndicator={false}
-          javaScriptEnabled={true}
-        />
-      </View>
-    </>
-  )
-}
+      :
+        <View style={styles.contentContainer}>
+          <View style={styles.headerContainer}>
+            <Text style={{...styles.lightHeaderText, alignSelf: 'center', alignItems: 'flex-end'}}>{props.email.date}</Text>
+            <NewIndicator isNew={!props.email.isRead}/>
+          </View>
+          <Text style={styles.lightHeaderText}>From:</Text>
+          <Text style={styles.lightInfoText}>{props.email.sender}</Text>
+          <View style={styles.lightDivider}></View>
+          <Text style={styles.lightHeaderText}>Subject:</Text>
+          <Text style={styles.lightInfoText}>{props.email.subject}</Text>
+          <View style={styles.lightDivider}></View>
+          <View style={styles.securityScanContainer}>
+            <Text style={styles.lightHeaderText}>Security Scan:</Text>
+            <SecurityLabel securityScore={props.email.securityScore}/>
+          </View>
+          <View style={styles.lightDivider}></View>
+        </View>
+      }
 
-const DarkFullScreenEmail = (props) => {
-  return (
-    <>
-      <View style={styles.contentContainer}>
-        <View style={styles.headerContainer}>
-          <Text style={{...styles.darkHeaderText, alignSelf: 'center', alignItems: 'flex-end'}}>{props.email.date}</Text>
-          <NewIndicator isNew={!props.email.isRead}/>
-        </View>
-        <Text style={styles.darkHeaderText}>From:</Text>
-        <Text style={styles.darkInfoText}>{props.email.sender}</Text>
-        <View style={styles.darkDivider}></View>
-        <Text style={styles.darkHeaderText}>Subject:</Text>
-        <Text style={styles.darkInfoText}>{props.email.subject}</Text>
-        <View style={styles.darkDivider}></View>
-        <Text style={styles.darkHeaderText}>Security Scan:</Text>
-        <SecurityLabel securityScore={props.email.securityScore}/>
-        <View style={styles.darkDivider}></View>
-      </View>
+
       <View style={styles.webViewContainer}>
-        <WebView 
+        <AutoHeightWebView 
+          style={{ width: Dimensions.get('window').width}}
           source={{ html: props.email.html || '<p>No content available</p>' }}
-          style={{ height: 10000, resizeMode: 'cover', flex: 1 }}
-          scalesPageToFit={false}
-          scrollEnabled={false}
+          scalesPageToFit={true}
+          viewportContent={'width=device-width, user-scalable=no'}
           showsVerticalScrollIndicator={false}
-          javaScriptEnabled={true}
+          scrollEnabled={false}
         />
       </View>
     </>
