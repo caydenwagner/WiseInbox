@@ -110,9 +110,6 @@ const styles = StyleSheet.create({
     marginBottom: moderateVerticalScale(10), 
     justifyContent: 'space-between'
   },
-  webViewContainer: {
-
-  },
   lightHeaderText: {
     fontSize: LARGE_TEXT,
     marginTop: moderateVerticalScale(10),

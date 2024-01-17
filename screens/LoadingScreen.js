@@ -4,22 +4,22 @@
 // Purpose: Provide the laoding screen for the application
 import React from 'react';
 import { View, StyleSheet, Text, useColorScheme } from "react-native";
-import { darkPallete, lightPallete } from '../globalStyles/colors';
+import { darkPalette, lightPalette } from '../globalStyles/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { moderateScale, moderateVerticalScale } from '../functions/helpers';
 import { EXTRA_LARGE_TEXT } from '../globalStyles/sizes';
 
 export default function LoadingScreen({}) {
   const isDarkMode = useColorScheme() === "dark"
-  const theme = isDarkMode ? darkPallete : lightPallete
+  const theme = isDarkMode ? darkPalette : lightPalette
 
   return (
     <View style={{...styles.background, backgroundColor: theme.secondary.color}}> 
       <MaterialCommunityIcons 
         name="owl"
-        color={isDarkMode ? darkPallete.white : darkPallete.secondary} 
+        color={isDarkMode ? darkPalette.white : darkPalette.secondary} 
         size={moderateScale(140)} />
-      <Text style={{...styles.headerText, color: isDarkMode ? darkPallete.white : darkPallete.secondary}}>WiseInbox</Text>
+      <Text style={{...styles.headerText, color: isDarkMode ? darkPalette.white : darkPalette.secondary}}>WiseInbox</Text>
     </View>
   )
 }

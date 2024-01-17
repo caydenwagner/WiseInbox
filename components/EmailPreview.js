@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, useColorScheme } from 'react-native';
-import { darkPallete, lightPallete } from '../globalStyles/colors';
+import { darkPalette, lightPalette } from '../globalStyles/colors';
 import { moderateScale, moderateVerticalScale } from '../functions/helpers';
 import { LARGE_TEXT, MEDIUM_TEXT, SMALL_TEXT } from '../globalStyles/sizes';
 
@@ -79,18 +79,18 @@ const DarkEmailPreview = (props) => {
 
 const styles = StyleSheet.create({
   darkBackground: {
-    backgroundColor: darkPallete.primary,
+    backgroundColor: darkPalette.primary,
     paddingHorizontal: moderateScale(20),
     paddingVertical: moderateVerticalScale(15),
     borderTopWidth: .2,
-    borderBlockColor: darkPallete.accent
+    borderBlockColor: darkPalette.accent
   },
   lightBackgroud: {
-    backgroundColor: lightPallete.primary,
+    backgroundColor: lightPalette.primary,
     paddingHorizontal: moderateScale(20),
     paddingVertical: moderateVerticalScale(15),
     borderTopWidth: .2,
-    borderBlockColor: lightPallete.accent
+    borderBlockColor: lightPalette.accent
   },
   headerContainer: {
     flexDirection: 'row-reverse', 
@@ -98,42 +98,42 @@ const styles = StyleSheet.create({
   },
   darkSender: {
     fontSize: LARGE_TEXT,
-    color: darkPallete.white,
+    color: darkPalette.white,
     fontWeight: "600",
     flex: 1
   },
   lightSender: {
     fontSize: LARGE_TEXT,
-    color: lightPallete.black,
+    color: lightPalette.black,
     fontWeight: "600",
     flex: 1
   },
   darkDate: {
     fontSize: SMALL_TEXT,
-    color: darkPallete.white,
+    color: darkPalette.white,
     alignSelf: "flex-end",
   },
   lightDate: {
     fontSize: SMALL_TEXT,
-    color: lightPallete.black,
+    color: lightPalette.black,
     alignSelf: "flex-end",
   },
   darkSubject: {
     fontSize: MEDIUM_TEXT,
-    color: darkPallete.white,
+    color: darkPalette.white,
     fontWeight: "600",
   },
   lightSubject: {
     fontSize: MEDIUM_TEXT,
-    color: lightPallete.black,
+    color: lightPalette.black,
     fontWeight: "600",
   },
   darkSnippet: {
     fontSize: SMALL_TEXT,
-    color: darkPallete.white,
+    color: darkPalette.white,
   },
   lightSnippet: {
     fontSize: SMALL_TEXT,
-    color: lightPallete.black,
+    color: lightPalette.black,
   }
 })

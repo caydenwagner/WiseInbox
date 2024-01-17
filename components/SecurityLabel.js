@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { moderateScale, moderateVerticalScale } from '../functions/helpers';
-import { lightPallete } from '../globalStyles/colors';
+import { lightPalette } from '../globalStyles/colors';
 import SecurityIndicator from './SecurityIndicator';
 import { LARGE_TEXT } from '../globalStyles/sizes';
 
@@ -11,14 +11,14 @@ export const SecurityLabel = (props) => {
     var textColor = "white"
 
     if (props.securityScore >= 80) {
-      color = lightPallete.safe
+      color = lightPalette.safe
     }
     else if (props.securityScore >= 60) {
-      color = lightPallete.warning
+      color = lightPalette.warning
       textColor = "black"
     }
     else {
-      color = lightPallete.unsafe
+      color = lightPalette.unsafe
     }
     return (
       <View style={styles.container}>

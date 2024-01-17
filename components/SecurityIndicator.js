@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { moderateScale, moderateVerticalScale } from '../functions/helpers';
-import { lightPallete } from '../globalStyles/colors';
+import { lightPalette } from '../globalStyles/colors';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import { LARGE_TEXT, MEDIUM_TEXT } from '../globalStyles/sizes';
 
@@ -13,7 +13,7 @@ export default SecurityIndicator = (props) => {
           <CircularProgress 
             value={props.value} 
             showProgressValue={false}
-            activeStrokeColor={lightPallete.unsafe}
+            activeStrokeColor={lightPalette.unsafe}
             activeStrokeWidth={moderateScale(12)}
             inActiveStrokeWidth={moderateScale(12)}
             inActiveStrokeColor='#EAA1A1'
@@ -28,7 +28,7 @@ export default SecurityIndicator = (props) => {
           <CircularProgress 
             value={props.value} 
             showProgressValue={false}
-            activeStrokeColor={lightPallete.warning}
+            activeStrokeColor={lightPalette.warning}
             activeStrokeWidth={moderateScale(12)}
             inActiveStrokeWidth={moderateScale(12)}
             inActiveStrokeColor='#D6CA9F'
@@ -43,7 +43,7 @@ export default SecurityIndicator = (props) => {
           <CircularProgress 
             value={props.value} 
             showProgressValue={false}
-            activeStrokeColor={lightPallete.safe}
+            activeStrokeColor={lightPalette.safe}
             activeStrokeWidth={moderateScale(12)}
             inActiveStrokeWidth={moderateScale(12)}
             inActiveStrokeColor='#92D2A5'
