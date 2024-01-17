@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, Text, Modal, StyleSheet, TouchableOpacity, useColorScheme } from 'react-native';
 import { darkPalette, lightPalette } from '../globalStyles/colors';
-import { EXTRA_LARGE_TEXT, LARGE_TEXT, MEDIUM_TEXT } from '../globalStyles/sizes';
+import { EXTRA_LARGE_TEXT, LARGE_TEXT } from '../globalStyles/sizes';
 import { moderateScale, moderateVerticalScale } from '../functions/helpers';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 
 const SecurityModal = ({ visible, displayUrl, onClose, onContinue }) => {
   const isDarkMode = useColorScheme() === "dark"
@@ -15,40 +17,58 @@ const SecurityModal = ({ visible, displayUrl, onClose, onContinue }) => {
       visible={visible}
       onRequestClose={onClose}
     >
-      <View style={styles.modalContainer}>
-        <View style={{...styles.modalContent, backgroundColor: pallette.background}}>
-          <Text style={{...styles.warningText, color: pallette.alternate}}>
-            Caution: Security Alert
-          </Text>
-          <Text style={{...styles.bodyText, color: pallette.alternate}}>
-            The link you are about to open leads to:
-          </Text>
-          <Text style={{...styles.bodyText, color: isDarkMode ? "#3366CC" : "#0000FF"}}>
-            {displayUrl}
-          </Text>
-          <Text style={{...styles.bodyText, color: pallette.alternate}}>
-            Proceed with caution.
-          </Text>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={onClose}>
-              <Text style={styles.buttonText}>Go Back</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={onContinue}>
-              <Text style={styles.buttonText}>Continue</Text>
-            </TouchableOpacity>
-          </View>
+      <TouchableOpacity 
+        style={styles.container} 
+        activeOpacity={1} 
+        onPress={onClose}>
+        <View style={styles.modalContainer}>
+          <TouchableOpacity 
+            activeOpacity={1}
+            style={{...styles.modalContent, backgroundColor: pallette.background}}>
+            <View style={{flexDirection: "row"}}> 
+              <MaterialCommunityIcons 
+                name="shield-alert-outline"
+                color={pallette.alternate} 
+                size={moderateScale(30)}
+              />
+              <Text style={{...styles.warningText, color: pallette.alternate}}>
+                Caution: Security Alert
+              </Text>
+            </View>
+            <Text style={{...styles.bodyText, color: pallette.alternate}}>
+              The link you are about to open leads to:
+            </Text>
+            <Text style={{...styles.bodyText, color: isDarkMode ? "#3366CC" : "#0000FF"}}>
+              {displayUrl}
+            </Text>
+            <Text style={{...styles.bodyText, color: pallette.alternate}}>
+              Proceed with caution.
+            </Text>
+            <View style={styles.buttonContainer}> 
+              <TouchableOpacity style={styles.activeButtonContainer} onPress={onClose}>
+                <Text style={styles.activeButtonText}>Go Back</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.inactiveButtonContainer} onPress={onContinue}>
+                <Text style={styles.buttonText}>Continue</Text>
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
         </View>
-      </View>
+      </TouchableOpacity>
     </Modal>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    height: "100%",
+    width: "100%",
+    backgroundColor: 'rgba(0,0,0,0.7)',
+  },
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
   },
   modalContent: {
     padding: moderateScale(20),
@@ -57,6 +77,7 @@ const styles = StyleSheet.create({
     width: '90%',
   },
   warningText: {
+    marginLeft: moderateScale(10),
     fontSize: EXTRA_LARGE_TEXT,
     fontWeight: '400',
     marginBottom: moderateVerticalScale(8)
@@ -70,13 +91,36 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   buttonContainer: {
-    flexDirection: 'row',
+    marginTop: moderateVerticalScale(20),
+    flexDirection: "row", 
+    justifyContent: "space-around"
+  },
+  activeButtonContainer: {
+    paddingVertical: moderateScale(8),
+    paddingHorizontal: moderateScale(16),
+    borderRadius: moderateScale(6),
+    alignItems: 'center',
+    backgroundColor: "#3366CC",
     justifyContent: 'space-around',
-    marginTop: 20,
+  },
+  inactiveButtonContainer: {
+    paddingVertical: moderateScale(8),
+    paddingHorizontal: moderateScale(16),
+    borderRadius: moderateScale(6),
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: "#3366CC",
+    justifyContent: 'space-around',
+  },
+  activeButtonText: {
+    color: 'white',
+    fontWeight: '600',
+    fontSize: LARGE_TEXT,
   },
   buttonText: {
-    color: 'blue',
-    fontSize: 16,
+    color: '#3366CC',
+    fontWeight: '600',
+    fontSize: LARGE_TEXT,
   },
 });
 
