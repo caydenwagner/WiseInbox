@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, useColorScheme, Dimensions } from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview'
 import { moderateScale, moderateVerticalScale } from '../functions/helpers';
@@ -60,7 +60,7 @@ const AutoThemeFullScreenEmail = (props) => {
         <AutoHeightWebView 
           style={{ width: Dimensions.get('window').width}}
           source={{ html: props.email.html || '<p>No content available</p>' }}
-          scalesPageToFit={true}
+          scalesPageToFit={false}
           viewportContent={'width=device-width, user-scalable=no'}
           showsVerticalScrollIndicator={false}
           scrollEnabled={false}
