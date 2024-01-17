@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, useColorScheme, Dimensions, Linking } from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview'
 import { moderateScale, moderateVerticalScale } from '../functions/helpers';
 import { LARGE_TEXT } from '../globalStyles/sizes';
 import { NewIndicator } from './NewIndicator'; 
 import { SecurityLabel } from './SecurityLabel';
+import SecurityModal from './SecurityModal';
 
 export const FullScreenEmail = (props) => {
   const isDarkMode = useColorScheme() === "dark"
@@ -17,8 +18,19 @@ export const FullScreenEmail = (props) => {
 }
 
 const AutoThemeFullScreenEmail = (props) => {
+  const [isModalVisible, setModalVisible] = useState(false)
+  const [url, setUrl] = useState("")
+  const [displayUrl, setDisplayUrl] = useState("")
+
   return (
     <>
+      <SecurityModal 
+        visible={isModalVisible}
+        displayUrl={displayUrl}
+        onClose={() => setModalVisible(false)}
+        onContinue={() => {Linking.openURL(url); setModalVisible(false)}}
+      />
+
       { props.isDarkMode ?
         <View style={styles.contentContainer}>
           <View style={styles.headerContainer}>
@@ -32,7 +44,10 @@ const AutoThemeFullScreenEmail = (props) => {
           <Text style={styles.darkInfoText}>{props.email.subject}</Text>
           <View style={styles.darkDivider}></View>
           <Text style={styles.darkHeaderText}>Security Scan:</Text>
-          <SecurityLabel securityScore={props.email.securityScore}/>
+          <SecurityLabel 
+            securityScore={props.email.securityScore}
+            label={props.email.securityLabel}
+          />
           <View style={styles.darkDivider}></View>
         </View>
       :
@@ -48,7 +63,10 @@ const AutoThemeFullScreenEmail = (props) => {
           <Text style={styles.lightInfoText}>{props.email.subject}</Text>
           <View style={styles.lightDivider}></View>
           <Text style={styles.lightHeaderText}>Security Scan:</Text>
-          <SecurityLabel securityScore={props.email.securityScore}/>
+          <SecurityLabel 
+            securityScore={props.email.securityScore}
+            label={props.email.securityLabel}
+          />
           <View style={styles.lightDivider}></View>
         </View>
       }
@@ -64,8 +82,16 @@ const AutoThemeFullScreenEmail = (props) => {
         javaScriptEnabled={true}
         onShouldStartLoadWithRequest={event => {
           if (event.url.slice(0,4) === 'http') {
+            if (props.email.securityLabel === "Safe") {
               Linking.openURL(event.url)
               return false
+            }
+            else if (props.email.securityLabel === "Caution" || props.email.securityLabel === "Unsafe") {
+              setUrl(event.url)
+              setDisplayUrl(event.url.split('?')[0])
+              setModalVisible(true)
+              return false
+            }
           }
           return true
         }}

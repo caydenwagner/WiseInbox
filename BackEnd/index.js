@@ -138,6 +138,17 @@ app.post('/gmail/messages', async (req, res) => {
       const isInbox = messageDetails.data.labelIds.includes('INBOX');
       const isRead = !messageDetails.data.labelIds.includes('UNREAD');
       const formattedDate = formatDate(emailDate)
+      const securityScore = Math.floor(Math.random() * 61) + 40
+      var securityLabel = ""
+      if (securityScore >= 80) {
+        securityLabel = "Safe"
+      }
+      else if (securityScore >= 60) {
+        securityLabel = "Caution"
+      }
+      else {
+        securityLabel = "Unsafe"
+      }
       let body = '';
       let html = '';
 
@@ -156,7 +167,8 @@ app.post('/gmail/messages', async (req, res) => {
         snippet: snippet,
         isInbox: isInbox,
         isRead: isRead,
-        securityScore: Math.floor(Math.random() * 61) + 40,
+        securityScore: securityScore,
+        securityLabel: securityLabel
       }
 
       return email;
