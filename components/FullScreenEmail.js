@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, useColorScheme, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, useColorScheme, Dimensions, Linking } from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview'
 import { moderateScale, moderateVerticalScale } from '../functions/helpers';
 import { LARGE_TEXT } from '../globalStyles/sizes';
@@ -64,6 +64,14 @@ const AutoThemeFullScreenEmail = (props) => {
           viewportContent={'width=device-width, user-scalable=no'}
           showsVerticalScrollIndicator={false}
           scrollEnabled={false}
+          javaScriptEnabled={true}
+          onShouldStartLoadWithRequest={event => {
+            if (event.url.slice(0,4) === 'http') {
+                Linking.openURL(event.url)
+                return false
+            }
+            return true
+          }}
         />
       </View>
     </>

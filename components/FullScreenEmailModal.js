@@ -41,7 +41,7 @@ export const FullScreenEmailModal = (props) => {
     >
       <ScrollView 
         ref={scrollViewRef}
-        contentContainerStyle={{paddingBottom: moderateVerticalScale(250)}}>
+        contentContainerStyle={{paddingBottom: moderateVerticalScale(200)}}>
         <FullScreenEmail 
           email={props.email}
           visible={props.isOpen}
