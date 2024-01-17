@@ -9,7 +9,7 @@ import { SecurityLabel } from './SecurityLabel';
 export const FullScreenEmail = (props) => {
   const isDarkMode = useColorScheme() === "dark"
 
-  if (!props.email || !props.visible) {
+  if (!props.email) {
     return <></>
   }
 
@@ -47,33 +47,29 @@ const AutoThemeFullScreenEmail = (props) => {
           <Text style={styles.lightHeaderText}>Subject:</Text>
           <Text style={styles.lightInfoText}>{props.email.subject}</Text>
           <View style={styles.lightDivider}></View>
-          <View style={styles.securityScanContainer}>
-            <Text style={styles.lightHeaderText}>Security Scan:</Text>
-            <SecurityLabel securityScore={props.email.securityScore}/>
-          </View>
+          <Text style={styles.lightHeaderText}>Security Scan:</Text>
+          <SecurityLabel securityScore={props.email.securityScore}/>
           <View style={styles.lightDivider}></View>
         </View>
       }
 
 
-      <View style={styles.webViewContainer}>
-        <AutoHeightWebView 
-          style={{ width: Dimensions.get('window').width}}
-          source={{ html: props.email.html || '<p>No content available</p>' }}
-          scalesPageToFit={false}
-          viewportContent={'width=device-width, user-scalable=no'}
-          showsVerticalScrollIndicator={false}
-          scrollEnabled={false}
-          javaScriptEnabled={true}
-          onShouldStartLoadWithRequest={event => {
-            if (event.url.slice(0,4) === 'http') {
-                Linking.openURL(event.url)
-                return false
-            }
-            return true
-          }}
-        />
-      </View>
+      <AutoHeightWebView 
+        style={{ width: Dimensions.get('window').width}}
+        source={{ html: props.email.html || '<p>No content available</p>' }}
+        scalesPageToFit={false}
+        viewportContent={'width=device-width, user-scalable=no'}
+        showsVerticalScrollIndicator={false}
+        scrollEnabled={false}
+        javaScriptEnabled={true}
+        onShouldStartLoadWithRequest={event => {
+          if (event.url.slice(0,4) === 'http') {
+              Linking.openURL(event.url)
+              return false
+          }
+          return true
+        }}
+      />
     </>
   )
 }
@@ -89,7 +85,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   webViewContainer: {
-    marginTop: moderateVerticalScale(10)
+
   },
   lightHeaderText: {
     fontSize: LARGE_TEXT,

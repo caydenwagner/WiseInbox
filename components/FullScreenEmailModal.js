@@ -13,7 +13,6 @@ export const FullScreenEmailModal = (props) => {
 
   function closeModal () {
     scrollViewRef.current?.scrollTo({x: 0, y: 0, animated: false})
-    props.setIsOpen(false)
   }
 
   const renderBackdrop = useCallback(
@@ -44,7 +43,6 @@ export const FullScreenEmailModal = (props) => {
         contentContainerStyle={{paddingBottom: moderateVerticalScale(200)}}>
         <FullScreenEmail 
           email={props.email}
-          visible={props.isOpen}
         />
       </ScrollView>
 

@@ -45,7 +45,8 @@ export const SecurityLabel = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: moderateVerticalScale(5)
+    marginTop: moderateVerticalScale(5),
+    marginBottom: moderateVerticalScale(10)
   },
   labelContainer: {
     position: "absolute",
