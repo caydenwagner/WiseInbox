@@ -33,11 +33,23 @@ const AutoThemeFullScreenEmail = (props) => {
 
       { props.isDarkMode ?
         <View style={styles.contentContainer}>
-          <View style={styles.headerContainer}>
-            <Text style={{...styles.darkHeaderText, alignSelf: 'center', alignItems: 'flex-end'}}>{props.email.date}</Text>
-            <NewIndicator isNew={!props.email.isRead}/>
-          </View>
-          <Text style={styles.darkHeaderText}>From:</Text>
+          { props.email.isRead ? 
+            <>
+              <View style={styles.headerContainer}>
+                <Text style={styles.darkHeaderText}>{props.email.date}</Text>
+                <Text style={styles.darkHeaderText}>From:</Text>
+              </View>
+            </>
+          : 
+            <>
+              <View style={styles.headerContainer}>
+                <Text style={styles.darkHeaderText}>{props.email.date}</Text>
+                <NewIndicator isNew={!props.email.isRead}/>
+              </View>
+              <Text style={styles.darkHeaderText}>From:</Text>
+            </>
+          }
+
           <Text style={styles.darkInfoText}>{props.email.sender}</Text>
           <View style={styles.darkDivider}></View>
           <Text style={styles.darkHeaderText}>Subject:</Text>
@@ -52,11 +64,22 @@ const AutoThemeFullScreenEmail = (props) => {
         </View>
       :
         <View style={styles.contentContainer}>
-          <View style={styles.headerContainer}>
-            <Text style={{...styles.lightHeaderText, alignSelf: 'center', alignItems: 'flex-end'}}>{props.email.date}</Text>
-            <NewIndicator isNew={!props.email.isRead}/>
-          </View>
-          <Text style={styles.lightHeaderText}>From:</Text>
+          { props.email.isRead ? 
+            <>
+              <View style={styles.headerContainer}>
+                <Text style={styles.lightHeaderText}>{props.email.date}</Text>
+                <Text style={styles.lightHeaderText}>From:</Text>
+              </View>
+            </>
+          : 
+            <>
+              <View style={styles.headerContainer}>
+                <Text style={styles.lightHeaderText}>{props.email.date}</Text>
+                <NewIndicator isNew={!props.email.isRead}/>
+              </View>
+              <Text style={styles.lightHeaderText}>From:</Text>
+            </>
+          }
           <Text style={styles.lightInfoText}>{props.email.sender}</Text>
           <View style={styles.lightDivider}></View>
           <Text style={styles.lightHeaderText}>Subject:</Text>
@@ -107,8 +130,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flexDirection: "row-reverse", 
-    marginBottom: moderateVerticalScale(10), 
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   lightHeaderText: {
     fontSize: LARGE_TEXT,
