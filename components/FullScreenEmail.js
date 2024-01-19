@@ -8,19 +8,24 @@ import { SecurityLabel } from './SecurityLabel';
 import SecurityModal from './SecurityModal';
 
 export const FullScreenEmail = (props) => {
-  const isDarkMode = useColorScheme() === "dark"
-
   if (!props.email) {
     return <></>
   }
 
-  return <AutoThemeFullScreenEmail email={props.email} isDarkMode={isDarkMode} />
+  return <AutoThemeFullScreenEmail email={props.email}/>
 }
 
 const AutoThemeFullScreenEmail = (props) => {
   const [isModalVisible, setModalVisible] = useState(false)
   const [url, setUrl] = useState("")
   const [displayUrl, setDisplayUrl] = useState("")
+  const isDarkMode = useColorScheme() === "dark"
+
+  var headerTextStyle = isDarkMode ? styles.darkHeaderText : styles.lightHeaderText
+  var infoTextStyle = isDarkMode ? styles.darkInfoText : styles.lightInfoText
+  var dividerStyle = isDarkMode ? styles.darkDivider : styles.lightDivider
+
+
 
   return (
     <>
@@ -31,68 +36,36 @@ const AutoThemeFullScreenEmail = (props) => {
         onContinue={() => {Linking.openURL(url); setModalVisible(false)}}
       />
 
-      { props.isDarkMode ?
-        <View style={styles.contentContainer}>
-          { props.email.isRead ? 
-            <>
-              <View style={styles.headerContainer}>
-                <Text style={styles.darkHeaderText}>{props.email.date}</Text>
-                <Text style={styles.darkHeaderText}>From:</Text>
-              </View>
-            </>
-          : 
-            <>
-              <View style={styles.headerContainer}>
-                <Text style={styles.darkHeaderText}>{props.email.date}</Text>
-                <NewIndicator isNew={!props.email.isRead}/>
-              </View>
-              <Text style={styles.darkHeaderText}>From:</Text>
-            </>
-          }
-
-          <Text style={styles.darkInfoText}>{props.email.sender}</Text>
-          <View style={styles.darkDivider}></View>
-          <Text style={styles.darkHeaderText}>Subject:</Text>
-          <Text style={styles.darkInfoText}>{props.email.subject}</Text>
-          <View style={styles.darkDivider}></View>
-          <Text style={styles.darkHeaderText}>Security Scan:</Text>
-          <SecurityLabel 
-            securityScore={props.email.securityScore}
-            label={props.email.securityLabel}
-          />
-          <View style={styles.darkDivider}></View>
-        </View>
-      :
-        <View style={styles.contentContainer}>
-          { props.email.isRead ? 
-            <>
-              <View style={styles.headerContainer}>
-                <Text style={styles.lightHeaderText}>{props.email.date}</Text>
-                <Text style={styles.lightHeaderText}>From:</Text>
-              </View>
-            </>
-          : 
-            <>
-              <View style={styles.headerContainer}>
-                <Text style={styles.lightHeaderText}>{props.email.date}</Text>
-                <NewIndicator isNew={!props.email.isRead}/>
-              </View>
-              <Text style={styles.lightHeaderText}>From:</Text>
-            </>
-          }
-          <Text style={styles.lightInfoText}>{props.email.sender}</Text>
-          <View style={styles.lightDivider}></View>
-          <Text style={styles.lightHeaderText}>Subject:</Text>
-          <Text style={styles.lightInfoText}>{props.email.subject}</Text>
-          <View style={styles.lightDivider}></View>
-          <Text style={styles.lightHeaderText}>Security Scan:</Text>
-          <SecurityLabel 
-            securityScore={props.email.securityScore}
-            label={props.email.securityLabel}
-          />
-          <View style={styles.lightDivider}></View>
-        </View>
-      }
+      
+      <View style={styles.contentContainer}>
+        { props.email.isRead ? 
+          <>
+            <View style={styles.headerContainer}>
+              <Text style={headerTextStyle}>{props.email.date}</Text>
+              <Text style={headerTextStyle}>From:</Text>
+            </View>
+          </>
+        : 
+          <>
+            <View style={styles.headerContainer}>
+              <Text style={headerTextStyle}>{props.email.date}</Text>
+              <NewIndicator isNew={!props.email.isRead}/>
+            </View>
+            <Text style={headerTextStyle}>From:</Text>
+          </>
+        }
+        <Text style={infoTextStyle}>{props.email.sender}</Text>
+        <View style={dividerStyle}></View>
+        <Text style={headerTextStyle}>Subject:</Text>
+        <Text style={infoTextStyle}>{props.email.subject}</Text>
+        <View style={dividerStyle}></View>
+        <Text style={headerTextStyle}>Security Scan:</Text>
+        <SecurityLabel 
+          securityScore={props.email.securityScore}
+          label={props.email.securityLabel}
+        />
+        <View style={dividerStyle}></View>
+      </View>
 
 
       <AutoHeightWebView 
