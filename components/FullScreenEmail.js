@@ -71,6 +71,7 @@ const AutoThemeFullScreenEmail = (props) => {
       <AutoHeightWebView 
         style={{ width: Dimensions.get('window').width}}
         source={{ html: props.email.html || '<p>No content available</p>' }}
+        androidLayerType={'hardware'}
         scalesPageToFit={false}
         viewportContent={'width=device-width, user-scalable=no'}
         showsVerticalScrollIndicator={false}
