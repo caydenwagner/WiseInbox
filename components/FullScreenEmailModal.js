@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, useRef } from 'react';
 import { ScrollView, useColorScheme } from 'react-native';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -9,6 +9,11 @@ export const FullScreenEmailModal = (props) => {
   const insets = useSafeAreaInsets();
   const snapPoints = useMemo(() => ['80%', '100%'], []);
   const isDarkMode = useColorScheme() === "dark"
+  const scrollViewRef = useRef()
+
+  function closeModal () {
+    scrollViewRef.current?.scrollTo({x: 0, y: 0, animated: false})
+  }
 
   const renderBackdrop = useCallback(
     props => (
@@ -31,9 +36,14 @@ export const FullScreenEmailModal = (props) => {
       enablePanDownToClose={true}
       topInset={insets.top}
       backdropComponent={renderBackdrop}
+      onClose={closeModal}
     >
-      <ScrollView contentContainerStyle={{paddingBottom: moderateVerticalScale(250)}}>
-        <FullScreenEmail email={props.email}/>
+      <ScrollView 
+        ref={scrollViewRef}
+        contentContainerStyle={{paddingBottom: moderateVerticalScale(200)}}>
+        <FullScreenEmail 
+          email={props.email}
+        />
       </ScrollView>
 
     </BottomSheet>

@@ -69,6 +69,31 @@ app.get("/", (req, res) => {
 
   res.json({"response": "Hello World"});
 });
+
+function findContent(parts) {
+  let body = '';
+  let html = '';
+
+  parts.forEach(part => {
+    if (part.body && part.body.size > 0) {
+      if (part.mimeType === 'text/plain' && !body) {
+        body = Buffer.from(part.body.data, 'base64').toString();
+      } else if (part.mimeType === 'text/html' && !html) {
+        html = Buffer.from(part.body.data, 'base64').toString();
+      }
+    } else if (part.parts) {
+      const { body: nestedBody, html: nestedHtml } = findContent(part.parts);
+      if (!body && nestedBody) {
+        body = nestedBody;
+      }
+      if (!html && nestedHtml) {
+        html = nestedHtml;
+      }
+    }
+  });
+
+  return { body, html };
+}
   
 app.post('/gmail/messages', async (req, res) => {
   const authToken = req.headers['authorization'];
@@ -105,9 +130,6 @@ app.post('/gmail/messages', async (req, res) => {
       const headers = payload.headers;
       const fromHeader = headers.find(header => header.name === 'From');
       const sender = fromHeader ? fromHeader.value : 'Sender information not available';
-      const body = payload.parts && payload.parts.length > 0 && payload.parts[0].body.data ?
-      Buffer.from(payload.parts[0].body.data, 'base64').toString('utf-8') :
-      '';
       const dateHeader = headers.find(header => header.name === 'Date');
       const emailDate = dateHeader ? new Date(dateHeader.value) : null;
       const subjectHeader = headers.find(header => header.name === 'Subject');
@@ -116,16 +138,37 @@ app.post('/gmail/messages', async (req, res) => {
       const isInbox = messageDetails.data.labelIds.includes('INBOX');
       const isRead = !messageDetails.data.labelIds.includes('UNREAD');
       const formattedDate = formatDate(emailDate)
+      const securityScore = Math.floor(Math.random() * 61) + 40
+      var securityLabel = ""
+      if (securityScore >= 80) {
+        securityLabel = "Safe"
+      }
+      else if (securityScore >= 60) {
+        securityLabel = "Caution"
+      }
+      else {
+        securityLabel = "Unsafe"
+      }
+      let body = '';
+      let html = '';
+
+      if (payload.parts) {
+        const { body: extractedBody, html: extractedHtml } = findContent(payload.parts);
+        body = extractedBody;
+        html = extractedHtml;
+      }
 
       const email = {
         sender: sender,
         body: body, 
+        html: html,
         date: formattedDate,
         subject: subject,
         snippet: snippet,
         isInbox: isInbox,
         isRead: isRead,
-        securityScore: 85,
+        securityScore: securityScore,
+        securityLabel: securityLabel
       }
 
       return email;
