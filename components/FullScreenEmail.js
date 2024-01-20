@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, useColorScheme, Dimensions, Linking, Platform } from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview'
 import { addToTrustedDomains, moderateScale, moderateVerticalScale } from '../functions/helpers';
@@ -58,7 +58,7 @@ const AutoThemeFullScreenEmail = (props) => {
   function addDomainToTrusted (url) {
     const domain = parseUrl(url)[1]
     addToTrustedDomains(domain)
-    props.setTrustedDomains[{...props.trustedDomains, domain}]
+    props.setTrustedDomains(domain)
   }
 
   function onContinue(url, checkboxValue) {

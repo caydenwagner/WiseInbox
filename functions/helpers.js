@@ -32,6 +32,7 @@ export const getLastLogin = () => {
 }
 
 export const getTrustedDomains = async () => {
+  // AsyncStorage.removeItem('TrustedDomains') 
   try {
     const value = await AsyncStorage.getItem('TrustedDomains');
     return value ? JSON.parse(value) : [];

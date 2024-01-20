@@ -49,6 +49,10 @@ export default function ViewEmailScreen() {
     fetchTrustedDomains()
   }, []) 
 
+  const addToTrustedDomains = (domain) => {
+    setTrustedDomains([...trustedDomains, domain])
+  }
+
   function openFullScreenMail(mail) {
     if (mail) {
       setCurrentDisplayEmail(mail)
@@ -78,7 +82,7 @@ export default function ViewEmailScreen() {
           forwardRef={bottomSheetRef}
           email={currentDisplayedEmail}
           trustedDomains={trustedDomains}
-          setTrustedDomains={setTrustedDomains}
+          setTrustedDomains={addToTrustedDomains}
         />
 
       </SafeAreaView>
