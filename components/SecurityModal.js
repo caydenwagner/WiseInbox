@@ -80,8 +80,9 @@ const styles = StyleSheet.create({
   },
   linkContainer: {
     backgroundColor: "black",
-    marginVertical: moderateScale(8),
-    padding: moderateScale(8),
+    marginVertical: moderateScale(6),
+    paddingVertical: moderateScale(10),
+    paddingHorizontal: moderateScale(6),
     borderRadius: moderateScale(6),
     flexDirection: "row",
   },
@@ -93,26 +94,22 @@ const styles = StyleSheet.create({
   modalContent: {
     padding: moderateScale(20),
     backgroundColor: 'white',
-    borderRadius: 10,
+    borderRadius: moderateScale(10),
     width: '90%',
   },
   warningText: {
     marginLeft: moderateScale(10),
     fontSize: EXTRA_LARGE_TEXT,
     fontWeight: '400',
-    marginBottom: moderateVerticalScale(8)
+    marginBottom: moderateVerticalScale(15)
   },
   bodyText: {
     fontSize: LARGE_TEXT,
-    marginTop: moderateVerticalScale(3)
+    marginVertical: moderateVerticalScale(3)
   },
   linkText: {
     fontSize: LARGE_TEXT,
     fontWeight: '400',
-  },
-  urlText: {
-    color: 'blue',
-    marginBottom: 10,
   },
   buttonContainer: {
     marginTop: moderateVerticalScale(20),
