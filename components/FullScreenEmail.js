@@ -7,6 +7,25 @@ import { NewIndicator } from './NewIndicator';
 import { SecurityLabel } from './SecurityLabel';
 import SecurityModal from './SecurityModal';
 
+function parseUrl(url) {
+  const regex = /^(.*?:\/\/)(.*?)(\/[^?]*)(\?.*)?$/;
+  const match = url.match(regex);
+
+  if (match) {
+    const protocol = match[1];
+    const domain = match[2];
+    const path = match[3].split('?')[0]; // Stop at the first occurrence of '?'
+
+    // Create the result array
+    const resultArray = [protocol, domain, path];
+
+    return resultArray;
+  } else {
+    // Handle invalid URLs
+    return [];
+  }
+}
+
 export const FullScreenEmail = (props) => {
   if (!props.email) {
     return <></>
@@ -85,7 +104,7 @@ const AutoThemeFullScreenEmail = (props) => {
             }
             else if (props.email.securityLabel === "Caution" || props.email.securityLabel === "Unsafe") {
               setUrl(event.url)
-              setDisplayUrl(event.url.split('?')[0])
+              setDisplayUrl(parseUrl(event.url))
               setModalVisible(true)
               return false
             }

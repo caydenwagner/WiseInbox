@@ -38,9 +38,22 @@ const SecurityModal = ({ visible, displayUrl, onClose, onContinue }) => {
             <Text style={{...styles.bodyText, color: pallette.alternate}}>
               The link you are about to open leads to:
             </Text>
-            <Text style={{...styles.bodyText, color: isDarkMode ? "#3366CC" : "#0000FF"}}>
-              {displayUrl}
-            </Text>
+
+            <View style={{...styles.linkContainer, backgroundColor: pallette.primary}}>
+              <Text numberOfLines={1}>
+                <Text style={{...styles.linkText, color: "grey"}}>
+                  {displayUrl[0]}
+                </Text>
+                <Text style={{...styles.linkText, color: pallette.alternate, fontWeight: '600'}}>
+                  {" "}{displayUrl[1]}{" "}
+                </Text>
+                <Text style={{...styles.linkText, color: "grey"}}>
+                  {displayUrl[2]}
+                </Text>
+              </Text>
+
+            </View>
+
             <Text style={{...styles.bodyText, color: pallette.alternate}}>
               Proceed with caution.
             </Text>
@@ -65,6 +78,13 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: 'rgba(0,0,0,0.7)',
   },
+  linkContainer: {
+    backgroundColor: "black",
+    marginVertical: moderateScale(8),
+    padding: moderateScale(8),
+    borderRadius: moderateScale(6),
+    flexDirection: "row",
+  },
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -85,6 +105,10 @@ const styles = StyleSheet.create({
   bodyText: {
     fontSize: LARGE_TEXT,
     marginTop: moderateVerticalScale(3)
+  },
+  linkText: {
+    fontSize: LARGE_TEXT,
+    fontWeight: '400',
   },
   urlText: {
     color: 'blue',
