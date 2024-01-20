@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, useColorScheme, Dimensions, Linking } from 'react-native';
+import { View, Text, StyleSheet, useColorScheme, Dimensions, Linking, Platform } from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview'
-import { moderateScale, moderateVerticalScale } from '../functions/helpers';
+import { addToTrustedDomains, moderateScale, moderateVerticalScale } from '../functions/helpers';
 import { LARGE_TEXT } from '../globalStyles/sizes';
 import { NewIndicator } from './NewIndicator'; 
 import { SecurityLabel } from './SecurityLabel';
@@ -31,7 +31,13 @@ export const FullScreenEmail = (props) => {
     return <></>
   }
 
-  return <AutoThemeFullScreenEmail email={props.email}/>
+  return (
+    <AutoThemeFullScreenEmail 
+      email={props.email} 
+      trustedDomains={props.trustedDomains}
+      setTrustedDomains={props.setTrustedDomains}
+    />
+  )
 }
 
 const AutoThemeFullScreenEmail = (props) => {
@@ -44,7 +50,47 @@ const AutoThemeFullScreenEmail = (props) => {
   var infoTextStyle = isDarkMode ? styles.darkInfoText : styles.lightInfoText
   var dividerStyle = isDarkMode ? styles.darkDivider : styles.lightDivider
 
+  function isDomainTrusted (url) {
+    const domain = parseUrl(url)[1]
+    return (props.trustedDomains.includes(domain))
+  }
 
+  function addDomainToTrusted (url) {
+    const domain = parseUrl(url)[1]
+    addToTrustedDomains(domain)
+    props.setTrustedDomains[{...props.trustedDomains, domain}]
+  }
+
+  function onContinue(url, checkboxValue) {
+    if (checkboxValue) {
+      addDomainToTrusted(url)
+    }
+    Linking.openURL(url)
+    setModalVisible(false)
+  }
+
+  function openLink(url) {
+    if (url.slice(0,4) === 'http') {
+      if (props.email.securityLabel === "Safe") {
+        Linking.openURL(url)
+        return false
+      }
+      else if (props.email.securityLabel === "Caution" || props.email.securityLabel === "Unsafe") {
+        const isTrusted = isDomainTrusted(url)
+        if (isTrusted) {
+          Linking.openURL(url)
+          return false
+        }
+        else {
+          setUrl(url)
+          setDisplayUrl(parseUrl(url))
+          setModalVisible(true)
+          return false
+        }
+      }
+    }
+    return true
+  }
 
   return (
     <>
@@ -52,9 +98,9 @@ const AutoThemeFullScreenEmail = (props) => {
         visible={isModalVisible}
         displayUrl={displayUrl}
         onClose={() => setModalVisible(false)}
-        onContinue={() => {Linking.openURL(url); setModalVisible(false)}}
+        onContinue={onContinue}
+        url={url}
       />
-
       
       <View style={styles.contentContainer}>
         { props.email.isRead ? 
@@ -86,30 +132,23 @@ const AutoThemeFullScreenEmail = (props) => {
         <View style={dividerStyle}></View>
       </View>
 
-
       <AutoHeightWebView 
         style={{ width: Dimensions.get('window').width}}
         source={{ html: props.email.html || '<p>No content available</p>' }}
+        userAgent={
+          Platform.OS === "android"
+            ? "Chrome/18.0.1025.133 Mobile Safari/535.19"
+            : "AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75"
+        }
         androidLayerType={'hardware'}
         scalesPageToFit={false}
         viewportContent={'width=device-width, user-scalable=no'}
         showsVerticalScrollIndicator={false}
         scrollEnabled={false}
         javaScriptEnabled={true}
-        onShouldStartLoadWithRequest={event => {
-          if (event.url.slice(0,4) === 'http') {
-            if (props.email.securityLabel === "Safe") {
-              Linking.openURL(event.url)
-              return false
-            }
-            else if (props.email.securityLabel === "Caution" || props.email.securityLabel === "Unsafe") {
-              setUrl(event.url)
-              setDisplayUrl(parseUrl(event.url))
-              setModalVisible(true)
-              return false
-            }
-          }
-          return true
+        startInLoadingState={true}
+        onShouldStartLoadWithRequest={(event) => {
+          return openLink(event.url)
         }}
       />
     </>

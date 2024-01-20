@@ -6,7 +6,7 @@ import { moderateScale, moderateVerticalScale } from '../functions/helpers';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
-const SecurityModal = ({ visible, displayUrl, onClose, onContinue }) => {
+const SecurityModal = ({ visible, displayUrl, onClose, onContinue, url }) => {
   const isDarkMode = useColorScheme() === "dark"
   var pallette = isDarkMode ? darkPalette : lightPalette
 
@@ -61,7 +61,7 @@ const SecurityModal = ({ visible, displayUrl, onClose, onContinue }) => {
               <TouchableOpacity style={styles.activeButtonContainer} onPress={onClose}>
                 <Text style={styles.activeButtonText}>Go Back</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.inactiveButtonContainer} onPress={onContinue}>
+              <TouchableOpacity style={styles.inactiveButtonContainer} onPress={() => onContinue(url, false)}>
                 <Text style={styles.buttonText}>Continue</Text>
               </TouchableOpacity>
             </View>

@@ -31,6 +31,32 @@ export const getLastLogin = () => {
   return getData()
 }
 
+export const getTrustedDomains = async () => {
+  try {
+    const value = await AsyncStorage.getItem('TrustedDomains');
+    return value ? JSON.parse(value) : [];
+  } catch (error) {
+    console.error('Error getting trusted domains:', error);
+    return [];
+  }
+};
+
+export const addToTrustedDomains = async (domain) => {
+  try {
+    const currentData = await AsyncStorage.getItem('TrustedDomains');
+    const currentTrustedDomains = currentData ? JSON.parse(currentData) : [];
+
+    const newTrustedDomains = [...currentTrustedDomains, domain];
+
+    if (!(domain in currentTrustedDomains)) {
+      await AsyncStorage.setItem('TrustedDomains', JSON.stringify(newTrustedDomains));
+    }
+    
+  } catch (error) {
+    console.error('Error adding to trusted domains:', error);
+  }
+};
+
 export const openUrl = (url) => {
   // // Use SafariView on iOS
   if (Platform.OS === "ios") {

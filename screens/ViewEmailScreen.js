@@ -10,12 +10,14 @@ import { EmailDisplayer } from '../components/EmailDisplayer';
 import { EmailScreenHeader } from '../components/EmailScreenHeader';
 import { darkPalette, lightPalette } from '../globalStyles/colors';
 import { FullScreenEmailModal } from '../components/FullScreenEmailModal';
+import { getTrustedDomains } from '../functions/helpers';
 
 export default function ViewEmailScreen() {
   const navigation = useNavigation();
   const [data, setData] = useState(null)
   const [currentDisplayedEmail, setCurrentDisplayEmail] = useState(null)
   const [refreshing, setRefreshing] = useState(false)
+  const [trustedDomains, setTrustedDomains] = useState([])
 
   const bottomSheetRef = useRef();
 
@@ -39,6 +41,12 @@ export default function ViewEmailScreen() {
 
   useEffect(() => {
     fetchMail()
+    const fetchTrustedDomains = async () => {
+      const trustedDomains = await getTrustedDomains()
+      setTrustedDomains(trustedDomains)
+    }
+
+    fetchTrustedDomains()
   }, []) 
 
   function openFullScreenMail(mail) {
@@ -69,6 +77,8 @@ export default function ViewEmailScreen() {
         <FullScreenEmailModal 
           forwardRef={bottomSheetRef}
           email={currentDisplayedEmail}
+          trustedDomains={trustedDomains}
+          setTrustedDomains={setTrustedDomains}
         />
 
       </SafeAreaView>

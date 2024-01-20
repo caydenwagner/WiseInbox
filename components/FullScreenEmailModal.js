@@ -43,6 +43,8 @@ export const FullScreenEmailModal = (props) => {
         contentContainerStyle={{paddingBottom: moderateVerticalScale(200)}}>
         <FullScreenEmail 
           email={props.email}
+          trustedDomains={props.trustedDomains}
+          setTrustedDomains={props.setTrustedDomains}
         />
       </ScrollView>
 
