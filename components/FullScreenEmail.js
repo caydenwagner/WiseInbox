@@ -4,7 +4,7 @@ import AutoHeightWebView from 'react-native-autoheight-webview'
 import { addToTrustedDomains, moderateScale, moderateVerticalScale } from '../functions/helpers';
 import { LARGE_TEXT } from '../globalStyles/sizes';
 import { NewIndicator } from './NewIndicator'; 
-import { SecurityLabel } from './SecurityLabel';
+import { SecurityLabel, SecurityScanSection } from './SecurityScanSection';
 import SecurityModal from './SecurityModal';
 
 function parseUrl(url) {
@@ -124,10 +124,10 @@ const AutoThemeFullScreenEmail = (props) => {
         <Text style={headerTextStyle}>Subject:</Text>
         <Text style={infoTextStyle}>{props.email.subject}</Text>
         <View style={dividerStyle}></View>
-        <Text style={headerTextStyle}>Security Scan:</Text>
-        <SecurityLabel 
+        <SecurityScanSection
           securityScore={props.email.securityScore}
           label={props.email.securityLabel}
+          headerTextStyle={headerTextStyle}
         />
         <View style={dividerStyle}></View>
       </View>
