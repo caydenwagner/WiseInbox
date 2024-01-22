@@ -14,7 +14,7 @@ const SecurityModal = ({ visible, displayUrl, onClose, onContinue, url }) => {
 
   return (
     <Modal
-      animationType="slide"
+      animationType="fade"
       transparent={true}
       visible={visible}
       onRequestClose={onClose}
@@ -34,11 +34,11 @@ const SecurityModal = ({ visible, displayUrl, onClose, onContinue, url }) => {
                 size={moderateScale(30)}
               />
               <Text style={{...styles.warningText, color: pallette.alternate}}>
-                Hang On
+                Hold On For a Moment
               </Text>
             </View>
             <Text style={{...styles.bodyText, color: pallette.alternate}}>
-              The link you are about to open leads to:
+              The link you're about to open goes to a website at the following address:
             </Text>
 
             <View style={{...styles.linkContainer, backgroundColor: pallette.primary}}>
@@ -72,15 +72,15 @@ const SecurityModal = ({ visible, displayUrl, onClose, onContinue, url }) => {
                 onFillColor={'#3366CC'}
               />
               <Text style={{...styles.bodyText, color: "#3366CC", fontWeight: '600'}}>
-                Trust this Domain in the future
+                Trust this website in the future
               </Text>
             </View>
             <View style={styles.buttonContainer}> 
-              <TouchableOpacity style={styles.activeButtonContainer} onPress={onClose}>
-                <Text style={styles.activeButtonText}>Go Back</Text>
+              <TouchableOpacity style={styles.inactiveButtonContainer} onPress={onClose}>
+                <Text style={styles.buttonText}>Go Back</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.inactiveButtonContainer} onPress={() => {onContinue(url, toggleCheckBox); setToggleCheckBox(false)}}>
-                <Text style={styles.buttonText}>Continue</Text>
+              <TouchableOpacity style={styles.activeButtonContainer} onPress={() => {onContinue(url, toggleCheckBox); setToggleCheckBox(false)}}>
+                <Text style={styles.activeButtonText}>Continue</Text>
               </TouchableOpacity>
             </View>
           </TouchableOpacity>
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     fontSize: EXTRA_LARGE_TEXT,
     fontWeight: '400',
     marginBottom: moderateVerticalScale(15),
-    marginLeft: moderateVerticalScale(10)
+    marginLeft: moderateVerticalScale(5)
   },
   bodyText: {
     fontSize: LARGE_TEXT,
