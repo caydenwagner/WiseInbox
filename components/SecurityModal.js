@@ -38,7 +38,7 @@ const SecurityModal = ({ visible, displayUrl, onClose, onContinue, url }) => {
               </Text>
             </View>
             <Text style={{...styles.bodyText, color: pallette.alternate}}>
-              The link you're about to open goes to a website at the following address:
+              The link you're about to open goes to a website at the following address. Are you sure you want to go there?
             </Text>
 
             <View style={{...styles.linkContainer, backgroundColor: pallette.primary}}>
@@ -55,11 +55,7 @@ const SecurityModal = ({ visible, displayUrl, onClose, onContinue, url }) => {
               </Text>
             </View>
 
-            <Text style={{...styles.bodyText, color: pallette.alternate}}>
-              Are you sure you want to go there?
-            </Text>
-
-            <View style={{flexDirection: "row", justifyContent: 'flex-start', alignItems: 'center', marginTop: moderateVerticalScale(20)}}> 
+            <View style={{flexDirection: "row", justifyContent: 'flex-start', alignItems: 'center', marginTop: moderateVerticalScale(10)}}> 
               <CheckBox
                 style={{height: moderateScale(18), width: moderateScale(18), marginRight: moderateScale(8)}}
                 value={toggleCheckBox}
@@ -98,7 +94,7 @@ const styles = StyleSheet.create({
   },
   linkContainer: {
     backgroundColor: "black",
-    marginVertical: moderateScale(6),
+    marginVertical: moderateScale(10),
     paddingVertical: moderateScale(10),
     paddingHorizontal: moderateScale(6),
     borderRadius: moderateScale(6),

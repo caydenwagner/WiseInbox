@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, useColorScheme, Dimensions, Linking, Platform } from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview'
 import { addToTrustedDomains, moderateScale, moderateVerticalScale } from '../functions/helpers';
 import { LARGE_TEXT } from '../globalStyles/sizes';
 import { NewIndicator } from './NewIndicator'; 
-import { SecurityLabel, SecurityScanSection } from './SecurityScanSection';
+import { SecurityScanSection } from './SecurityScanSection';
 import SecurityModal from './SecurityModal';
 
 function parseUrl(url) {
@@ -132,25 +132,30 @@ const AutoThemeFullScreenEmail = (props) => {
         <View style={dividerStyle}></View>
       </View>
 
-      <AutoHeightWebView 
-        style={{ width: Dimensions.get('window').width}}
-        source={{ html: props.email.html || '<p>No content available</p>' }}
-        userAgent={
-          Platform.OS === "android"
-            ? "Chrome/18.0.1025.133 Mobile Safari/535.19"
-            : "AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75"
-        }
-        androidLayerType={'hardware'}
-        scalesPageToFit={false}
-        viewportContent={'width=device-width, user-scalable=no'}
-        showsVerticalScrollIndicator={false}
-        scrollEnabled={false}
-        javaScriptEnabled={true}
-        startInLoadingState={true}
-        onShouldStartLoadWithRequest={(event) => {
-          return openLink(event.url)
-        }}
-      />
+      {
+        props.email.securityLabel === "Unsafe" ? 
+          <Text>Unsafe Mail Detected</Text>
+        :
+        <AutoHeightWebView 
+          style={{ width: Dimensions.get('window').width}}
+          source={{ html: props.email.html || '<p>No content available</p>' }}
+          userAgent={
+            Platform.OS === "android"
+              ? "Chrome/18.0.1025.133 Mobile Safari/535.19"
+              : "AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75"
+          }
+          androidLayerType={'hardware'}
+          scalesPageToFit={false}
+          viewportContent={'width=device-width, user-scalable=no'}
+          showsVerticalScrollIndicator={false}
+          scrollEnabled={false}
+          javaScriptEnabled={true}
+          startInLoadingState={true}
+          onShouldStartLoadWithRequest={(event) => {
+            return openLink(event.url)
+          }}
+        />
+      }
     </>
   )
 }
