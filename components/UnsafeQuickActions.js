@@ -36,13 +36,16 @@ export const UnsafeQuickActions = ({ email, onIgnore, deleteMailById, closeFullS
   function onContinue() {
     if (reportMailToggle) {
       localReportEmail(email)
+      setReportMailToggle(false)
     }
     if (blockSenderToggle) {
       localBlockSender(email)
+      setBlockSenderToggle(false)
     }
     if (deleteMailToggle) {
       localDeleteMail(email)
       deleteMailById(email.id)
+      setDeleteMailToggle(false)
     }
     closeFullScreenMail()
   }
