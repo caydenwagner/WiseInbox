@@ -2,17 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, useColorScheme, TouchableOpacity } from 'react-native';
 import { QuickAction } from './QuickAction';
 import { moderateScale, moderateVerticalScale } from '../functions/helpers';
+import { reportEmail, deleteMail, blockSender } from '../functions/apiHelpers'
 
-function reportEmail(email) {
-
+function localReportEmail(email) {
+  reportEmail(email.id)
 }
 
-function deleteMail(email) {
-
+function localDeleteMail(email) {
+  deleteMail(email.id)
 }
 
-function blockSender(email) {
-
+function localBlockSender(email) {
+  blockSender(email.senderEmail)
 }
 
 export const UnsafeQuickActions = ({ email }) => {
@@ -34,13 +35,13 @@ export const UnsafeQuickActions = ({ email }) => {
 
   function onContinue() {
     if (reportMailToggle) {
-      reportEmail(email)
+      localReportEmail(email)
     }
     if (blockSenderToggle) {
-      blockSender(email)
+      localBlockSender(email)
     }
     if (deleteMailToggle) {
-      deleteMail(email)
+      localDeleteMail(email)
     }
   }
 
@@ -79,8 +80,10 @@ export const UnsafeQuickActions = ({ email }) => {
           style={{
             ...isButtonActive ? styles.activeButton : styles.inactiveButton, 
             // im so sorry for writing it this way
-            borderColor: isButtonActive ? "#0A55C5" : isDarkMode ? "white" : "black"}}
+            borderColor: isButtonActive ? "#0A55C5" : isDarkMode ? "white" : "black"
+          }}
           isButtonActive={isButtonActive}
+          onPress={() => onContinue()}
         >
           <Text 
             style={{

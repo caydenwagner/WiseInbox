@@ -39,7 +39,7 @@ export const getMail = async () => {
   }
 };
 
-export const reportMail = async (emailID) => {
+export const reportEmail = async (emailID) => {
   try {
     const value = await AsyncStorage.getItem("User")
     const user = JSON.parse(value)
@@ -109,10 +109,10 @@ export const blockSender = async (sender) => {
       }
     ).then(response => {
       if (!response.ok) {
-        console.log("Delete Mail Error")
+        console.log("Block Sender Error")
       } 
       else {
-        console.log("Delete Mail Success")
+        console.log("Block Sender Success")
       } 
     })
   } catch (error) {

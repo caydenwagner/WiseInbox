@@ -135,7 +135,9 @@ const AutoThemeFullScreenEmail = (props) => {
 
       {
         props.email.securityLabel === "Unsafe" ? 
-          <UnsafeQuickActions/>
+          <UnsafeQuickActions
+            email={props.email}
+          />
         :
         <AutoHeightWebView 
           style={{ width: Dimensions.get('window').width}}
