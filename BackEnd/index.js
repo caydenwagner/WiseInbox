@@ -182,4 +182,102 @@ app.post('/gmail/messages', async (req, res) => {
   }
 });
 
+app.post('/gmail/block', async (req, res) => {
+  const authToken = req.headers['authorization'];
+  const sender = req.headers['sender'];
+
+  const oAuth2Client = new google.auth.OAuth2(
+    process.env.GOOGLE_APP_ID,
+    process.env.GOOGLE_APP_SECRET,
+    process.env.REDIRECT_URI
+  )
+
+  oAuth2Client.setCredentials({
+    access_token: authToken
+  })
+
+  const gmail = google.gmail({ version: 'v1', auth: oAuth2Client });
+
+  gmail.users.settings.filters.create({
+    userId: 'me',
+    resource: {
+      criteria: {
+        from: sender,
+      },
+      action: {
+        removeLabelIds: ['INBOX'],
+        addLabelIds: ['SPAM'],
+      },
+    },
+  }, (err, res) => {
+    if (err) {
+      res.status(500).json({ message: err });
+    }
+    else {
+      res.status(200).json({ message: 'Success' });
+    }
+  });
+});
+
+app.post('/gmail/delete', async (req, res) => {
+  const authToken = req.headers['authorization'];
+  const emailID = req.headers['emailid'];
+
+  const oAuth2Client = new google.auth.OAuth2(
+    process.env.GOOGLE_APP_ID,
+    process.env.GOOGLE_APP_SECRET,
+    process.env.REDIRECT_URI
+  )
+
+  oAuth2Client.setCredentials({
+    access_token: authToken
+  })
+
+  const gmail = google.gmail({ version: 'v1', auth: oAuth2Client });
+
+  gmail.users.messages.delete({
+    userId: 'me',
+    id: emailID,
+  }, (err, res) => {
+    if (err) {
+      res.status(500).json({ message: err });
+    }
+    else {
+      res.status(200).json({ message: 'Success' });
+    }
+  });
+});
+
+app.post('/gmail/report', async (req, res) => {
+  const authToken = req.headers['authorization'];
+  const emailID = req.headers['emailid'];
+
+  const oAuth2Client = new google.auth.OAuth2(
+    process.env.GOOGLE_APP_ID,
+    process.env.GOOGLE_APP_SECRET,
+    process.env.REDIRECT_URI
+  )
+
+  oAuth2Client.setCredentials({
+    access_token: authToken
+  })
+
+  const gmail = google.gmail({ version: 'v1', auth: oAuth2Client });
+
+  gmail.users.messages.modify({
+    userId: 'me',
+    id: emailID,
+    resource: {
+      addLabelIds: ['SPAM'],
+    },
+  }, (err, res) => {
+    if (err) {
+      res.status(500).json({ message: err });
+    }
+    else {
+      res.status(200).json({ message: 'Success' });
+    }
+  });
+});
+
 app.listen(port,() => console.log("Server listening at port" + port));
