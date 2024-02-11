@@ -16,7 +16,7 @@ function localBlockSender(email) {
   blockSender(email.senderEmail)
 }
 
-export const UnsafeQuickActions = ({ email }) => {
+export const UnsafeQuickActions = ({ email, onIgnore, deleteMailById, closeFullScreenMail }) => {
   const [ reportMailToggle, setReportMailToggle ] = useState(false)
   const [ blockSenderToggle, setBlockSenderToggle ] = useState(false)
   const [ deleteMailToggle, setDeleteMailToggle ] = useState(false)
@@ -42,7 +42,9 @@ export const UnsafeQuickActions = ({ email }) => {
     }
     if (deleteMailToggle) {
       localDeleteMail(email)
+      deleteMailById(email.id)
     }
+    closeFullScreenMail()
   }
 
   return (
@@ -70,7 +72,9 @@ export const UnsafeQuickActions = ({ email }) => {
       />
       
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={{...styles.inactiveButton, borderColor: isDarkMode ? "white" : "#272727"}}>
+        <TouchableOpacity 
+          onPress={onIgnore}
+          style={{...styles.inactiveButton, borderColor: isDarkMode ? "white" : "#272727"}}>
           <Text style={{...styles.buttonText, color: isDarkMode ? "white" : "black"}}>
             Ignore
           </Text>
@@ -80,15 +84,15 @@ export const UnsafeQuickActions = ({ email }) => {
           style={{
             ...isButtonActive ? styles.activeButton : styles.inactiveButton, 
             // im so sorry for writing it this way
-            borderColor: isButtonActive ? "#0A55C5" : isDarkMode ? "white" : "black"
+            borderColor: isButtonActive ? "#0A55C5" : isDarkMode ? "lightgrey" : "grey"
           }}
-          isButtonActive={isButtonActive}
+          disabled={!isButtonActive}
           onPress={() => onContinue()}
         >
           <Text 
             style={{
               ...styles.buttonText, 
-              color: (isDarkMode || isButtonActive) ? "white" : "black",
+              color: isButtonActive ? "white" : isDarkMode ? "lightgrey" : "grey"
             }}
           >
             Take Action

@@ -37,6 +37,10 @@ export const FullScreenEmail = (props) => {
       email={props.email} 
       trustedDomains={props.trustedDomains}
       setTrustedDomains={props.setTrustedDomains}
+      quickActionsIgnored={props.quickActionsIgnored}
+      setQuickActionsIgnored={props.setQuickActionsIgnored}
+      deleteMailById={props.deleteMailById}
+      closeFullScreenMail={props.closeFullScreenMail}
     />
   )
 }
@@ -45,6 +49,7 @@ const AutoThemeFullScreenEmail = (props) => {
   const [isModalVisible, setModalVisible] = useState(false)
   const [url, setUrl] = useState("")
   const [displayUrl, setDisplayUrl] = useState("")
+
   const isDarkMode = useColorScheme() === "dark"
 
   var headerTextStyle = isDarkMode ? styles.darkHeaderText : styles.lightHeaderText
@@ -134,9 +139,12 @@ const AutoThemeFullScreenEmail = (props) => {
       </View>
 
       {
-        props.email.securityLabel === "Unsafe" ? 
+        props.email.securityLabel === "Unsafe" && !props.quickActionsIgnored ? 
           <UnsafeQuickActions
             email={props.email}
+            onIgnore={props.setQuickActionsIgnored}
+            deleteMailById={props.deleteMailById}
+            closeFullScreenMail={props.closeFullScreenMail}
           />
         :
         <AutoHeightWebView 

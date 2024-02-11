@@ -56,9 +56,17 @@ export default function ViewEmailScreen() {
   function openFullScreenMail(mail) {
     if (mail) {
       setCurrentDisplayEmail(mail)
-      bottomSheetRef.current.snapToIndex(0)
+      bottomSheetRef.current?.snapToIndex(0)
     }
   }
+
+  function closeFullScreenMail() {
+    bottomSheetRef.current?.close()
+  }
+
+  const deleteMailById = (idToRemove) => {
+    setData(prevData => prevData.filter(item => item.id !== idToRemove));
+  };
 
   const isDarkMode = useColorScheme() === "dark"
   
@@ -83,6 +91,8 @@ export default function ViewEmailScreen() {
           email={currentDisplayedEmail}
           trustedDomains={trustedDomains}
           setTrustedDomains={addToTrustedDomains}
+          deleteMailById={deleteMailById}
+          closeFullScreenMail={closeFullScreenMail}
         />
 
       </SafeAreaView>
