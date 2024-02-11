@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, useColorScheme } from 'react-native';
+import { Text, View, StyleSheet, useColorScheme, TouchableOpacity } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { moderateScale, moderateVerticalScale } from '../functions/helpers';
 import { LARGE_TEXT } from '../globalStyles/sizes';
@@ -22,9 +22,11 @@ export const QuickAction = ({ label, isToggled, setToggled }) => {
         onTintColor={isDarkMode ? "white" : "black"}
       />
 
-      <Text style={{...styles.labelText, color: isDarkMode ? "white" : "black"}}>
-        {label}
-      </Text>
+      <TouchableOpacity onPress={() => setToggled(!isToggled)}>
+        <Text style={{...styles.labelText, color: isDarkMode ? "white" : "black"}}>
+          {label}
+        </Text>
+      </TouchableOpacity>
     </View>
   )
 }
@@ -32,7 +34,7 @@ export const QuickAction = ({ label, isToggled, setToggled }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    marginTop: moderateVerticalScale(10)
+    marginTop: moderateVerticalScale(13)
   },
   labelText: {
     fontSize: moderateScale(16),
