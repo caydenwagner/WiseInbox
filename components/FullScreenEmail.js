@@ -6,6 +6,7 @@ import { LARGE_TEXT } from '../globalStyles/sizes';
 import { NewIndicator } from './NewIndicator'; 
 import { SecurityScanSection } from './SecurityScanSection';
 import SecurityModal from './SecurityModal';
+import { UnsafeQuickActions } from './UnsafeQuickActions';
 
 function parseUrl(url) {
   const regex = /^(.*?:\/\/)(.*?)(\/[^?]*)(\?.*)?$/;
@@ -134,7 +135,7 @@ const AutoThemeFullScreenEmail = (props) => {
 
       {
         props.email.securityLabel === "Unsafe" ? 
-          <Text>Unsafe Mail Detected</Text>
+          <UnsafeQuickActions/>
         :
         <AutoHeightWebView 
           style={{ width: Dimensions.get('window').width}}

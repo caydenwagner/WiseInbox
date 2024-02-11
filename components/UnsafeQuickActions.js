@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { Text, StyleSheet} from 'react-native';
+import { Text, View, StyleSheet, useColorScheme } from 'react-native';
+import { QuickAction } from './QuickAction';
+import { moderateScale, moderateVerticalScale } from '../functions/helpers';
+import { EXTRA_LARGE_TEXT, } from '../globalStyles/sizes';
 
 function reportEmail(email) {
 
@@ -18,6 +21,8 @@ export const UnsafeQuickActions = ({ email }) => {
   const [ blockSenderToggle, setBlockSenderToggle ] = useState(false)
   const [ deleteMailToggle, setDeleteMailToggle ] = useState(false)
 
+  const isDarkMode = useColorScheme() === "dark"
+
   function onContinue() {
     if (reportMailToggle) {
       reportEmail(email)
@@ -31,9 +36,9 @@ export const UnsafeQuickActions = ({ email }) => {
   }
 
   return (
-    <>
-      <Text>
-        Recommended Actions
+    <View style={styles.container}>
+      <Text style={{...styles.titleText, color: isDarkMode ? "white" : "black"}}>
+        Recommended Actions:
       </Text>
 
       <QuickAction
@@ -53,7 +58,17 @@ export const UnsafeQuickActions = ({ email }) => {
         isToggled={deleteMailToggle}
         setToggled={setDeleteMailToggle}
       />
-    </>
-
+    </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: moderateScale(20),
+    paddingVertical: moderateVerticalScale(20)
+  },
+  titleText: {
+    fontSize: moderateScale(20),
+    fontWeight: "600",
+  }
+})
