@@ -57,7 +57,7 @@ export const UnsafeQuickActions = ({ email, onIgnore, deleteMailById, closeFullS
       </Text>
 
       <QuickAction
-        label={"Report email as a scam"}
+        label={"Report this email"}
         isToggled={reportMailToggle}
         setToggled={setReportMailToggle}
       />
@@ -69,7 +69,7 @@ export const UnsafeQuickActions = ({ email, onIgnore, deleteMailById, closeFullS
       />
 
       <QuickAction
-        label={"Delete this mail"}
+        label={"Delete this email"}
         isToggled={deleteMailToggle}
         setToggled={setDeleteMailToggle}
       />
