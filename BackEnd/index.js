@@ -204,8 +204,6 @@ app.post('/gmail/block', async (req, res) => {
   const authToken = req.headers['authorization'];
   const sender = req.headers['sender'];
 
-  console.log(sender)
-
   const oAuth2Client = new google.auth.OAuth2(
     process.env.GOOGLE_APP_ID,
     process.env.GOOGLE_APP_SECRET,
@@ -216,9 +214,9 @@ app.post('/gmail/block', async (req, res) => {
     access_token: authToken
   })
 
-  const gmail = google.gmail({ version: 'v1', auth: oAuth2Client });
+  const gmailAPIObject = google.gmail({ version: 'v1', auth: oAuth2Client });
 
-  gmail.users.settings.filters.create({
+  gmailAPIObject.users.settings.filters.create({
     userId: 'me',
     resource: {
       criteria: {
