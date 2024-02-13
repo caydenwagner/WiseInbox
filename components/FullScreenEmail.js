@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, useColorScheme, Dimensions, Linking, Platform } from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview'
 import { addToTrustedDomains, moderateScale, moderateVerticalScale } from '../functions/helpers';
 import { LARGE_TEXT } from '../globalStyles/sizes';
 import { NewIndicator } from './NewIndicator'; 
-import { SecurityLabel } from './SecurityLabel';
+import { SecurityScanSection } from './SecurityScanSection';
 import SecurityModal from './SecurityModal';
+import { UnsafeQuickActions } from './UnsafeQuickActions';
 
 function parseUrl(url) {
   const regex = /^(.*?:\/\/)(.*?)(\/[^?]*)(\?.*)?$/;
@@ -36,6 +37,10 @@ export const FullScreenEmail = (props) => {
       email={props.email} 
       trustedDomains={props.trustedDomains}
       setTrustedDomains={props.setTrustedDomains}
+      quickActionsIgnored={props.quickActionsIgnored}
+      setQuickActionsIgnored={props.setQuickActionsIgnored}
+      deleteMailById={props.deleteMailById}
+      closeFullScreenMail={props.closeFullScreenMail}
     />
   )
 }
@@ -44,6 +49,7 @@ const AutoThemeFullScreenEmail = (props) => {
   const [isModalVisible, setModalVisible] = useState(false)
   const [url, setUrl] = useState("")
   const [displayUrl, setDisplayUrl] = useState("")
+
   const isDarkMode = useColorScheme() === "dark"
 
   var headerTextStyle = isDarkMode ? styles.darkHeaderText : styles.lightHeaderText
@@ -124,33 +130,43 @@ const AutoThemeFullScreenEmail = (props) => {
         <Text style={headerTextStyle}>Subject:</Text>
         <Text style={infoTextStyle}>{props.email.subject}</Text>
         <View style={dividerStyle}></View>
-        <Text style={headerTextStyle}>Security Scan:</Text>
-        <SecurityLabel 
+        <SecurityScanSection
           securityScore={props.email.securityScore}
           label={props.email.securityLabel}
+          headerTextStyle={headerTextStyle}
         />
         <View style={dividerStyle}></View>
       </View>
 
-      <AutoHeightWebView 
-        style={{ width: Dimensions.get('window').width}}
-        source={{ html: props.email.html || '<p>No content available</p>' }}
-        userAgent={
-          Platform.OS === "android"
-            ? "Chrome/18.0.1025.133 Mobile Safari/535.19"
-            : "AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75"
-        }
-        androidLayerType={'hardware'}
-        scalesPageToFit={false}
-        viewportContent={'width=device-width, user-scalable=no'}
-        showsVerticalScrollIndicator={false}
-        scrollEnabled={false}
-        javaScriptEnabled={true}
-        startInLoadingState={true}
-        onShouldStartLoadWithRequest={(event) => {
-          return openLink(event.url)
-        }}
-      />
+      {
+        props.email.securityLabel === "Unsafe" && !props.quickActionsIgnored ? 
+          <UnsafeQuickActions
+            email={props.email}
+            onIgnore={props.setQuickActionsIgnored}
+            deleteMailById={props.deleteMailById}
+            closeFullScreenMail={props.closeFullScreenMail}
+          />
+        :
+        <AutoHeightWebView 
+          style={{ width: Dimensions.get('window').width}}
+          source={{ html: props.email.html || '<p>No content available</p>' }}
+          userAgent={
+            Platform.OS === "android"
+              ? "Chrome/18.0.1025.133 Mobile Safari/535.19"
+              : "AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75"
+          }
+          androidLayerType={'hardware'}
+          scalesPageToFit={false}
+          viewportContent={'width=device-width, user-scalable=no'}
+          showsVerticalScrollIndicator={false}
+          scrollEnabled={false}
+          javaScriptEnabled={true}
+          startInLoadingState={true}
+          onShouldStartLoadWithRequest={(event) => {
+            return openLink(event.url)
+          }}
+        />
+      }
     </>
   )
 }

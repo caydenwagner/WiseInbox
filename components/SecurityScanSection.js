@@ -5,13 +5,21 @@ import { lightPalette } from '../globalStyles/colors';
 import SecurityIndicator from './SecurityIndicator';
 import { LARGE_TEXT } from '../globalStyles/sizes';
 
-export const SecurityLabel = (props) => {
+export const SecurityScanSection = (props) => {
   if (props.securityScore) {
     var color = "white"
     var textColor = "white"
 
     if (props.securityScore >= 80) {
       color = lightPalette.safe
+      return (
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={props.headerTextStyle}>Security Scan:  </Text>
+          <View style={{...styles.labelContainer, backgroundColor: color, position: 'relative', top: moderateVerticalScale(5)}}>
+            <Text style={{...styles.securityLabelText, color: textColor}}>{props.label}</Text>
+          </View> 
+        </View>
+      )
     }
     else if (props.securityScore >= 60) {
       color = lightPalette.warning
@@ -21,15 +29,18 @@ export const SecurityLabel = (props) => {
       color = lightPalette.unsafe
     }
     return (
-      <View style={styles.container}>
-        <SecurityIndicator 
-          label={props.label}
-          value={props.securityScore}
-        />
-        <View style={{...styles.labelContainer, backgroundColor: color}}>
-          <Text style={{...styles.securityLabelText, color: textColor}}>{props.label}</Text>
-        </View> 
-      </View>
+      <>
+        <Text style={props.headerTextStyle}>Security Scan: </Text>
+        <View style={styles.container}>
+          <SecurityIndicator 
+            label={props.label}
+            value={props.securityScore}
+          />
+          <View style={{...styles.labelContainer, backgroundColor: color}}>
+            <Text style={{...styles.securityLabelText, color: textColor}}>{props.label}</Text>
+          </View> 
+        </View>
+      </>
     )
   }
   else {

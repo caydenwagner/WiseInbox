@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useRef } from 'react';
+import React, { useMemo, useCallback, useRef, useState } from 'react';
 import { ScrollView, useColorScheme } from 'react-native';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -6,13 +6,15 @@ import { FullScreenEmail } from './FullScreenEmail';
 import { moderateVerticalScale, moderateScale } from '../functions/helpers';
 
 export const FullScreenEmailModal = (props) => {
+  const [quickActionsIgnored, setQuickActionsIgnored] = useState(false)
   const insets = useSafeAreaInsets();
   const snapPoints = useMemo(() => ['80%', '100%'], []);
   const isDarkMode = useColorScheme() === "dark"
   const scrollViewRef = useRef()
 
-  function closeModal () {
+  function onClose () {
     scrollViewRef.current?.scrollTo({x: 0, y: 0, animated: false})
+    setQuickActionsIgnored(false)
   }
 
   const renderBackdrop = useCallback(
@@ -36,7 +38,7 @@ export const FullScreenEmailModal = (props) => {
       enablePanDownToClose={true}
       topInset={insets.top}
       backdropComponent={renderBackdrop}
-      onClose={closeModal}
+      onClose={onClose}
     >
       <ScrollView 
         ref={scrollViewRef}
@@ -45,6 +47,10 @@ export const FullScreenEmailModal = (props) => {
           email={props.email}
           trustedDomains={props.trustedDomains}
           setTrustedDomains={props.setTrustedDomains}
+          quickActionsIgnored={quickActionsIgnored}
+          setQuickActionsIgnored={() => setQuickActionsIgnored(true)}
+          deleteMailById={props.deleteMailById}
+          closeFullScreenMail={props.closeFullScreenMail}
         />
       </ScrollView>
 

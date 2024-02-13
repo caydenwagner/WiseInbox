@@ -39,6 +39,87 @@ export const getMail = async () => {
   }
 };
 
+export const reportEmail = async (emailID) => {
+  try {
+    const value = await AsyncStorage.getItem("User")
+    const user = JSON.parse(value)
+
+    fetch(
+      'http://localhost:3000/gmail/report', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'authorization': `${user[0].accessToken}`,
+          'emailid': emailID
+        },
+      }
+    ).then(response => {
+      if (!response.ok) {
+        console.log("Report Mail Error")
+      } 
+      else {
+        console.log("Report Mail Success")
+      } 
+    })
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const deleteMail = async (emailID) => {
+  try {
+    const value = await AsyncStorage.getItem("User")
+    const user = JSON.parse(value)
+
+    fetch(
+      'http://localhost:3000/gmail/delete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'authorization': `${user[0].accessToken}`,
+          'emailid': emailID
+        },
+      }
+    ).then(response => {
+      if (!response.ok) {
+        console.log("Delete Mail Error")
+      } 
+      else {
+        console.log("Delete Mail Success")
+      } 
+    })
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const blockSender = async (sender) => {
+  try {
+    const value = await AsyncStorage.getItem("User")
+    const user = JSON.parse(value)
+
+    fetch(
+      'http://localhost:3000/gmail/block', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'authorization': `${user[0].accessToken}`,
+          'sender': sender
+        },
+      }
+    ).then(response => {
+      if (!response.ok) {
+        console.log("Block Sender Error")
+      } 
+      else {
+        console.log("Block Sender Success")
+      } 
+    })
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const logOut = async () => {
   try {
     removeLastLogin();
