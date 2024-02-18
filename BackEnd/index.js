@@ -8,6 +8,7 @@ import passport from "passport";
 import { google } from "googleapis"
 import { formatDate } from "./formatDate.js";
 import { decode } from 'html-entities';
+import fetch from 'node-fetch';
 import "dotenv/config";
 
 const app = express();
@@ -102,6 +103,36 @@ function findContent(parts) {
 
   return { body, html };
 }
+
+function makePrediction(email, sender, subject) {
+  const apiUrl = 'http://127.0.0.1:8000/email_prediction';
+
+  const inputData = {
+    Email: email,
+    Sender: sender,
+    Subject: subject,
+  };
+
+  // Making the API request
+  fetch(apiUrl, {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(inputData),
+  })
+  .then(response => {
+    if (!response.ok) {
+      console.log('Network response was not ok');
+    }
+  })
+  .then(data => {
+    console.log('Prediction:', data);
+  })
+  .catch(error => {
+    console.error('There was a problem with your fetch operation:', error);
+  });
+}
   
 app.post('/gmail/messages', async (req, res) => {
   const authToken = req.headers['authorization'];
@@ -122,7 +153,7 @@ app.post('/gmail/messages', async (req, res) => {
     const response = await gmail.users.messages.list({
       userId: 'me',
       labelIds: ['INBOX'],
-      maxResults: 20,
+      maxResults: 1,
     });
 
     const messages = response.data.messages;
@@ -141,11 +172,11 @@ app.post('/gmail/messages', async (req, res) => {
       const sender = fromHeader ? fromHeader.value : 'Sender information not available';
       const match = sender.match(/([^<]+)<([^>]+)>/);
       var senderEmail
-        if (match) {
-          senderEmail = match[2].trim();
-        } else {
-          senderEmail = sender;
-        }
+      if (match) {
+        senderEmail = match[2].trim();
+      } else {
+        senderEmail = sender;
+      }
       const dateHeader = headers.find(header => header.name === 'Date');
       const emailDate = dateHeader ? new Date(dateHeader.value) : null;
       const subjectHeader = headers.find(header => header.name === 'Subject');
@@ -165,8 +196,11 @@ app.post('/gmail/messages', async (req, res) => {
       else {
         securityLabel = "Unsafe"
       }
+
       let body = '';
       let html = '';
+
+      makePrediction(body, sender, subject)
 
       if (payload.parts) {
         const { body: extractedBody, html: extractedHtml } = findContent(payload.parts);
