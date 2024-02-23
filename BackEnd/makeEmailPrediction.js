@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 
 export async function makeEmailPrediction (body, sender, subject) {
-  const apiUrl = 'https://f406-35-221-41-212.ngrok-free.app/email_prediction';
+  const apiUrl = 'https://d58a-35-221-41-212.ngrok-free.app/email_prediction';
 
   const inputData = {
     Email: body,
@@ -39,7 +39,6 @@ export async function makeEmailPrediction (body, sender, subject) {
     else {
       securityLabel = "Unsafe"
     }
-    console.log(prediction)
     return { prediction, securityLabel }; // Return the prediction value
   } catch (error) {
     console.error('Error fetching prediction:', error);
