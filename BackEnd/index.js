@@ -6,7 +6,6 @@ import express from "express";
 import { initPassport } from "./initPassport.js";
 import passport from "passport";
 import { google } from "googleapis"
-import { formatDate } from "./formatDate.js";
 import { decode } from 'html-entities';
 import { makeEmailPrediction } from "./makeEmailPrediction.js";
 import "dotenv/config";
@@ -117,7 +116,7 @@ app.post('/gmail/messages', async (req, res) => {
     const response = await gmail.users.messages.list({
       userId: 'me',
       labelIds: ['INBOX'],
-      maxResults: 20,
+      maxResults: 3,
     });
 
     const messages = response.data.messages;
@@ -134,12 +133,18 @@ app.post('/gmail/messages', async (req, res) => {
       const headers = payload.headers;
       const fromHeader = headers.find(header => header.name === 'From');
       const sender = fromHeader ? fromHeader.value : 'Sender information not available';
-      const match = sender.match(/([^<]+)<([^>]+)>/);
-      var senderEmail
+      const regex = /^(.+?)\s*<(.+?)>$/;
+      const match = regex.exec(sender);
+      var senderEmail = ""
+      var senderName = ""
+  
       if (match) {
-        senderEmail = match[2].trim();
+        senderName = match[1].trim()
+        senderEmail = match[2].trim()
       } else {
-        senderEmail = sender;
+        // Handle cases where the regex doesn't match
+        senderName = "",
+        senderEmail = sender.trim()
       }
       const dateHeader = headers.find(header => header.name === 'Date');
       const emailDate = dateHeader ? new Date(dateHeader.value) : null;
@@ -158,13 +163,11 @@ app.post('/gmail/messages', async (req, res) => {
         html = extractedHtml;
       }
 
-      // const { prediction, securityLabel } = await makeEmailPrediction(body, sender, subject)
-      const prediction = 0
-      const securityLabel = "UNSAFE"
+      const { prediction, securityLabel } = await makeEmailPrediction(body, sender, subject)
       
       const email = {
         id: message.id,
-        sender: sender,
+        sender: senderName,
         senderEmail: senderEmail,
         body: body, 
         html: html,

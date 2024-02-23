@@ -110,12 +110,12 @@ const styles = StyleSheet.create({
     flex: 1
   },
   darkDate: {
-    fontSize: SMALL_TEXT,
+    fontSize: MEDIUM_TEXT,
     color: darkPalette.white,
     alignSelf: "flex-end",
   },
   lightDate: {
-    fontSize: SMALL_TEXT,
+    fontSize: MEDIUM_TEXT,
     color: lightPalette.black,
     alignSelf: "flex-end",
   },
