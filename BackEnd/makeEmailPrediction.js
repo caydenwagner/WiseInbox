@@ -28,6 +28,7 @@ export async function makeEmailPrediction (body, sender, subject) {
 
     const data = await response.json();
     const prediction = data.prediction;
+    console.log("Made Prediction: " + prediction)
     let securityLabel = ""
 
     if (prediction >= 80) {

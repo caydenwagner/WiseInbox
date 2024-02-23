@@ -67,16 +67,10 @@ app.get("/user/logout", function (req, res) {
   console.log("here");
   req.logout(function(err) {
     if (err) { 
-      res.json({status: "Failure"}); 
+      res.status(500).json({ status: err });
     }
     res.json({status: "Success"});
   })
-});
-
-app.get("/", (req, res) => {
-  console.log("Entered Get");
-
-  res.json({"response": "Hello World"});
 });
 
 function findContent(parts) {
