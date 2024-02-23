@@ -8,7 +8,7 @@ import passport from "passport";
 import { google } from "googleapis"
 import { formatDate } from "./formatDate.js";
 import { decode } from 'html-entities';
-import fetch from 'node-fetch';
+import { makeEmailPrediction } from "./makeEmailPrediction.js";
 import "dotenv/config";
 
 const app = express();
@@ -103,36 +103,6 @@ function findContent(parts) {
 
   return { body, html };
 }
-
-function makePrediction(email, sender, subject) {
-  const apiUrl = 'http://127.0.0.1:8000/email_prediction';
-
-  const inputData = {
-    Email: email,
-    Sender: sender,
-    Subject: subject,
-  };
-
-  // Making the API request
-  fetch(apiUrl, {
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(inputData),
-  })
-  .then(response => {
-    if (!response.ok) {
-      console.log('Network response was not ok');
-    }
-  })
-  .then(data => {
-    console.log('Prediction:', data);
-  })
-  .catch(error => {
-    console.error('There was a problem with your fetch operation:', error);
-  });
-}
   
 app.post('/gmail/messages', async (req, res) => {
   const authToken = req.headers['authorization'];
@@ -185,22 +155,9 @@ app.post('/gmail/messages', async (req, res) => {
       const isInbox = messageDetails.data.labelIds.includes('INBOX');
       const isRead = !messageDetails.data.labelIds.includes('UNREAD');
       const formattedDate = formatDate(emailDate)
-      const securityScore = Math.floor(Math.random() * 61) + 40
-      var securityLabel = ""
-      if (securityScore >= 80) {
-        securityLabel = "Safe"
-      }
-      else if (securityScore >= 60) {
-        securityLabel = "Caution"
-      }
-      else {
-        securityLabel = "Unsafe"
-      }
 
       let body = '';
       let html = '';
-
-      makePrediction(body, sender, subject)
 
       if (payload.parts) {
         const { body: extractedBody, html: extractedHtml } = findContent(payload.parts);
@@ -208,6 +165,8 @@ app.post('/gmail/messages', async (req, res) => {
         html = extractedHtml;
       }
 
+      const { prediction, securityLabel } = await makeEmailPrediction(body, sender, subject)
+      
       const email = {
         id: message.id,
         sender: sender,
@@ -219,8 +178,8 @@ app.post('/gmail/messages', async (req, res) => {
         snippet: snippet,
         isInbox: isInbox,
         isRead: isRead,
-        securityScore: securityScore,
-        securityLabel: securityLabel
+        securityScore: prediction,
+        securityLabel: securityLabel,
       }
 
       return email;
