@@ -117,7 +117,7 @@ app.post('/gmail/messages', async (req, res) => {
     const response = await gmail.users.messages.list({
       userId: 'me',
       labelIds: ['INBOX'],
-      maxResults: 1,
+      maxResults: 20,
     });
 
     const messages = response.data.messages;
@@ -148,7 +148,6 @@ app.post('/gmail/messages', async (req, res) => {
       const snippet = decode(messageDetails.data.snippet);
       const isInbox = messageDetails.data.labelIds.includes('INBOX');
       const isRead = !messageDetails.data.labelIds.includes('UNREAD');
-      const formattedDate = formatDate(emailDate)
 
       let body = '';
       let html = '';
@@ -159,7 +158,9 @@ app.post('/gmail/messages', async (req, res) => {
         html = extractedHtml;
       }
 
-      const { prediction, securityLabel } = await makeEmailPrediction(body, sender, subject)
+      // const { prediction, securityLabel } = await makeEmailPrediction(body, sender, subject)
+      const prediction = 0
+      const securityLabel = "UNSAFE"
       
       const email = {
         id: message.id,
@@ -167,7 +168,7 @@ app.post('/gmail/messages', async (req, res) => {
         senderEmail: senderEmail,
         body: body, 
         html: html,
-        date: formattedDate,
+        date: emailDate,
         subject: subject,
         snippet: snippet,
         isInbox: isInbox,
