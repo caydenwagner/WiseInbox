@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, useColorScheme } from 'react-native';
 import { darkPalette, lightPalette } from '../globalStyles/colors';
 import { moderateScale, moderateVerticalScale } from '../functions/helpers';
 import { LARGE_TEXT, MEDIUM_TEXT, SMALL_TEXT } from '../globalStyles/sizes';
+import { formatDate } from '../functions/formatDate';
 
 export const EmailPreview = (props) => {
   const isDarkMode = useColorScheme() === "dark"
@@ -20,7 +21,7 @@ const LightEmailPreview = (props) => {
         <Text 
           style={styles.lightDate}
           numberOfLines={2}>
-            {props.message.date}
+            {formatDate(props.message.date)}
         </Text>
 
         <Text
@@ -52,7 +53,7 @@ const DarkEmailPreview = (props) => {
         <Text 
           style={styles.darkDate}
           numberOfLines={1}>
-            {props.message.date}
+            {formatDate(props.message.date)}
         </Text>
 
         <Text
@@ -109,12 +110,12 @@ const styles = StyleSheet.create({
     flex: 1
   },
   darkDate: {
-    fontSize: SMALL_TEXT,
+    fontSize: MEDIUM_TEXT,
     color: darkPalette.white,
     alignSelf: "flex-end",
   },
   lightDate: {
-    fontSize: SMALL_TEXT,
+    fontSize: MEDIUM_TEXT,
     color: lightPalette.black,
     alignSelf: "flex-end",
   },

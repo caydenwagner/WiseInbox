@@ -24,7 +24,7 @@ export default function ViewEmailScreen() {
   const fetchMail = async () => {
     console.log("fetching mail")
     await getMail()
-      .then((res) => setData(res))
+      .then((res) => {if (res) setData(res)})
     setRefreshing(false)
   }
 

@@ -5,19 +5,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { removeLastLogin } from './helpers';
 
-
-export const getContent = async () => {
-  try {
-    const response = await fetch(
-      'http://localhost:3000/',
-    );
-    const json = await response.json();
-    return json;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
 export const getMail = async () => {
   try {
     const value = await AsyncStorage.getItem("User")
@@ -33,6 +20,9 @@ export const getMail = async () => {
       }
     );
     const json = await response.json();
+    if (!response.ok) {
+      return null
+    }
     return json;
   } catch (error) {
     console.error(error);

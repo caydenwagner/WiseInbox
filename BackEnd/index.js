@@ -6,8 +6,8 @@ import express from "express";
 import { initPassport } from "./initPassport.js";
 import passport from "passport";
 import { google } from "googleapis"
-import { formatDate } from "./formatDate.js";
 import { decode } from 'html-entities';
+import { makeEmailPrediction } from "./makeEmailPrediction.js";
 import "dotenv/config";
 
 const app = express();
@@ -66,16 +66,10 @@ app.get("/user/logout", function (req, res) {
   console.log("here");
   req.logout(function(err) {
     if (err) { 
-      res.json({status: "Failure"}); 
+      res.status(500).json({ status: err });
     }
     res.json({status: "Success"});
   })
-});
-
-app.get("/", (req, res) => {
-  console.log("Entered Get");
-
-  res.json({"response": "Hello World"});
 });
 
 function findContent(parts) {
@@ -122,7 +116,7 @@ app.post('/gmail/messages', async (req, res) => {
     const response = await gmail.users.messages.list({
       userId: 'me',
       labelIds: ['INBOX'],
-      maxResults: 20,
+      maxResults: 3,
     });
 
     const messages = response.data.messages;
@@ -139,13 +133,19 @@ app.post('/gmail/messages', async (req, res) => {
       const headers = payload.headers;
       const fromHeader = headers.find(header => header.name === 'From');
       const sender = fromHeader ? fromHeader.value : 'Sender information not available';
-      const match = sender.match(/([^<]+)<([^>]+)>/);
-      var senderEmail
-        if (match) {
-          senderEmail = match[2].trim();
-        } else {
-          senderEmail = sender;
-        }
+      const regex = /^(.+?)\s*<(.+?)>$/;
+      const match = regex.exec(sender);
+      var senderEmail = ""
+      var senderName = ""
+  
+      if (match) {
+        senderName = match[1].trim()
+        senderEmail = match[2].trim()
+      } else {
+        // Handle cases where the regex doesn't match
+        senderName = "",
+        senderEmail = sender.trim()
+      }
       const dateHeader = headers.find(header => header.name === 'Date');
       const emailDate = dateHeader ? new Date(dateHeader.value) : null;
       const subjectHeader = headers.find(header => header.name === 'Subject');
@@ -153,18 +153,7 @@ app.post('/gmail/messages', async (req, res) => {
       const snippet = decode(messageDetails.data.snippet);
       const isInbox = messageDetails.data.labelIds.includes('INBOX');
       const isRead = !messageDetails.data.labelIds.includes('UNREAD');
-      const formattedDate = formatDate(emailDate)
-      const securityScore = Math.floor(Math.random() * 61) + 40
-      var securityLabel = ""
-      if (securityScore >= 80) {
-        securityLabel = "Safe"
-      }
-      else if (securityScore >= 60) {
-        securityLabel = "Caution"
-      }
-      else {
-        securityLabel = "Unsafe"
-      }
+
       let body = '';
       let html = '';
 
@@ -174,19 +163,21 @@ app.post('/gmail/messages', async (req, res) => {
         html = extractedHtml;
       }
 
+      const { prediction, securityLabel } = await makeEmailPrediction(body, sender, subject)
+      
       const email = {
         id: message.id,
-        sender: sender,
+        sender: senderName,
         senderEmail: senderEmail,
         body: body, 
         html: html,
-        date: formattedDate,
+        date: emailDate,
         subject: subject,
         snippet: snippet,
         isInbox: isInbox,
         isRead: isRead,
-        securityScore: securityScore,
-        securityLabel: securityLabel
+        securityScore: prediction,
+        securityLabel: securityLabel,
       }
 
       return email;

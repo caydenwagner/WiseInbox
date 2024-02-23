@@ -7,6 +7,7 @@ import { NewIndicator } from './NewIndicator';
 import { SecurityScanSection } from './SecurityScanSection';
 import SecurityModal from './SecurityModal';
 import { UnsafeQuickActions } from './UnsafeQuickActions';
+import { formatDate } from '../functions/formatDate';
 
 function parseUrl(url) {
   const regex = /^(.*?:\/\/)(.*?)(\/[^?]*)(\?.*)?$/;
@@ -112,14 +113,14 @@ const AutoThemeFullScreenEmail = (props) => {
         { props.email.isRead ? 
           <>
             <View style={styles.headerContainer}>
-              <Text style={headerTextStyle}>{props.email.date}</Text>
+              <Text style={headerTextStyle}>{formatDate(props.email.date)}</Text>
               <Text style={headerTextStyle}>From:</Text>
             </View>
           </>
         : 
           <>
             <View style={styles.headerContainer}>
-              <Text style={headerTextStyle}>{props.email.date}</Text>
+              <Text style={headerTextStyle}>{formatDate(props.email.date)}</Text>
               <NewIndicator isNew={!props.email.isRead}/>
             </View>
             <Text style={headerTextStyle}>From:</Text>
