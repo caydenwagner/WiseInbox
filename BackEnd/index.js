@@ -116,7 +116,7 @@ app.post('/gmail/messages', async (req, res) => {
     const response = await gmail.users.messages.list({
       userId: 'me',
       labelIds: ['INBOX'],
-      maxResults: 3,
+      maxResults: 20,
     });
 
     const messages = response.data.messages;

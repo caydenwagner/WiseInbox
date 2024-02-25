@@ -86,8 +86,8 @@ const styles = StyleSheet.create({
     marginVertical: moderateVerticalScale(10)
   },
   loadingCircleContainer: {
-    width: moderateVerticalScale(100),
-    height: moderateVerticalScale(100),
+    width: moderateVerticalScale(90),
+    height: moderateVerticalScale(90),
     borderRadius: 200,
     alignSelf: 'center',
     position: "absolute",

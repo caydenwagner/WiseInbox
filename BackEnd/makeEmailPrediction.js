@@ -4,7 +4,7 @@ import fetch from 'node-fetch';
 // Returns an integer prediciton 1-100
 // Returns defualt vaules null if the request is unsucessful
 export async function makeEmailPrediction (body, sender, subject) {
-  const apiUrl = 'https://875f-34-86-218-165.ngrok-free.app/email_prediction';
+  const apiUrl = 'https://cc3b-34-86-218-165.ngrok-free.app/email_prediction'
 
   const inputData = {
     Email: body,
