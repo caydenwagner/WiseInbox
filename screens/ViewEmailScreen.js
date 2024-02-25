@@ -4,7 +4,7 @@
 // Purpose: Provide the page for the user to view emails
 import React, {useEffect, useState, useRef} from 'react';
 import { StyleSheet, SafeAreaView, View, useColorScheme } from "react-native";
-import { logOut, getMail } from '../functions/apiHelpers';
+import { logOut, getMail, getPredictionOnMail } from '../functions/apiHelpers';
 import { useNavigation } from '@react-navigation/native';
 import { EmailDisplayer } from '../components/EmailDisplayer';
 import { EmailScreenHeader } from '../components/EmailScreenHeader';
@@ -14,7 +14,7 @@ import { getTrustedDomains } from '../functions/helpers';
 
 export default function ViewEmailScreen() {
   const navigation = useNavigation();
-  const [data, setData] = useState(null)
+  const [listOfEmails, setListOfEmails] = useState(null)
   const [currentDisplayedEmail, setCurrentDisplayEmail] = useState(null)
   const [refreshing, setRefreshing] = useState(false)
   const [trustedDomains, setTrustedDomains] = useState([])
@@ -24,7 +24,7 @@ export default function ViewEmailScreen() {
   const fetchMail = async () => {
     console.log("fetching mail")
     await getMail()
-      .then((res) => {if (res) setData(res)})
+      .then((res) => {if (res) setListOfEmails(res)})
     setRefreshing(false)
   }
 
@@ -58,6 +58,7 @@ export default function ViewEmailScreen() {
       setCurrentDisplayEmail(mail)
       bottomSheetRef.current?.snapToIndex(0)
     }
+    makePredictionOnMail(mail);
   }
 
   function closeFullScreenMail() {
@@ -65,8 +66,28 @@ export default function ViewEmailScreen() {
   }
 
   const deleteMailById = (idToRemove) => {
-    setData(prevData => prevData.filter(item => item.id !== idToRemove));
+    setListOfEmails(prevData => prevData.filter(item => item.id !== idToRemove));
   };
+
+  const makePredictionOnMail = async (mail) => {
+    if (!mail.securityScore) {
+      try {
+        const { securityScore, securityLabel } = await getPredictionOnMail(mail.id);
+  
+        // Update the mail object itself
+        mail.securityScore = securityScore;
+        mail.securityLabel = securityLabel;
+  
+        // Update the list of emails in state, preserving any other changes
+        setListOfEmails(prevListOfEmails =>
+          prevListOfEmails.map(item => item.id === mail.id ? mail : item)
+        );
+      } catch (error) {
+        console.log('Error fetching prediction for mail:', mail.id, error);
+        // Handle the error appropriately, retry button may be needed
+      }
+    }
+  }
 
   const isDarkMode = useColorScheme() === "dark"
   
@@ -82,7 +103,7 @@ export default function ViewEmailScreen() {
         <EmailDisplayer
           refreshing={refreshing}
           handleRefresh={handleRefresh}
-          data={data}
+          data={listOfEmails}
           setCurrentDisplayEmail={openFullScreenMail}
         />
 

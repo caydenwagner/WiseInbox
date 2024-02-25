@@ -1,7 +1,10 @@
 import fetch from 'node-fetch';
 
+// Sends an api request to the ML model at the apiURL
+// Returns an integer prediciton 1-100
+// Returns defualt vaules null if the request is unsucessful
 export async function makeEmailPrediction (body, sender, subject) {
-  const apiUrl = 'https://d58a-35-221-41-212.ngrok-free.app/email_prediction';
+  const apiUrl = 'https://8606-34-148-47-165.ngrok-free.app/email_prediction'
 
   const inputData = {
     Email: body,
@@ -9,8 +12,11 @@ export async function makeEmailPrediction (body, sender, subject) {
     Subject: subject,
   };
 
-  const DEFAULT_SECURITY_SCORE_ON_ERROR = 50
-  const DEFAULT_SECURITY_LABEL_ON_ERROR = "UNSAFE"
+  const DEFAULT_SECURITY_SCORE_ON_ERROR = null
+  const DEFAULT_SECURITY_LABEL_ON_ERROR = "ERROR"
+
+  var prediction = DEFAULT_SECURITY_SCORE_ON_ERROR
+  var securityLabel = DEFAULT_SECURITY_LABEL_ON_ERROR
 
   try {
     const response = await fetch(apiUrl, {
@@ -23,26 +29,25 @@ export async function makeEmailPrediction (body, sender, subject) {
 
     if (!response.ok) {
       console.log("Network error: " + response.status);
-      return { DEFAULT_SECURITY_SCORE_ON_ERROR, DEFAULT_SECURITY_LABEL_ON_ERROR };
-    }
-
-    const data = await response.json();
-    const prediction = data.prediction;
-    console.log("Made Prediction: " + prediction)
-    let securityLabel = ""
-
-    if (prediction >= 80) {
-      securityLabel = "Safe"
-    }
-    else if (prediction >= 60) {
-      securityLabel = "Caution"
     }
     else {
-      securityLabel = "Unsafe"
+      const data = await response.json();
+      prediction = data.prediction;
+      console.log("Made Prediction: " + prediction)
+
+      if (prediction >= 80) {
+        securityLabel = "Safe"
+      }
+      else if (prediction >= 60) {
+        securityLabel = "Caution"
+      }
+      else {
+        securityLabel = "Unsafe"
+      }
     }
-    return { prediction, securityLabel }; // Return the prediction value
+    return { prediction, securityLabel }; 
   } catch (error) {
     console.error('Error fetching prediction:', error);
-    return { DEFAULT_SECURITY_SCORE_ON_ERROR, DEFAULT_SECURITY_LABEL_ON_ERROR };
+    return { prediction, securityLabel };
   }
 }

@@ -1,11 +1,14 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, useColorScheme } from 'react-native';
 import { moderateScale, moderateVerticalScale } from '../functions/helpers';
 import { lightPalette } from '../globalStyles/colors';
 import SecurityIndicator from './SecurityIndicator';
 import { LARGE_TEXT } from '../globalStyles/sizes';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 export const SecurityScanSection = (props) => {
+  const isDarkMode = useColorScheme() === "dark"
+
   if (props.securityScore) {
     var color = "white"
     var textColor = "white"
@@ -45,7 +48,15 @@ export const SecurityScanSection = (props) => {
   }
   else {
     return (
-      <></>
+      <View>
+        <Text style={props.headerTextStyle}>Security Scan: </Text>
+        <SkeletonPlaceholder backgroundColor={isDarkMode ? 'grey' : 'lightgrey'} speed={1100} highlightColor={isDarkMode ? "#1E1E1E" : '#E7E7E7'}>
+          <SkeletonPlaceholder.Item height={moderateVerticalScale(100)}>
+            <SkeletonPlaceholder.Item {...styles.loadingTextContainer}/>
+            <SkeletonPlaceholder.Item {...styles.loadingCircleContainer}/>
+          </SkeletonPlaceholder.Item>
+        </SkeletonPlaceholder>
+      </View>
     )
   }
 }
@@ -67,5 +78,19 @@ const styles = StyleSheet.create({
     fontSize: LARGE_TEXT, 
     fontWeight: "500",
     color: "#DBDBDB"
+  },
+  loadingTextContainer: {
+    width: moderateScale(55),
+    height: moderateVerticalScale(26), 
+    borderRadius: moderateScale(10),
+    marginVertical: moderateVerticalScale(10)
+  },
+  loadingCircleContainer: {
+    width: moderateVerticalScale(90),
+    height: moderateVerticalScale(90),
+    borderRadius: 200,
+    alignSelf: 'center',
+    position: "absolute",
+    top: moderateVerticalScale(10)
   }
 })

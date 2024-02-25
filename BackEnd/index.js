@@ -116,7 +116,7 @@ app.post('/gmail/messages', async (req, res) => {
     const response = await gmail.users.messages.list({
       userId: 'me',
       labelIds: ['INBOX'],
-      maxResults: 3,
+      maxResults: 20,
     });
 
     const messages = response.data.messages;
@@ -162,8 +162,6 @@ app.post('/gmail/messages', async (req, res) => {
         body = extractedBody;
         html = extractedHtml;
       }
-
-      const { prediction, securityLabel } = await makeEmailPrediction(body, sender, subject)
       
       const email = {
         id: message.id,
@@ -176,8 +174,6 @@ app.post('/gmail/messages', async (req, res) => {
         snippet: snippet,
         isInbox: isInbox,
         isRead: isRead,
-        securityScore: prediction,
-        securityLabel: securityLabel,
       }
 
       return email;
@@ -290,5 +286,64 @@ app.post('/gmail/report', async (req, res) => {
     }
   });
 });
+
+app.post('/ML/prediction', async (req, res) => {
+  const authToken = req.headers['authorization'];
+  const emailID = req.headers['emailid'];
+
+  const oAuth2Client = new google.auth.OAuth2(
+    process.env.GOOGLE_APP_ID,
+    process.env.GOOGLE_APP_SECRET,
+    process.env.REDIRECT_URI
+  )
+
+  oAuth2Client.setCredentials({
+    access_token: authToken
+  })
+
+  try {
+    const gmail = google.gmail({ version: 'v1', auth: oAuth2Client });
+
+    const messageDetails = await gmail.users.messages.get({
+      userId: 'me',
+      id: emailID,
+      format: 'full', // Requesting full message details
+    });
+
+    const { payload } = messageDetails.data;
+    const headers = payload.headers;
+    const fromHeader = headers.find(header => header.name === 'From');
+    const sender = fromHeader ? fromHeader.value : 'Sender information not available';
+    const regex = /^(.+?)\s*<(.+?)>$/;
+    const match = regex.exec(sender);
+    var senderEmail = ""
+    var senderName = ""
+
+    if (match) {
+      senderName = match[1].trim()
+      senderEmail = match[2].trim()
+    } else {
+      // Handle cases where the regex doesn't match
+      senderName = "",
+      senderEmail = sender.trim()
+    }
+    const subjectHeader = headers.find(header => header.name === 'Subject');
+    const subject = subjectHeader ? subjectHeader.value : 'No Subject';
+
+    let body = '';
+
+    if (payload.parts) {
+      const { body: extractedBody } = findContent(payload.parts);
+      body = extractedBody;
+    }
+
+    const { prediction, securityLabel } = await makeEmailPrediction(body, senderEmail, subject)
+
+    res.status(200).json({ securityScore: prediction, securityLabel: securityLabel });
+  } catch (err) {
+    console.log("error making prediction: " + err)
+    res.status(500).json({ message: err })
+  }
+})
 
 app.listen(port,() => console.log("Server listening at port" + port));

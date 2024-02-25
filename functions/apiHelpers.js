@@ -123,3 +123,32 @@ export const logOut = async () => {
     console.error(error);
   }
 };
+
+export const getPredictionOnMail = async (emailID) => {
+  try {
+    const value = await AsyncStorage.getItem("User")
+    const user = JSON.parse(value)
+
+    const response = await fetch(
+      'http://localhost:3000/ML/prediction', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'authorization': `${user[0].accessToken}`,
+          'emailid': emailID
+        },
+      }
+    )
+
+    if (!response.ok) {
+      throw new Error(`Prediction API request failed with status ${response.message}`); 
+    }
+
+    const json = await response.json();
+
+    return {securityScore: json.securityScore, securityLabel: json.securityLabel}
+
+  } catch (error) {
+    throw new Error('Error fetching prediction:', error); 
+  }
+};
