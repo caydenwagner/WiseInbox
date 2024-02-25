@@ -8,6 +8,7 @@ import { SecurityScanSection } from './SecurityScanSection';
 import SecurityModal from './SecurityModal';
 import { UnsafeQuickActions } from './UnsafeQuickActions';
 import { formatDate } from '../functions/formatDate';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 function parseUrl(url) {
   const regex = /^(.*?:\/\/)(.*?)(\/[^?]*)(\?.*)?$/;
@@ -26,6 +27,10 @@ function parseUrl(url) {
     // Handle invalid URLs
     return [];
   }
+}
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * max) + min;
 }
 
 export const FullScreenEmail = (props) => {
@@ -52,6 +57,7 @@ const AutoThemeFullScreenEmail = (props) => {
   const [displayUrl, setDisplayUrl] = useState("")
 
   const isDarkMode = useColorScheme() === "dark"
+  var bShouldDisplayEmail = props.email.securityScore && (props.email.securityLabel !== "Unsafe" || props.quickActionsIgnored)
 
   var headerTextStyle = isDarkMode ? styles.darkHeaderText : styles.lightHeaderText
   var infoTextStyle = isDarkMode ? styles.darkInfoText : styles.lightInfoText
@@ -139,8 +145,7 @@ const AutoThemeFullScreenEmail = (props) => {
         <View style={dividerStyle}></View>
       </View>
 
-      {
-        props.email.securityLabel === "Unsafe" && !props.quickActionsIgnored ? 
+      { props.email.securityLabel === "Unsafe" && !props.quickActionsIgnored ? 
           <UnsafeQuickActions
             email={props.email}
             onIgnore={props.setQuickActionsIgnored}
@@ -148,26 +153,42 @@ const AutoThemeFullScreenEmail = (props) => {
             closeFullScreenMail={props.closeFullScreenMail}
           />
         :
-        <AutoHeightWebView 
-          style={{ width: Dimensions.get('window').width}}
-          source={{ html: props.email.html || '<p>No content available</p>' }}
-          userAgent={
-            Platform.OS === "android"
-              ? "Chrome/18.0.1025.133 Mobile Safari/535.19"
-              : "AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75"
-          }
-          androidLayerType={'hardware'}
-          scalesPageToFit={false}
-          viewportContent={'width=device-width, user-scalable=no'}
-          showsVerticalScrollIndicator={false}
-          scrollEnabled={false}
-          javaScriptEnabled={true}
-          startInLoadingState={true}
-          onShouldStartLoadWithRequest={(event) => {
-            return openLink(event.url)
-          }}
-        />
+          <></>
       }
+
+      { props.email.securityScore ?
+          <></>
+        :
+        <View>
+          <SkeletonPlaceholder backgroundColor={isDarkMode ? 'grey' : 'lightgrey'} speed={1100} highlightColor={isDarkMode ? "#1E1E1E" : '#E7E7E7'}>
+            <SkeletonPlaceholder.Item marginHorizontal={moderateScale(20)}>
+              <SkeletonPlaceholder.Item {...styles.loadingTextContainer} width={moderateScale(getRandomInt(30, 300))}/>
+              <SkeletonPlaceholder.Item {...styles.loadingTextContainer} width={moderateScale(getRandomInt(30, 300))}/>
+              <SkeletonPlaceholder.Item {...styles.loadingTextContainer} width={moderateScale(getRandomInt(30, 300))}/>
+            </SkeletonPlaceholder.Item>
+          </SkeletonPlaceholder>
+        </View>
+      }
+
+      <AutoHeightWebView 
+        style={{ width: Dimensions.get('window').width, marginTop: moderateVerticalScale(10)}}
+        source={{ html: bShouldDisplayEmail ? props.email.html || '<p>No content available</p>' : '<p></p>'}}
+        userAgent={
+          Platform.OS === "android"
+            ? "Chrome/18.0.1025.133 Mobile Safari/535.19"
+            : "AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75"
+        }
+        androidLayerType={'hardware'}
+        scalesPageToFit={false}
+        viewportContent={'width=device-width, user-scalable=no'}
+        showsVerticalScrollIndicator={false}
+        scrollEnabled={false}
+        javaScriptEnabled={true}
+        startInLoadingState={true}
+        onShouldStartLoadWithRequest={(event) => {
+          return openLink(event.url)
+        }}
+      />
     </>
   )
 }
@@ -216,5 +237,10 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: "150%",
     marginTop: moderateVerticalScale(10)
-  }
+  },
+  loadingTextContainer: {
+    height: moderateVerticalScale(26), 
+    borderRadius: moderateScale(8),
+    marginTop: moderateVerticalScale(10)
+  },
 })
