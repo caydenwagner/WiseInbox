@@ -51,7 +51,7 @@ export const SecurityScanSection = (props) => {
       <View>
         <Text style={props.headerTextStyle}>Security Scan: </Text>
         <SkeletonPlaceholder backgroundColor={isDarkMode ? 'grey' : 'lightgrey'} speed={900} highlightColor={isDarkMode ? "#1E1E1E" : '#E7E7E7'}>
-          <SkeletonPlaceholder.Item>
+          <SkeletonPlaceholder.Item height={moderateVerticalScale(110)}>
             <SkeletonPlaceholder.Item {...styles.loadingTextContainer}/>
             <SkeletonPlaceholder.Item {...styles.loadingCircleContainer}/>
           </SkeletonPlaceholder.Item>

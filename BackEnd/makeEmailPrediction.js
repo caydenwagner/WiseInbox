@@ -4,7 +4,7 @@ import fetch from 'node-fetch';
 // Returns an integer prediciton 1-100
 // Returns defualt vaules null if the request is unsucessful
 export async function makeEmailPrediction (body, sender, subject) {
-  const apiUrl = 'https://d58a-35-221-41-212.ngrok-free.app/email_prediction';
+  const apiUrl = 'https://875f-34-86-218-165.ngrok-free.app/email_prediction';
 
   const inputData = {
     Email: body,
@@ -32,9 +32,8 @@ export async function makeEmailPrediction (body, sender, subject) {
     }
     else {
       const data = await response.json();
-      const prediction = data.prediction;
+      prediction = data.prediction;
       console.log("Made Prediction: " + prediction)
-      let securityLabel = ""
 
       if (prediction >= 80) {
         securityLabel = "Safe"
