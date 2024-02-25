@@ -6048,10 +6048,10 @@
   "resolved" "https://registry.npmjs.org/react-native-keychain/-/react-native-keychain-8.1.2.tgz"
   "version" "8.1.2"
 
-"react-native-reanimated@^3.6.1", "react-native-reanimated@>=2.0.0", "react-native-reanimated@>=2.2.0":
-  "integrity" "sha512-F4vG9Yf9PKmE3GaWtVGUpzj3SM6YY2cx1yRHCwiMd1uY7W0gU017LfcVUorboJnj0y5QZqEriEK1Usq2Y8YZqg=="
-  "resolved" "https://registry.npmjs.org/react-native-reanimated/-/react-native-reanimated-3.6.1.tgz"
-  "version" "3.6.1"
+"react-native-reanimated@^3.7.1", "react-native-reanimated@>=2.0.0", "react-native-reanimated@>=2.2.0":
+  "integrity" "sha512-bapCxhnS58+GZynQmA/f5U8vRlmhXlI/WhYg0dqnNAGXHNIc+38ahRWcG8iK8e0R2v9M8Ky2ZWObEC6bmweofg=="
+  "resolved" "https://registry.npmjs.org/react-native-reanimated/-/react-native-reanimated-3.7.1.tgz"
+  "version" "3.7.1"
   dependencies:
     "@babel/plugin-transform-object-assign" "^7.16.7"
     "@babel/preset-typescript" "^7.16.7"
