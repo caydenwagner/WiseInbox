@@ -50,10 +50,10 @@ export const SecurityScanSection = (props) => {
     return (
       <View>
         <Text style={props.headerTextStyle}>Security Scan: </Text>
-        <SkeletonPlaceholder borderRadius={4} backgroundColor={isDarkMode ? 'grey' : 'lightgrey'} speed={900} highlightColor={isDarkMode ? "#1E1E1E" : '#E7E7E7'}>
+        <SkeletonPlaceholder backgroundColor={isDarkMode ? 'grey' : 'lightgrey'} speed={900} highlightColor={isDarkMode ? "#1E1E1E" : '#E7E7E7'}>
           <SkeletonPlaceholder.Item>
-            <SkeletonPlaceholder.Item width={55} height={28} borderRadius={10} marginVertical={10}/>
-            <SkeletonPlaceholder.Item width={120} height={120} borderRadius={200} alignSelf='center'/>
+            <SkeletonPlaceholder.Item {...styles.loadingTextContainer}/>
+            <SkeletonPlaceholder.Item {...styles.loadingCircleContainer}/>
           </SkeletonPlaceholder.Item>
         </SkeletonPlaceholder>
       </View>
@@ -78,5 +78,19 @@ const styles = StyleSheet.create({
     fontSize: LARGE_TEXT, 
     fontWeight: "500",
     color: "#DBDBDB"
+  },
+  loadingTextContainer: {
+    width: moderateScale(55),
+    height: moderateVerticalScale(26), 
+    borderRadius: moderateScale(10),
+    marginVertical: moderateVerticalScale(10)
+  },
+  loadingCircleContainer: {
+    width: moderateVerticalScale(100),
+    height: moderateVerticalScale(100),
+    borderRadius: 200,
+    alignSelf: 'center',
+    position: "absolute",
+    top: moderateVerticalScale(10)
   }
 })
