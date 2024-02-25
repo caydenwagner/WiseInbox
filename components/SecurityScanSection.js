@@ -4,6 +4,7 @@ import { moderateScale, moderateVerticalScale } from '../functions/helpers';
 import { lightPalette } from '../globalStyles/colors';
 import SecurityIndicator from './SecurityIndicator';
 import { LARGE_TEXT } from '../globalStyles/sizes';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 export const SecurityScanSection = (props) => {
   if (props.securityScore) {
@@ -45,7 +46,15 @@ export const SecurityScanSection = (props) => {
   }
   else {
     return (
-      <></>
+      <View>
+        <Text style={props.headerTextStyle}>Security Scan: </Text>
+        <SkeletonPlaceholder borderRadius={4} backgroundColor='lightgrey'>
+          <SkeletonPlaceholder.Item>
+            <SkeletonPlaceholder.Item width={55} height={28} borderRadius={10} marginVertical={10}/>
+            <SkeletonPlaceholder.Item width={120} height={120} borderRadius={200} alignSelf='center'/>
+          </SkeletonPlaceholder.Item>
+        </SkeletonPlaceholder>
+      </View>
     )
   }
 }
