@@ -73,8 +73,6 @@ export default function ViewEmailScreen() {
     if (!mail.securityScore) {
       try {
         const { securityScore, securityLabel } = await getPredictionOnMail(mail.id);
-        console.log(securityLabel)
-        console.log(securityScore)
   
         // Update the mail object itself
         mail.securityScore = securityScore;
@@ -85,7 +83,7 @@ export default function ViewEmailScreen() {
           prevListOfEmails.map(item => item.id === mail.id ? mail : item)
         );
       } catch (error) {
-        console.error('Error fetching prediction for mail:', mail.id, error);
+        console.log('Error fetching prediction for mail:', mail.id, error);
         // Handle the error appropriately, retry button may be needed
       }
     }
