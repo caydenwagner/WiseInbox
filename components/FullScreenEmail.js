@@ -63,6 +63,20 @@ const AutoThemeFullScreenEmail = (props) => {
   var infoTextStyle = isDarkMode ? styles.darkInfoText : styles.lightInfoText
   var dividerStyle = isDarkMode ? styles.darkDivider : styles.lightDivider
 
+  const defaultHTML = `<!DOCTYPE html>
+  <html>
+    <head>
+      <style>
+        html, body {
+          height: 0;
+        }
+      </style>
+    </head>
+    <body>
+        <p></p>
+    </body>
+  </html>`
+
   function isDomainTrusted (url) {
     const domain = parseUrl(url)[1]
     return (props.trustedDomains.includes(domain))
@@ -172,7 +186,7 @@ const AutoThemeFullScreenEmail = (props) => {
 
       <AutoHeightWebView 
         style={{ width: Dimensions.get('window').width, marginTop: moderateVerticalScale(10)}}
-        source={{ html: bShouldDisplayEmail ? props.email.html || '<p>No content available</p>' : '<p></p>'}}
+        source={{ html: bShouldDisplayEmail ? props.email.html || '<p>No content available</p>' : defaultHTML}}
         userAgent={
           Platform.OS === "android"
             ? "Chrome/18.0.1025.133 Mobile Safari/535.19"
