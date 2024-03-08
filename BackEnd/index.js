@@ -3,6 +3,8 @@
 // Date: 10/2/23
 // Purpose: Launch point for the back end server
 import express from "express";
+import fs from 'fs'; // Import fs module
+import https from 'https'; // Import https module
 import { initPassport } from "./initPassport.js";
 import passport from "passport";
 import { google } from "googleapis"
@@ -13,6 +15,13 @@ import "dotenv/config";
 const app = express();
 initPassport(app);
 const port = 3000
+
+const httpsOptions = {
+  key: fs.readFileSync('./cert/WiseInbox-key.pem'),
+  cert: fs.readFileSync('./cert/WiseInbox.pem'),
+};
+
+const server = https.createServer(httpsOptions, app);
 
 // will go access 3rd party to get permission to access the data
 app.get("/user/login/google", passport.authenticate(
@@ -346,4 +355,4 @@ app.post('/ML/prediction', async (req, res) => {
   }
 })
 
-app.listen(port,() => console.log("Server listening at port" + port));
+server.listen(port,() => console.log("Server listening at port" + port));
