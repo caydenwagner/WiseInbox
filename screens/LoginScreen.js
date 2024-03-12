@@ -36,7 +36,7 @@ export default function LoginScreen() {
       const lastLogin = await getLastLogin()
 
       if (lastLogin != null) {
-        openUrl(`http://localhost:3000/user/login/google`)
+        openUrl(`https://localhost:3000/user/login/google`)
       } 
     }
 
@@ -48,10 +48,10 @@ export default function LoginScreen() {
       const lastLogin = await getLastLogin()
 
       if (lastLogin != null) {
-        openUrl(`http://localhost:3000/user/login/google`)
+        openUrl(`https://localhost:3000/user/login/google`)
       } 
       else {
-        openUrl(`http://localhost:3000/user/login/google/newuser`)
+        openUrl(`https://localhost:3000/user/login/google/newuser`)
       }
     }
 
