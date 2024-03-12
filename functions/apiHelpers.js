@@ -4,26 +4,27 @@
 // Purpose: Provide some helper function to interact with the back end through its API
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { removeLastLogin } from './helpers';
+import RNFetchBlob from 'rn-fetch-blob'
 
 export const getMail = async () => {
   try {
     const value = await AsyncStorage.getItem("User")
     const user = JSON.parse(value)
 
-    const response = await fetch(
-      'https://localhost:3000/gmail/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'authorization': `${user[0].accessToken}`
-        },
-        rejectUnauthorized: false
+    const response = await RNFetchBlob.config({
+      trusty : true
+    }).fetch('POST', 'https://localhost:3000/gmail/messages', {
+      'Content-Type': 'application/json',
+      'authorization': `${user[0].accessToken}`
       }
     );
-    const json = await response.json();
-    if (!response.ok) {
+
+    if (!response.status === 200) {
       return null
     }
+    
+    const json = await response.json();
+
     return json;
   } catch (error) {
     console.error(error);
@@ -35,23 +36,21 @@ export const reportEmail = async (emailID) => {
     const value = await AsyncStorage.getItem("User")
     const user = JSON.parse(value)
 
-    fetch(
-      'https://localhost:3000/gmail/report', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'authorization': `${user[0].accessToken}`,
-          'emailid': emailID
-        },
+    const response = await RNFetchBlob.config({
+      trusty : true
+    }).fetch('POST', 'https://localhost:3000/gmail/report', {
+      'Content-Type': 'application/json',
+      'authorization': `${user[0].accessToken}`,
+      'emailid': emailID
       }
-    ).then(response => {
-      if (!response.ok) {
-        console.log("Report Mail Error")
-      } 
-      else {
-        console.log("Report Mail Success")
-      } 
-    })
+    );
+
+    if (!response.status === 200) {
+      console.log("Report Mail Error")
+    }
+    else {
+      console.log("Report Mail Success")
+    } 
   } catch (error) {
     console.error(error);
   }
@@ -62,23 +61,21 @@ export const deleteMail = async (emailID) => {
     const value = await AsyncStorage.getItem("User")
     const user = JSON.parse(value)
 
-    fetch(
-      'https://localhost:3000/gmail/delete', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'authorization': `${user[0].accessToken}`,
-          'emailid': emailID
-        },
+    const response = await RNFetchBlob.config({
+      trusty : true
+    }).fetch('POST', 'https://localhost:3000/gmail/delete', {
+      'Content-Type': 'application/json',
+      'authorization': `${user[0].accessToken}`,
+      'emailid': emailID
       }
-    ).then(response => {
-      if (!response.ok) {
-        console.log("Delete Mail Error")
-      } 
-      else {
-        console.log("Delete Mail Success")
-      } 
-    })
+    );
+
+    if (!response.status === 200) {
+      console.log("Delete Mail Error")
+    } 
+    else {
+      console.log("Delete Mail Success")
+    } 
   } catch (error) {
     console.error(error);
   }
@@ -89,23 +86,21 @@ export const blockSender = async (sender) => {
     const value = await AsyncStorage.getItem("User")
     const user = JSON.parse(value)
 
-    fetch(
-      'https://localhost:3000/gmail/block', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'authorization': `${user[0].accessToken}`,
-          'sender': sender
-        },
+    const response = await RNFetchBlob.config({
+      trusty : true
+    }).fetch('POST', 'https://localhost:3000/gmail/block', {
+      'Content-Type': 'application/json',
+      'authorization': `${user[0].accessToken}`,
+      'sender': sender
       }
-    ).then(response => {
-      if (!response.ok) {
-        console.log("Block Sender Error")
-      } 
-      else {
-        console.log("Block Sender Success")
-      } 
-    })
+    );
+
+    if (!response.status === 200) {
+      console.log("Block Sender Error")
+    } 
+    else {
+      console.log("Block Sender Success")
+    } 
   } catch (error) {
     console.error(error);
   }
@@ -115,10 +110,16 @@ export const logOut = async () => {
   try {
     removeLastLogin();
 
-    const response = await fetch(
-      'https://localhost:3000/user/logout'
-    );
+    const response = await RNFetchBlob.config({
+      trusty : true
+    }).fetch('GET', 'https://localhost:3000/user/logout');
+
+    if (!response.status === 200) {
+      console.log("Log Out Error")
+    } 
+
     const json = await response.json();
+
     return json
   } catch (error) {
     console.error(error);
@@ -130,18 +131,16 @@ export const getPredictionOnMail = async (emailID) => {
     const value = await AsyncStorage.getItem("User")
     const user = JSON.parse(value)
 
-    const response = await fetch(
-      'https://localhost:3000/ML/prediction', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'authorization': `${user[0].accessToken}`,
-          'emailid': emailID
-        },
+    const response = await RNFetchBlob.config({
+      trusty : true
+    }).fetch('POST', 'https://localhost:3000/ML/prediction', {
+      'Content-Type': 'application/json',
+      'authorization': `${user[0].accessToken}`,
+      'emailid': emailID
       }
-    )
+    );
 
-    if (!response.ok) {
+    if (!response.status === 200) {
       throw new Error(`Prediction API request failed with status ${response.message}`); 
     }
 

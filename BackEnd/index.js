@@ -17,8 +17,8 @@ initPassport(app);
 const port = 3000
 
 const httpsOptions = {
-  key: fs.readFileSync('./cert/WiseInbox-key.pem'),
-  cert: fs.readFileSync('./cert/WiseInbox.pem'),
+  key: fs.readFileSync(process.env.SSL_KEY_PATH),
+  cert: fs.readFileSync(process.env.SSL_CERT_PATH),
 };
 
 const server = https.createServer(httpsOptions, app);
@@ -188,7 +188,7 @@ app.post('/gmail/messages', async (req, res) => {
       return email;
     }))
 
-    res.json(fullMessages);
+    res.status(200).json(fullMessages);
 
   } catch (error) {
     console.error('Error fetching messages:', error);
