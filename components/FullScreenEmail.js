@@ -180,7 +180,7 @@ const AutoThemeFullScreenEmail = (props) => {
         :
         <View>
           <SkeletonPlaceholder 
-            backgroundColor={isDarkMode ? 'grey' : 'lightgrey'} 
+            backgroundColor={isDarkMode ? 'grey' : '#BEBEBE'} 
             speed={props.predictionLoadingStatus === "Error" ? 0 : 1100} 
             highlightColor={isDarkMode ? "#1E1E1E" : '#E7E7E7'}>
             <SkeletonPlaceholder.Item marginHorizontal={moderateScale(20)}>
