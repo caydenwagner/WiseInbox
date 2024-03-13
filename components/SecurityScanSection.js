@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, StyleSheet, Text, useColorScheme } from 'react-native';
+import { View, StyleSheet, Text, useColorScheme, TouchableOpacity } from 'react-native';
 import { moderateScale, moderateVerticalScale } from '../functions/helpers';
-import { lightPalette } from '../globalStyles/colors';
+import { darkPalette, lightPalette } from '../globalStyles/colors';
 import SecurityIndicator from './SecurityIndicator';
-import { LARGE_TEXT } from '../globalStyles/sizes';
+import { EXTRA_LARGE_TEXT, LARGE_TEXT } from '../globalStyles/sizes';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 export const SecurityScanSection = (props) => {
@@ -47,6 +47,21 @@ export const SecurityScanSection = (props) => {
     )
   }
   else {
+    if (props.predictionLoadingStatus === "Error") {
+      return (
+        <View style={styles.errorContainer}>
+          <Text style={{...styles.errorLabelText, color: isDarkMode ? darkPalette.alternate : lightPalette.alternate}}>
+            Something went wrong
+          </Text>
+          <Text style={{...styles.secondaryErrorLabelText, color: isDarkMode ? "lightgrey" : "grey"}}>
+            Try Refreshing
+          </Text>
+          <TouchableOpacity onPress={() => props.onRefresh(props.email)}>
+            <Text style={styles.refreshText}>Refresh</Text>
+          </TouchableOpacity>
+        </View>
+      )
+    }
     return (
       <View>
         <Text style={props.headerTextStyle}>Security Scan: </Text>
@@ -92,5 +107,22 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     position: "absolute",
     top: moderateVerticalScale(10)
+  },
+  errorLabelText: {
+    fontSize: EXTRA_LARGE_TEXT, 
+  },
+  secondaryErrorLabelText: {
+    fontSize: LARGE_TEXT, 
+    marginVertical: moderateVerticalScale(5)
+  },
+  errorContainer: {
+    alignItems: "center",
+    marginVertical: moderateVerticalScale(20),
+  },
+  refreshText: {
+    fontSize: LARGE_TEXT, 
+    marginTop: moderateVerticalScale(20),
+    color: "#3366CC",
+    fontWeight: "600"
   }
 })
