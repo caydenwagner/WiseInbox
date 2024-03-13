@@ -6,4 +6,4 @@ export const MEDIUM_TEXT = moderateScale(12)
 
 export const LARGE_TEXT = moderateScale(14)
 
-export const EXTRA_LARGE_TEXT = moderateScale(24)
+export const EXTRA_LARGE_TEXT = moderateScale(22)

@@ -47,6 +47,8 @@ export const FullScreenEmail = (props) => {
       setQuickActionsIgnored={props.setQuickActionsIgnored}
       deleteMailById={props.deleteMailById}
       closeFullScreenMail={props.closeFullScreenMail}
+      onRefresh={props.onRefresh}
+      predictionLoadingStatus={props.predictionLoadingStatus}
     />
   )
 }
@@ -155,6 +157,9 @@ const AutoThemeFullScreenEmail = (props) => {
           securityScore={props.email.securityScore}
           label={props.email.securityLabel}
           headerTextStyle={headerTextStyle}
+          onRefresh={props.onRefresh}
+          email={props.email}
+          predictionLoadingStatus={props.predictionLoadingStatus}
         />
         <View style={dividerStyle}></View>
       </View>
@@ -174,7 +179,10 @@ const AutoThemeFullScreenEmail = (props) => {
           <></>
         :
         <View>
-          <SkeletonPlaceholder backgroundColor={isDarkMode ? 'grey' : 'lightgrey'} speed={1100} highlightColor={isDarkMode ? "#1E1E1E" : '#E7E7E7'}>
+          <SkeletonPlaceholder 
+            backgroundColor={isDarkMode ? 'grey' : 'lightgrey'} 
+            speed={props.predictionLoadingStatus === "Error" ? 0 : 1100} 
+            highlightColor={isDarkMode ? "#1E1E1E" : '#E7E7E7'}>
             <SkeletonPlaceholder.Item marginHorizontal={moderateScale(20)}>
               <SkeletonPlaceholder.Item {...styles.loadingTextContainer} width={moderateScale(getRandomInt(30, 300))}/>
               <SkeletonPlaceholder.Item {...styles.loadingTextContainer} width={moderateScale(getRandomInt(30, 300))}/>

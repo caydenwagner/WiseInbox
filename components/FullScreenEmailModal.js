@@ -51,6 +51,8 @@ export const FullScreenEmailModal = (props) => {
           setQuickActionsIgnored={() => setQuickActionsIgnored(true)}
           deleteMailById={props.deleteMailById}
           closeFullScreenMail={props.closeFullScreenMail}
+          onRefresh={props.onRefresh}
+          predictionLoadingStatus={props.predictionLoadingStatus}
         />
       </ScrollView>
 

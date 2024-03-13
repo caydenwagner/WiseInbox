@@ -18,6 +18,7 @@ export default function ViewEmailScreen() {
   const [currentDisplayedEmail, setCurrentDisplayEmail] = useState(null)
   const [refreshing, setRefreshing] = useState(false)
   const [trustedDomains, setTrustedDomains] = useState([])
+  const [predictionLoadingStatus, setPredictionLoadingStatus] = useState("Fetching")
 
   const bottomSheetRef = useRef();
 
@@ -63,6 +64,7 @@ export default function ViewEmailScreen() {
 
   function closeFullScreenMail() {
     bottomSheetRef.current?.close()
+    setPredictionLoadingStatus("Fetching")
   }
 
   const deleteMailById = (idToRemove) => {
@@ -70,18 +72,23 @@ export default function ViewEmailScreen() {
   };
 
   const makePredictionOnMail = async (mail) => {
+    setPredictionLoadingStatus("Fetching")
     if (!mail.securityScore) {
       try {
         const { securityScore, securityLabel } = await getPredictionOnMail(mail.id);
   
         // Update the mail object itself
-        mail.securityScore = securityScore;
-        mail.securityLabel = securityLabel;
-  
-        // Update the list of emails in state, preserving any other changes
-        setListOfEmails(prevListOfEmails =>
-          prevListOfEmails.map(item => item.id === mail.id ? mail : item)
-        );
+        if (securityScore) {
+          mail.securityLabel = securityLabel;
+          mail.securityScore = securityScore;
+          setListOfEmails(prevListOfEmails =>
+            prevListOfEmails.map(item => item.id === mail.id ? mail : item)
+          );
+          setPredictionLoadingStatus("Fetched")
+        }
+        else {
+          setPredictionLoadingStatus("Error")
+        }
       } catch (error) {
         console.log('Error fetching prediction for mail:', mail.id, error);
         // Handle the error appropriately, retry button may be needed
@@ -114,6 +121,8 @@ export default function ViewEmailScreen() {
           setTrustedDomains={addToTrustedDomains}
           deleteMailById={deleteMailById}
           closeFullScreenMail={closeFullScreenMail}
+          onRefresh={makePredictionOnMail}
+          predictionLoadingStatus={predictionLoadingStatus}
         />
 
       </SafeAreaView>
