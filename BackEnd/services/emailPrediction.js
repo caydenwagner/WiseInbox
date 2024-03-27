@@ -1,15 +1,20 @@
+import 'dotenv/config';
 import fetch from 'node-fetch';
+import { getGmailClient, getMessageDetails } from './gmail.js';
+import { findContent } from '../utils/email.js';
 
 // Sends an api request to the ML model at the apiURL
 // Returns an integer prediciton 1-100
 // Returns defualt vaules null if the request is unsucessful
-export async function makeEmailPrediction (body, sender, subject) {
-  const apiUrl = 'https://b80c-35-232-89-61.ngrok-free.app/email_prediction'
+export async function makeEmailPrediction (authToken, emailID) {
+  const apiUrl = process.env.ML_API;
+  const gmail = await getGmailClient(authToken);
+  const fullEmail = await getMessageDetails(gmail, emailID);
 
   const inputData = {
-    Email: body,
-    Sender: sender,
-    Subject: subject,
+    Email: fullEmail.body,
+    Sender: fullEmail.sender,
+    Subject: fullEmail.subject,
   };
 
   const DEFAULT_SECURITY_SCORE_ON_ERROR = null
