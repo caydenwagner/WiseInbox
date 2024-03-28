@@ -1,4 +1,4 @@
-# Wise Inbox - A secure email browisng application with scam detection
+# Wise Inbox - A secure email browsing application with scam detection
 
 This is a cross-platform mobile application built with React Native that integrates with the Gmail API using OAuth. It allows users to scan their emails for potential phishing scams using a machine learning model. The app includes a Node.js/Express.js backend server to handle API requests, authentication, and communication with the machine learning model.
 
@@ -10,16 +10,20 @@ This is a cross-platform mobile application built with React Native that integra
 - **Phishing Detection**: Scan emails for potential phishing scams using a machine learning model.
 
 ## Screenshots
-<img width="434" alt="Screenshot 2024-03-27 at 4 48 44 PM" src="https://github.com/cwagner2325/WiseInbox/assets/78619267/5bfe579f-2c1c-4f46-af4f-c0fc5073f081">
+
+<img src="https://github.com/cwagner2325/WiseInbox/assets/78619267/31182d35-52dc-434d-82da-c5792ae47a4f" width="300">
 
 View your emails in a list
 
-<img width="423" alt="Screenshot 2024-03-27 at 4 49 14 PM" src="https://github.com/cwagner2325/WiseInbox/assets/78619267/f1b1c860-5081-4781-83ad-3bdf73e2c426">
-<img width="430" alt="Screenshot 2024-03-27 at 4 49 31 PM" src="https://github.com/cwagner2325/WiseInbox/assets/78619267/45bb0553-316c-445b-86fb-357d987d3b31">
+<img src="https://github.com/cwagner2325/WiseInbox/assets/78619267/7f1a339e-5223-4db3-bfc4-f3c3bd2ebf98" width="300">
+
+<img src="https://github.com/cwagner2325/WiseInbox/assets/78619267/35af83aa-8adf-4a84-8e5d-f61af22d3cea" width="300">
 
 Click on an email to open the full screen modal. In this modal, you can view more details about the email, along with the security scan section. The security scan section will either display as safe, caution, or unsafe depending on the analysis of the ML Model.
 
-<img width="430" alt="Screenshot 2024-03-27 at 4 49 56 PM" src="https://github.com/cwagner2325/WiseInbox/assets/78619267/8928e042-221e-4d0f-9e50-4f6f6d85d690">
+<img src="https://github.com/cwagner2325/WiseInbox/assets/78619267/8005b60e-7e87-456e-9bd0-c01d25f8a07d" width="300">
+
+<img src="https://github.com/cwagner2325/WiseInbox/assets/78619267/07140315-9be1-4fb3-9dc8-3f9adba1b1a2" width="300">
 
 When an email is found to be unsafe by the ML Model, a list of quick actions will be displayed that the user can choose from. Notice that the app also has a dark mode.
 
