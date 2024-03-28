@@ -1,12 +1,18 @@
 import 'dotenv/config';
 import fetch from 'node-fetch';
 import { getGmailClient, getMessageDetails } from './gmail.js';
-import { findContent } from '../utils/email.js';
+import cache from '../cache.js';
 
 // Sends an api request to the ML model at the apiURL
 // Returns an integer prediciton 1-100
 // Returns defualt vaules null if the request is unsucessful
 export async function makeEmailPrediction (authToken, emailID) {
+  const cacheKey = `prediction:${emailID}`;
+  const cachedData = cache.get(cacheKey);
+
+  if (cachedData) {
+    return cachedData;
+  }
   const apiUrl = process.env.ML_API;
   const gmail = await getGmailClient(authToken);
   const fullEmail = await getMessageDetails(gmail, emailID);
@@ -17,11 +23,11 @@ export async function makeEmailPrediction (authToken, emailID) {
     Subject: fullEmail.subject,
   };
 
-  const DEFAULT_SECURITY_SCORE_ON_ERROR = null
-  const DEFAULT_SECURITY_LABEL_ON_ERROR = "ERROR"
+  const ERROR_SECURITY_SCORE = null
+  const ERROR_SECURITY_LABEL = "ERROR"
 
-  var prediction = DEFAULT_SECURITY_SCORE_ON_ERROR
-  var securityLabel = DEFAULT_SECURITY_LABEL_ON_ERROR
+  var prediction = ERROR_SECURITY_SCORE
+  var securityLabel = ERROR_SECURITY_LABEL
 
   try {
     const response = await fetch(apiUrl, {
@@ -49,7 +55,11 @@ export async function makeEmailPrediction (authToken, emailID) {
       else {
         securityLabel = "Unsafe"
       }
+
+      const cacheData = { prediction, securityLabel };
+      cache.set(cacheKey, cacheData);
     }
+
     return { prediction, securityLabel }; 
   } catch (error) {
     console.error('Error fetching prediction:', error);
