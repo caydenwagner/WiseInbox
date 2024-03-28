@@ -1,4 +1,4 @@
-# Phishing Email Detection App
+# Wise Inbox - A secure email browisng application with scam detection
 
 This is a cross-platform mobile application built with React Native that integrates with the Gmail API using OAuth. It allows users to scan their emails for potential phishing scams using a machine learning model. The app includes a Node.js/Express.js backend server to handle API requests, authentication, and communication with the machine learning model.
 
