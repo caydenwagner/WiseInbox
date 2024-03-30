@@ -86,14 +86,14 @@ export async function getMessageDetails(gmail, emailID) {
     const email = {
       id: emailID,
       sender: senderName,
-      senderEmail,
-      body,
-      html,
+      senderEmail: senderEmail,
+      body: body,
+      html: html,
       date: emailDate,
-      subject,
-      snippet,
-      isInbox,
-      isRead,
+      subject: subject,
+      snippet: snippet,
+      isInbox: isInbox,
+      isRead: isRead,
     };
 
     return email;
