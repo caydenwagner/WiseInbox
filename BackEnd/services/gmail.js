@@ -74,14 +74,8 @@ export async function getMessageDetails(gmail, emailID) {
     const isInbox = messageDetails.data.labelIds.includes('INBOX');
     const isRead = !messageDetails.data.labelIds.includes('UNREAD');
 
-    let body = '';
-    let html = '';
 
-    if (payload.parts) {
-      const { body: extractedBody, html: extractedHtml } = findContent(payload.parts);
-      body = extractedBody;
-      html = extractedHtml;
-    }
+    const { body, html } = findContent(payload);
 
     const email = {
       id: emailID,

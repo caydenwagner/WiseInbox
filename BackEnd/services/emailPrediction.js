@@ -23,8 +23,8 @@ export async function makeEmailPrediction (authToken, emailID) {
     Subject: fullEmail.subject,
   };
 
-  const ERROR_SECURITY_SCORE = null
-  const ERROR_SECURITY_LABEL = "ERROR"
+  const ERROR_SECURITY_SCORE = 50
+  const ERROR_SECURITY_LABEL = "Unsafe"
 
   var prediction = ERROR_SECURITY_SCORE
   var securityLabel = ERROR_SECURITY_LABEL
