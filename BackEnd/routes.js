@@ -1,7 +1,7 @@
 // routes.js
 import express from 'express';
 import passport from 'passport';
-import { makeEmailPrediction } from './services/emailPrediction.js';
+import { makeEmailPrediction, makeEmailPredictionGenAI } from './services/emailPrediction.js';
 import { 
   getGmailClient, 
   fetchMessages, 
@@ -9,6 +9,7 @@ import {
   deleteMessage, 
   reportMessage 
 } from './services/gmail.js';
+import { extractDetails } from './utils/extractDetails.js';
 
 const router = express.Router();
 
@@ -131,6 +132,21 @@ router.post('/ML/prediction', async (req, res, next) => {
     const { prediction, securityLabel } = await makeEmailPrediction(authToken, emailID);
 
     res.status(200).json({ securityScore: prediction, securityLabel });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post('/ML/genAIPrediction', async (req, res, next) => {
+  try {
+    const authToken = req.headers['authorization'];
+    const emailID = req.headers['emailid'];
+
+    const response = await makeEmailPredictionGenAI(authToken, emailID);
+
+    const { prediction, securityDesctiption, securityLabel, resultsArray } = extractDetails(response);
+
+    res.status(200).json({ securityScore: prediction, securityDesctiption, securityLabel, resultsArray});
   } catch (error) {
     next(error);
   }

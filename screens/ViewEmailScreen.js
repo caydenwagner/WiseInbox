@@ -4,7 +4,7 @@
 // Purpose: Provide the page for the user to view emails
 import React, {useEffect, useState, useRef} from 'react';
 import { StyleSheet, SafeAreaView, View, useColorScheme } from "react-native";
-import { logOut, getMail, getPredictionOnMail } from '../functions/apiHelpers';
+import { logOut, getMail, getPredictionOnMail, getGenAIPredictionOnMail } from '../functions/apiHelpers';
 import { useNavigation } from '@react-navigation/native';
 import { EmailDisplayer } from '../components/EmailDisplayer';
 import { EmailScreenHeader } from '../components/EmailScreenHeader';
@@ -75,12 +75,15 @@ export default function ViewEmailScreen() {
     setPredictionLoadingStatus("Fetching")
     if (!mail.securityScore) {
       try {
-        const { securityScore, securityLabel } = await getPredictionOnMail(mail.id);
+        const { securityScore, securityLabel, resultsArray, securityDesctiption } = await getGenAIPredictionOnMail(mail.id);
   
         // Update the mail object itself
         if (securityScore) {
           mail.securityLabel = securityLabel;
           mail.securityScore = securityScore;
+          mail.resultsArray = resultsArray;
+          mail.securityDesctiption = securityDesctiption;
+          
           setListOfEmails(prevListOfEmails =>
             prevListOfEmails.map(item => item.id === mail.id ? mail : item)
           );

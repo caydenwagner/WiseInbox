@@ -155,7 +155,9 @@ const AutoThemeFullScreenEmail = (props) => {
         <View style={dividerStyle}></View>
         <SecurityScanSection
           securityScore={props.email.securityScore}
-          label={props.email.securityLabel}
+          securityLabel={props.email.securityLabel}
+          resultsArray={props.email.resultsArray}
+          securityDescription={props.email.securityDescription}
           headerTextStyle={headerTextStyle}
           onRefresh={props.onRefresh}
           email={props.email}
