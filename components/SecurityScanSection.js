@@ -5,12 +5,11 @@ import { darkPalette, lightPalette } from '../globalStyles/colors';
 import SecurityIndicator from './SecurityIndicator';
 import { EXTRA_LARGE_TEXT, LARGE_TEXT } from '../globalStyles/sizes';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { EmailSecurityResults } from './EmailSecurityResults';
 import { SecurityLabel } from './SecurityLabel';
+import { MoreDetailsButton } from './MoreDetailsButton';
 
 export const SecurityScanSection = (props) => {
-  const [ moreDetailsIsOpen, setMoreDetailsIsOpen ] = useState(false)
   const isDarkMode = useColorScheme() === "dark"
 
   if (props.securityScore) {
@@ -23,41 +22,15 @@ export const SecurityScanSection = (props) => {
         <>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View style={{flexDirection: 'row'}}>
-            <Text style={props.headerTextStyle}>Security Scan:  </Text>
-            <View style={{top: moderateVerticalScale(8)}}>
-              <SecurityLabel 
-                securityLabel={props.securityLabel}
-                position={'relative'}
-              />
+              <Text style={props.headerTextStyle}>Security Scan:  </Text>
+              <View style={{top: moderateVerticalScale(8)}}>
+                <SecurityLabel 
+                  securityLabel={props.securityLabel}
+                  position={'relative'}
+                />
+              </View>
             </View>
-            </View>
-            <TouchableOpacity onPress={() => setMoreDetailsIsOpen(!moreDetailsIsOpen)}>
-              {
-                !moreDetailsIsOpen ? 
-                  <View style={styles.dropDownButton}>
-                    <Text>View More Details</Text>
-                    <MaterialCommunityIcons 
-                      name="arrow-down-drop-circle-outline"
-                      color={isDarkMode ? darkPalette.white : lightPalette.black} 
-                      size={moderateScale(20)}
-                    />
-                  </View>
-                :
-                  <View style={styles.dropDownButton}>
-                    <Text>Close Details</Text>
-                    <MaterialCommunityIcons 
-                      name="arrow-up-drop-circle-outline"
-                      color={isDarkMode ? darkPalette.white : lightPalette.black} 
-                      size={moderateScale(20)}
-                    />
-                </View>
-              }
-            </TouchableOpacity>
           </View>
-          <EmailSecurityResults
-            data={props.resultsArray}
-            visible={moreDetailsIsOpen}
-          />
         </>
       )
     }
@@ -72,28 +45,13 @@ export const SecurityScanSection = (props) => {
       <>
         <View style={{flexDirection: "row", justifyContent: 'space-between', alignContent: 'center'}}>
           <Text style={props.headerTextStyle}>Security Scan: </Text>
-          <TouchableOpacity onPress={() => setMoreDetailsIsOpen(!moreDetailsIsOpen)}>
-            {
-              !moreDetailsIsOpen ? 
-                <View style={styles.dropDownButton}>
-                  <Text>View More Details</Text>
-                  <MaterialCommunityIcons 
-                    name="arrow-down-drop-circle-outline"
-                    color={isDarkMode ? darkPalette.white : lightPalette.black} 
-                    size={moderateScale(20)}
-                  />
-                </View>
-              :
-                <View style={styles.dropDownButton}>
-                  <Text>Close Details</Text>
-                  <MaterialCommunityIcons 
-                    name="arrow-up-drop-circle-outline"
-                    color={isDarkMode ? darkPalette.white : lightPalette.black} 
-                    size={moderateScale(20)}
-                  />
-              </View>
-            }
-          </TouchableOpacity>
+          <MoreDetailsButton
+            isOpen={props.moreDetailIsOpen}
+            setIsOpen={props.setMoreDetailOpen}
+            fetch={props.getMoreDetailsOnMail}
+            status={props.moreDetailLoadingStatus}
+            email={props.email}
+          />
         </View>
         <View style={styles.container}>
           <SecurityIndicator 
@@ -106,7 +64,7 @@ export const SecurityScanSection = (props) => {
           />
           <EmailSecurityResults
             data={props.resultsArray}
-            visible={moreDetailsIsOpen}
+            visible={props.moreDetailIsOpen}
           />
         </View>
       </>

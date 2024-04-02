@@ -19,6 +19,8 @@ export default function ViewEmailScreen() {
   const [refreshing, setRefreshing] = useState(false)
   const [trustedDomains, setTrustedDomains] = useState([])
   const [predictionLoadingStatus, setPredictionLoadingStatus] = useState("Fetching")
+  const [moreDetailLoadingStatus, setMoreDetailLoadingStatus] = useState("Empty")
+  const [moreDetailIsOpen, setMoreDetailOpen] = useState(false)
 
   const bottomSheetRef = useRef();
 
@@ -56,6 +58,9 @@ export default function ViewEmailScreen() {
 
   function openFullScreenMail(mail) {
     if (mail) {
+      if (mail.resultsArray) {
+        setMoreDetailLoadingStatus("Fetched")
+      }
       setCurrentDisplayEmail(mail)
       bottomSheetRef.current?.snapToIndex(0)
     }
@@ -71,18 +76,47 @@ export default function ViewEmailScreen() {
     setListOfEmails(prevData => prevData.filter(item => item.id !== idToRemove));
   };
 
+  const getMoreDetailsOnMail = async (mail) => {
+    setMoreDetailLoadingStatus("Fetching")
+    if (!mail.resultsArray) {
+      try {
+        const { resultsArray, securityDesctiption } = await getGenAIPredictionOnMail(mail.id);
+  
+        // Update the mail object itself
+        if (resultsArray) {
+          mail.resultsArray = resultsArray;
+          mail.securityDesctiption = securityDesctiption;
+          
+          setListOfEmails(prevListOfEmails =>
+            prevListOfEmails.map(item => item.id === mail.id ? mail : item)
+          );
+          setMoreDetailLoadingStatus("Fetched")
+          setMoreDetailOpen(true)
+        }
+        else {
+          setMoreDetailLoadingStatus("Error")
+        }
+      } catch (error) {
+        console.log('Error fetching prediction for mail:', mail.id, error);
+        // Handle the error appropriately, retry button may be needed
+      }
+    }
+    else {
+      setMoreDetailLoadingStatus("Fetched")
+      setMoreDetailOpen(true)
+    }
+  }
+
   const makePredictionOnMail = async (mail) => {
     setPredictionLoadingStatus("Fetching")
     if (!mail.securityScore) {
       try {
-        const { securityScore, securityLabel, resultsArray, securityDesctiption } = await getGenAIPredictionOnMail(mail.id);
+        const { securityScore, securityLabel } = await getPredictionOnMail(mail.id);
   
         // Update the mail object itself
         if (securityScore) {
           mail.securityLabel = securityLabel;
           mail.securityScore = securityScore;
-          mail.resultsArray = resultsArray;
-          mail.securityDesctiption = securityDesctiption;
           
           setListOfEmails(prevListOfEmails =>
             prevListOfEmails.map(item => item.id === mail.id ? mail : item)
@@ -126,6 +160,11 @@ export default function ViewEmailScreen() {
           closeFullScreenMail={closeFullScreenMail}
           onRefresh={makePredictionOnMail}
           predictionLoadingStatus={predictionLoadingStatus}
+          getMoreDetailsOnMail={getMoreDetailsOnMail}
+          moreDetailLoadingStatus={moreDetailLoadingStatus}
+          setMoreDetailLoadingStatus={setMoreDetailLoadingStatus}
+          moreDetailIsOpen={moreDetailIsOpen}
+          setMoreDetailOpen={setMoreDetailOpen}
         />
 
       </SafeAreaView>

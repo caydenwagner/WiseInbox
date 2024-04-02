@@ -49,6 +49,10 @@ export const FullScreenEmail = (props) => {
       closeFullScreenMail={props.closeFullScreenMail}
       onRefresh={props.onRefresh}
       predictionLoadingStatus={props.predictionLoadingStatus}
+      getMoreDetailsOnMail={props.getMoreDetailsOnMail}
+      moreDetailLoadingStatus={props.moreDetailLoadingStatus}
+      moreDetailIsOpen={props.moreDetailIsOpen}
+      setMoreDetailOpen={props.setMoreDetailOpen}
     />
   )
 }
@@ -162,6 +166,10 @@ const AutoThemeFullScreenEmail = (props) => {
           onRefresh={props.onRefresh}
           email={props.email}
           predictionLoadingStatus={props.predictionLoadingStatus}
+          getMoreDetailsOnMail={props.getMoreDetailsOnMail}
+          moreDetailLoadingStatus={props.moreDetailLoadingStatus}
+          moreDetailIsOpen={props.moreDetailIsOpen}
+          setMoreDetailOpen={props.setMoreDetailOpen}
         />
         <View style={dividerStyle}></View>
       </View>

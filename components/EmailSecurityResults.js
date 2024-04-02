@@ -10,6 +10,7 @@ export const EmailSecurityResults = (props) => {
     return (
       props.data.map((item, index) => (
         <FlatListItem 
+          key={index}
           isDarkMode={isDarkMode}
           title={item.title} 
           description={item.description} 
