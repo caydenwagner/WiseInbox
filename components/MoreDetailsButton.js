@@ -20,7 +20,7 @@ export const MoreDetailsButton = (props) => {
   else if (props.status === "Fetching") {
     return (
       <View style={styles.container}>
-        <Text>Loading...</Text>
+        <Text style={{color: isDarkMode ? "#E8E8E8" : "#272727"}}>Loading...</Text>
       </View>
     )
   }
@@ -30,7 +30,7 @@ export const MoreDetailsButton = (props) => {
         {
           !props.isOpen ? 
             <View style={styles.dropDownButton}>
-              <Text>View More Details  </Text>
+              <Text style={{color: isDarkMode ? "#E8E8E8" : "#272727"}}>View More Details  </Text>
               <MaterialCommunityIcons 
                 name="arrow-down-drop-circle-outline"
                 color={isDarkMode ? darkPalette.white : lightPalette.black} 
@@ -39,7 +39,7 @@ export const MoreDetailsButton = (props) => {
             </View>
           :
             <View style={styles.dropDownButton}>
-              <Text>Close Details  </Text>
+              <Text style={{color: isDarkMode ? "#E8E8E8" : "#272727"}}>Close Details  </Text>
               <MaterialCommunityIcons 
                 name="arrow-up-drop-circle-outline"
                 color={isDarkMode ? darkPalette.white : lightPalette.black} 
@@ -54,7 +54,7 @@ export const MoreDetailsButton = (props) => {
     return (
       <TouchableOpacity onPress={() => props.fetch()}>
         <View style={styles.container}>
-          <Text>An Error has Occured, Try Again</Text>
+          <Text style={{color: isDarkMode ? "#E8E8E8" : "#272727"}}>An Error has Occured, Try Again</Text>
         </View>
       </TouchableOpacity>
     )

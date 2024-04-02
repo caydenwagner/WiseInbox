@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View, StyleSheet, useColorScheme } from 'react-native';
 import { moderateVerticalScale } from '../functions/helpers';
 import { SecurityLabel } from './SecurityLabel';
+import { LARGE_TEXT, MEDIUM_TEXT } from '../globalStyles/sizes';
 
 export const EmailSecurityResults = (props) => {
   const isDarkMode = useColorScheme() === "dark"
@@ -26,13 +27,13 @@ const FlatListItem = ({ title, description, securityLabel, isDarkMode }) => (
   <View style={styles.itemContainer}>
     <View style={isDarkMode ? styles.darkDivider : styles.lightDivider}></View>
     <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', marginVertical: moderateVerticalScale(8)}}>
-      <Text style={styles.title}>{title}</Text>
+      <Text style={{...styles.title, color: isDarkMode ? "#E8E8E8" : "#272727"}}>{title}</Text>
       <SecurityLabel 
         securityLabel={securityLabel}
         position={'relative'}
       />
     </View>
-    <Text style={styles.description}>{description}</Text>
+    <Text style={{...styles.description, color: isDarkMode ? "#E8E8E8" : "#272727"}}>{description}</Text>
   </View>
 );
 
@@ -41,22 +42,11 @@ const styles = StyleSheet.create({
 
   },
   title: {
-    fontSize: 16,
+    fontSize: LARGE_TEXT,
     fontWeight: 'bold',
-    marginBottom: 5
   },
   description: {
-    fontSize: 14,
-    marginBottom: 10
-  },
-  securityLabel: {
-    fontWeight: 'bold'
-  },
-  safeLabel: {
-    color: 'green'
-  },
-  cautionLabel: {
-    color: 'orange'
+    fontSize: MEDIUM_TEXT,
   },
   lightDivider: {
     borderColor: "#BEBEBE",
