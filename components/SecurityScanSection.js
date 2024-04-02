@@ -23,7 +23,7 @@ export const SecurityScanSection = (props) => {
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View style={{flexDirection: 'row'}}>
               <Text style={props.headerTextStyle}>Security Scan:  </Text>
-              <View style={{top: moderateVerticalScale(8)}}>
+              <View style={{top: moderateVerticalScale(6)}}>
                 <SecurityLabel 
                   securityLabel={props.securityLabel}
                   position={'relative'}
