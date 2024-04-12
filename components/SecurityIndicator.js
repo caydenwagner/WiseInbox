@@ -1,9 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import { moderateScale, moderateVerticalScale } from '../functions/helpers';
+import { View, StyleSheet } from 'react-native';
+import { moderateScale } from '../functions/helpers';
 import { lightPalette } from '../globalStyles/colors';
 import CircularProgress from 'react-native-circular-progress-indicator';
-import { LARGE_TEXT, MEDIUM_TEXT } from '../globalStyles/sizes';
 
 export default SecurityIndicator = (props) => {
   switch (props.label) {
@@ -18,7 +17,6 @@ export default SecurityIndicator = (props) => {
             inActiveStrokeWidth={moderateScale(12)}
             inActiveStrokeColor='#EAA1A1'
             radius={moderateScale(45)}
-            titleStyle={styles.titleStyle}
           />
         </View>
       )
@@ -33,7 +31,6 @@ export default SecurityIndicator = (props) => {
             inActiveStrokeWidth={moderateScale(12)}
             inActiveStrokeColor='#D6CA9F'
             radius={moderateScale(45)}
-            titleStyle={styles.titleStyle}
           />
         </View>
       )
@@ -48,7 +45,6 @@ export default SecurityIndicator = (props) => {
             inActiveStrokeWidth={moderateScale(12)}
             inActiveStrokeColor='#92D2A5'
             radius={moderateScale(40)}
-            titleStyle={styles.titleStyle}
           />
         </View>
       )
@@ -62,8 +58,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  titleStyle: {
-    fontSize: LARGE_TEXT,
-    fontWeight: '500'
-  }
 })

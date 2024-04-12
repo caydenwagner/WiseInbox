@@ -49,6 +49,10 @@ export const FullScreenEmail = (props) => {
       closeFullScreenMail={props.closeFullScreenMail}
       onRefresh={props.onRefresh}
       predictionLoadingStatus={props.predictionLoadingStatus}
+      getMoreDetailsOnMail={props.getMoreDetailsOnMail}
+      moreDetailLoadingStatus={props.moreDetailLoadingStatus}
+      moreDetailIsOpen={props.moreDetailIsOpen}
+      setMoreDetailOpen={props.setMoreDetailOpen}
     />
   )
 }
@@ -155,11 +159,17 @@ const AutoThemeFullScreenEmail = (props) => {
         <View style={dividerStyle}></View>
         <SecurityScanSection
           securityScore={props.email.securityScore}
-          label={props.email.securityLabel}
+          securityLabel={props.email.securityLabel}
+          resultsArray={props.email.resultsArray}
+          securityDescription={props.email.securityDescription}
           headerTextStyle={headerTextStyle}
           onRefresh={props.onRefresh}
           email={props.email}
           predictionLoadingStatus={props.predictionLoadingStatus}
+          getMoreDetailsOnMail={props.getMoreDetailsOnMail}
+          moreDetailLoadingStatus={props.moreDetailLoadingStatus}
+          moreDetailIsOpen={props.moreDetailIsOpen}
+          setMoreDetailOpen={props.setMoreDetailOpen}
         />
         <View style={dividerStyle}></View>
       </View>
@@ -201,10 +211,8 @@ const AutoThemeFullScreenEmail = (props) => {
             : "AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75"
         }
         androidLayerType={'hardware'}
-        scalesPageToFit={false}
-        viewportContent={'width=device-width, user-scalable=no'}
+        viewportContent={'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'}
         showsVerticalScrollIndicator={false}
-        scrollEnabled={false}
         javaScriptEnabled={true}
         startInLoadingState={true}
         onShouldStartLoadWithRequest={(event) => {

@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Text, useColorScheme, TouchableOpacity } from 'react-native';
 import { moderateScale, moderateVerticalScale } from '../functions/helpers';
 import { darkPalette, lightPalette } from '../globalStyles/colors';
 import SecurityIndicator from './SecurityIndicator';
 import { EXTRA_LARGE_TEXT, LARGE_TEXT } from '../globalStyles/sizes';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import { EmailSecurityResults } from './EmailSecurityResults';
+import { SecurityLabel } from './SecurityLabel';
+import { MoreDetailsButton } from './MoreDetailsButton';
 
 export const SecurityScanSection = (props) => {
   const isDarkMode = useColorScheme() === "dark"
@@ -13,18 +16,25 @@ export const SecurityScanSection = (props) => {
     var color = "white"
     var textColor = "white"
 
-    if (props.securityScore >= 80) {
+    if (props.securityLabel === "Safe") {
       color = lightPalette.safe
       return (
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text style={props.headerTextStyle}>Security Scan:  </Text>
-          <View style={{...styles.labelContainer, backgroundColor: color, position: 'relative', top: moderateVerticalScale(5)}}>
-            <Text style={{...styles.securityLabelText, color: textColor}}>{props.label}</Text>
-          </View> 
-        </View>
+        <>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={props.headerTextStyle}>Security Scan:  </Text>
+              <View style={{top: moderateVerticalScale(6)}}>
+                <SecurityLabel 
+                  securityLabel={props.securityLabel}
+                  position={'relative'}
+                />
+              </View>
+            </View>
+          </View>
+        </>
       )
     }
-    else if (props.securityScore >= 60) {
+    else if (props.securityLabel === "Caution") {
       color = lightPalette.warning
       textColor = "black"
     }
@@ -33,15 +43,29 @@ export const SecurityScanSection = (props) => {
     }
     return (
       <>
-        <Text style={props.headerTextStyle}>Security Scan: </Text>
+        <View style={{flexDirection: "row", justifyContent: 'space-between', alignContent: 'center'}}>
+          <Text style={props.headerTextStyle}>Security Scan: </Text>
+          <MoreDetailsButton
+            isOpen={props.moreDetailIsOpen}
+            setIsOpen={props.setMoreDetailOpen}
+            fetch={props.getMoreDetailsOnMail}
+            status={props.moreDetailLoadingStatus}
+            email={props.email}
+          />
+        </View>
         <View style={styles.container}>
           <SecurityIndicator 
-            label={props.label}
+            label={props.securityLabel}
             value={props.securityScore}
           />
-          <View style={{...styles.labelContainer, backgroundColor: color}}>
-            <Text style={{...styles.securityLabelText, color: textColor}}>{props.label}</Text>
-          </View> 
+          <SecurityLabel
+            securityLabel={props.securityLabel}
+            position={'absolute'}
+          />
+          <EmailSecurityResults
+            data={props.resultsArray}
+            visible={props.moreDetailIsOpen}
+          />
         </View>
       </>
     )
@@ -124,5 +148,11 @@ const styles = StyleSheet.create({
     marginTop: moderateVerticalScale(20),
     color: "#3366CC",
     fontWeight: "600"
+  },
+  dropDownButton: {
+    flexDirection: "row", 
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginTop: moderateVerticalScale(10)
   }
 })

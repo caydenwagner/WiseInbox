@@ -7,6 +7,7 @@ import { moderateVerticalScale, moderateScale } from '../functions/helpers';
 
 export const FullScreenEmailModal = (props) => {
   const [quickActionsIgnored, setQuickActionsIgnored] = useState(false)
+
   const insets = useSafeAreaInsets();
   const snapPoints = useMemo(() => ['80%', '100%'], []);
   const isDarkMode = useColorScheme() === "dark"
@@ -15,6 +16,8 @@ export const FullScreenEmailModal = (props) => {
   function onClose () {
     scrollViewRef.current?.scrollTo({x: 0, y: 0, animated: false})
     setQuickActionsIgnored(false)
+    props.setMoreDetailLoadingStatus("Empty")
+    props.setMoreDetailOpen(false)
   }
 
   const renderBackdrop = useCallback(
@@ -53,6 +56,10 @@ export const FullScreenEmailModal = (props) => {
           closeFullScreenMail={props.closeFullScreenMail}
           onRefresh={props.onRefresh}
           predictionLoadingStatus={props.predictionLoadingStatus}
+          getMoreDetailsOnMail={props.getMoreDetailsOnMail}
+          moreDetailLoadingStatus={props.moreDetailLoadingStatus}
+          moreDetailIsOpen={props.moreDetailIsOpen}
+          setMoreDetailOpen={props.setMoreDetailOpen}
         />
       </ScrollView>
 

@@ -152,3 +152,31 @@ export const getPredictionOnMail = async (emailID) => {
     throw new Error('Error fetching prediction:', error); 
   }
 };
+
+export const getGenAIPredictionOnMail = async (emailID) => {
+  try {
+    const value = await AsyncStorage.getItem("User")
+    const user = JSON.parse(value)
+
+    const response = await RNFetchBlob.config({
+      trusty : true
+    }).fetch('POST', 'https://localhost:3000/ML/genAIPrediction', {
+      'Content-Type': 'application/json',
+      'authorization': `${user[0].accessToken}`,
+      'emailid': emailID
+      }
+    );
+
+    if (!response.status === 200) {
+      throw new Error(`Prediction API request failed with status ${response.message}`); 
+    }
+
+    const json = await response.json();
+
+    return {securityScore: json.securityScore, securityLabel: json.securityLabel, resultsArray: json.resultsArray, securityDesctiption: json.securityDesctiption}
+
+  } catch (error) {
+    throw new Error('Error fetching prediction:', error); 
+  }
+};
+
