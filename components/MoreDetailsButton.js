@@ -2,7 +2,6 @@ import React from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, useColorScheme } from 'react-native';
 import { moderateScale, moderateVerticalScale } from '../functions/helpers';
 import { darkPalette, lightPalette } from '../globalStyles/colors';
-import { LARGE_TEXT } from '../globalStyles/sizes';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const MoreDetailsButton = (props) => {
@@ -52,7 +51,7 @@ export const MoreDetailsButton = (props) => {
   }
   else if (props.status === "Error") {
     return (
-      <TouchableOpacity onPress={() => props.fetch()}>
+      <TouchableOpacity onPress={() => props.fetch(props.email)}>
         <View style={styles.container}>
           <Text style={{color: isDarkMode ? "#E8E8E8" : "#272727"}}>An Error has Occured, Try Again</Text>
         </View>

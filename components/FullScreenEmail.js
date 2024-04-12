@@ -211,10 +211,8 @@ const AutoThemeFullScreenEmail = (props) => {
             : "AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75"
         }
         androidLayerType={'hardware'}
-        scalesPageToFit={false}
-        viewportContent={'width=device-width, user-scalable=no'}
+        viewportContent={'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'}
         showsVerticalScrollIndicator={false}
-        scrollEnabled={false}
         javaScriptEnabled={true}
         startInLoadingState={true}
         onShouldStartLoadWithRequest={(event) => {

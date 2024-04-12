@@ -112,9 +112,11 @@ export async function makeEmailPredictionGenAI(authToken, emailID) {
 
     const data = await response.json();
     const responseText = data.content[0].text;
-    const jsonObject = JSON.parse(responseText);
+    const jsonObject = extractJSONFromString(responseText);
 
-    cache.set(cacheKey, jsonObject);
+    if (jsonObject) {
+      cache.set(cacheKey, jsonObject);
+    }
 
     return jsonObject;
   } catch (error) {
@@ -126,7 +128,7 @@ export async function makeEmailPredictionGenAI(authToken, emailID) {
 function makePrompt(fullEmail) {
   const { senderEmail, subject, body } = fullEmail;
 
-  const prompt = `Human: Respond in JSON format. Analyze the following email and respond with only a json object. The goal is to identify patterns that may indicate a scam or phishing attempt. Decide if each indicator shows a risk of a scam by labeling it as either Safe, Caution, or Unsafe and provide a brief analysis that is targeted towards a non-technical audience such as the elderly.
+  const prompt = `Human: Respond with only JSON format. Act as an advisor to a non-technical user such as an elderly person. Perform a security scan on this email for potential scams or threats. Note that this email is randomly selected and is expected to be legitimate. Provide clear and concise feedback on any suspicious elements found in the email, but avoid being overly skeptical.
 
 Subject: ${subject}
 Sender: ${senderEmail}
@@ -135,8 +137,6 @@ Body: ${body}
 The JSON response should follow this structure:
 
 {
-  "urgency_rating": choose one from "Safe", "Caution", "Unsafe",
-  "urgency_analysis": "BRIEF ANALYSIS OF URGENCY INDICATORS",
   "sender_domain_rating": choose one from "Safe", "Caution", "Unsafe",
   "sender_domain_analysis": "BRIEF ANALYSIS OF SENDER DOMAIN LEGITIMACY",
   "subject_matter_rating": choose one from "Safe", "Caution", "Unsafe",
@@ -149,9 +149,35 @@ The JSON response should follow this structure:
   "inconsistency_analysis": "BRIEF ANALYSIS OF INCONSISTENCIES IN EMAIL",
   "immediate_action_rating": choose one from "Safe", "Caution", "Unsafe",
   "immediate_action_analysis": "BRIEF ANALYSIS OF IMMEDIATE ACTION DEMANDS",
-  "overall_security_rating": choose one from "Safe", "Caution", "Unsafe",
-  "overall_security_analysis": "SUMMARY OF OVERALL SECURITY RISK"
 }Assistant: `;
 
   return prompt;
+}
+
+function extractJSONFromString(inputString) {
+  // Find the index of the first '{' character in the string
+  const openingBraceIndex = inputString.indexOf('{');
+  
+  // Find the index of the last '}' character in the string
+  const closingBraceIndex = inputString.lastIndexOf('}');
+  
+  // Check if both opening and closing braces exist in the string
+  if (openingBraceIndex !== -1 && closingBraceIndex !== -1) {
+    // Extract the substring containing the JSON object
+    const jsonString = inputString.substring(openingBraceIndex, closingBraceIndex + 1).trim();
+    
+    // Try parsing the extracted substring as JSON
+    try {
+      const jsonObject = JSON.parse(jsonString);
+      return jsonObject;
+    } catch (error) {
+      // JSON parsing failed
+      console.error("Error parsing JSON:", error);
+      return null;
+    }
+  } else {
+    // Opening or closing braces not found in the string
+    console.error("Opening or closing braces not found in the input string.");
+    return null;
+  }
 }
