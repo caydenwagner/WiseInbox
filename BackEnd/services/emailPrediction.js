@@ -18,7 +18,7 @@ export async function makeEmailPrediction (authToken, emailID) {
   const fullEmail = await getMessageDetails(gmail, emailID);
 
   const inputData = {
-    Email: fullEmail.body,
+    Email: fullEmail.body.length > 0 ? fullEmail.body : fullEmail.snippet,
     Sender: fullEmail.sender,
     Subject: fullEmail.subject,
   };

@@ -214,6 +214,7 @@ const AutoThemeFullScreenEmail = (props) => {
         viewportContent={'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'}
         showsVerticalScrollIndicator={false}
         javaScriptEnabled={true}
+        scrollEnabled={false}
         startInLoadingState={true}
         onShouldStartLoadWithRequest={(event) => {
           return openLink(event.url)
