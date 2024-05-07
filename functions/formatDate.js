@@ -15,6 +15,9 @@ export const formatDate = (emailDateStr) => {
 
    // Within the last 24 hours, but not today or yesterday
   if (diffMs < 24 * 60 * 60 * 1000) {
+    if (Math.floor(diffMs / (60 * 60 * 1000)) === 1) {
+      return `1 hour ago`;
+    }
     return `${Math.floor(diffMs / (60 * 60 * 1000))} hours ago`;
   }
 
