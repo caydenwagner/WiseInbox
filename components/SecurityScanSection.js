@@ -13,9 +13,6 @@ export const SecurityScanSection = (props) => {
   const isDarkMode = useColorScheme() === "dark"
 
   if (props.securityScore) {
-    var color = "white"
-    var textColor = "white"
-
     if (props.securityLabel === "Safe") {
       color = lightPalette.safe
       return (
