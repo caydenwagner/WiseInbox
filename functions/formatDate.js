@@ -10,6 +10,9 @@ export const formatDate = (emailDateStr) => {
 
   // Exact time for recent events within the last hour
   if (diffMs < 60 * 60 * 1000) {
+    if (Math.floor(diffMs / 60000) === 0) {
+      return `Now`;
+    }
     return `${Math.floor(diffMs / 60000)} minutes ago`;
   }
 
