@@ -36,7 +36,7 @@ export default function LoginScreen() {
       const lastLogin = await getLastLogin()
 
       if (lastLogin != null) {
-        openUrl(`https://localhost:3000/user/login/google`)
+        openUrl(`https://hopelessly-summary-chow.ngrok-free.app/user/login/google`)
       } 
     }
 
@@ -48,10 +48,10 @@ export default function LoginScreen() {
       const lastLogin = await getLastLogin()
 
       if (lastLogin != null) {
-        openUrl(`https://localhost:3000/user/login/google`)
+        openUrl(`https://hopelessly-summary-chow.ngrok-free.app/user/login/google`)
       } 
       else {
-        openUrl(`https://localhost:3000/user/login/google/newuser`)
+        openUrl(`https://hopelessly-summary-chow.ngrok-free.app/user/login/google/newuser`)
       }
     }
 
