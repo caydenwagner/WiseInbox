@@ -129,8 +129,6 @@ router.post('/ML/prediction', async (req, res, next) => {
     const authToken = req.body.authorization;
     const emailID = req.body.emailid;
 
-    console.log(emailID);
-
     const { prediction, securityLabel } = await makeEmailPrediction(authToken, emailID);
 
     res.status(200).json({ securityScore: prediction, securityLabel });
