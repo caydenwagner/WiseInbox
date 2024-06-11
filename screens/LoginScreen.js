@@ -2,7 +2,7 @@
 // Author: Cayden Wagner
 // Date: 09/7/23
 // Purpose: Provide the login page for the application
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, ScrollView, StyleSheet, useColorScheme, View, TouchableOpacity, SafeAreaView, Platform, Linking } from "react-native";
 import SafariView from "react-native-safari-view";
 import { WebView } from "react-native-webview";
@@ -123,58 +123,72 @@ export default function LoginScreen() {
           />
         </SafeAreaView>
       ) : (
-        <ScrollView 
-          style={{...styles.background, backgroundColor: isDarkMode ? darkPalette.primary : lightPalette.primary}}
-          contentContainerStyle={{flexGrow: 1}}
-          keyboardShouldPersistTaps='handled'>
+        <View style={styles.container}>
+          <ScrollView
+            style={{ flex: 1 }}
+            contentContainerStyle={styles.contentContainer}
+            keyboardShouldPersistTaps='handled'
+          >
+            <SafeAreaView style={styles.iconContainer}>
+              <MaterialCommunityIcons
+                name="owl"
+                color={lightPalette.white}
+                size={moderateScale(120)}
+              />
+            </SafeAreaView>
 
-          <SafeAreaView style={styles.iconContainer}>
-            <MaterialCommunityIcons 
-              name="owl"
-              color={isDarkMode ? darkPalette.white : darkPalette.secondary} 
-              size={moderateScale(120)}
-            />
-          </SafeAreaView>
+            <Text style={styles.headerText}>Wise Inbox</Text>
+            <Text style={styles.subtitleText}>Stay safe from email scams</Text>
 
-          <Text style={{...styles.headerText, color: isDarkMode ? darkPalette.white : lightPalette.black}}>Add an Account</Text>
-          <View>
-            
-            <TouchableOpacity 
-              style={styles.button} 
-              onPress={() => logIn()}>
-              <Text>Login With Google</Text>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => logIn()}
+            >
+              <Text style={styles.buttonText}>Login With Google</Text>
             </TouchableOpacity>
-
-          </View>
-        </ScrollView>
+          </ScrollView>
+        </View>
       )}
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  background: {
-    width: "100%", 
-    height: "100%"
+  container: {
+    flex: 1,
+    backgroundColor: '#d6f6ff',
+  },
+  contentContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: moderateScale(20),
   },
   iconContainer: {
-    justifyContent: 'center',
-    alignItems: 'center'
+    marginBottom: moderateVerticalScale(20),
   },
   headerText: {
-    fontSize: EXTRA_LARGE_TEXT,
+    fontSize: EXTRA_LARGE_TEXT + 20,
     fontWeight: "700",
-    alignSelf: 'center',
-    marginTop: moderateVerticalScale(20),
-    marginBottom: moderateVerticalScale(8)
+    color: lightPalette.white,
+    marginBottom: moderateVerticalScale(8),
+  },
+  subtitleText: {
+    fontSize: moderateScale(16) + 5,
+    color: lightPalette.white,
+    marginBottom: moderateVerticalScale(20),
+    textAlign: 'center',
   },
   button: {
-    backgroundColor: lightPalette.accent,
-    paddingVertical: moderateVerticalScale(8),
-    marginHorizontal: moderateVerticalScale(15),
-    marginVertical: moderateVerticalScale(10),
-    paddingHorizontal: moderateScale(15),
+    backgroundColor: "#959ea1",
+    paddingVertical: moderateVerticalScale(12),
+    paddingHorizontal: moderateScale(20),
     borderRadius: moderateVerticalScale(8),
-    alignSelf: 'center',
+    elevation: 4,
   },
-})
+  buttonText: {
+    color: lightPalette.white,
+    fontWeight: 'bold',
+    fontSize: 16
+  },
+});
