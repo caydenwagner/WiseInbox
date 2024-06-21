@@ -8,7 +8,7 @@ import { MEDIUM_TEXT, EXTRA_LARGE_TEXT } from '../../globalStyles/sizes'
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#d6f6ff',
+    backgroundColor: lightPalette.primary,
   },
   contentContainer: {
     flex: 1,
@@ -20,30 +20,30 @@ export default StyleSheet.create({
     marginBottom: moderateVerticalScale(20),
   },
   icon: {
-    color: lightPalette.accent,
+    color: "black",
     size: moderateScale(120),
   },
   headerText: {
     fontSize: EXTRA_LARGE_TEXT + 20,
     fontWeight: '700',
-    color: lightPalette.accent,
+    color: "black",
     marginBottom: moderateVerticalScale(8),
   },
   subtitleText: {
     fontSize: moderateScale(16) + 5,
-    color: lightPalette.accent,
+    color: "black",
     marginBottom: moderateVerticalScale(20),
-    textAlign: 'center',
+    textAlign: 'center', 
   },
   button: {
-    backgroundColor: '#959ea1',
+    backgroundColor: 'lightgrey',
     paddingVertical: moderateVerticalScale(12),
     paddingHorizontal: moderateScale(20),
     borderRadius: moderateVerticalScale(8),
     elevation: 4,
   },
   buttonText: {
-    color: lightPalette.accent,
+    color: "black",
     fontWeight: 'bold',
     fontSize: MEDIUM_TEXT
   },
