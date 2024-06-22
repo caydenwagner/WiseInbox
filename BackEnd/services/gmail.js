@@ -17,7 +17,7 @@ export async function getGmailClient(authToken) {
   return google.gmail({ version: 'v1', auth: oAuth2Client });
 }
 
-export async function fetchMessages(gmail, maxResults = 20) {
+export async function fetchMessages(gmail, maxResults = 6) {
   try {
     const response = await gmail.users.messages.list({
       userId: 'me',
@@ -62,7 +62,7 @@ export async function getMessageDetails(gmail, emailID) {
       senderName = match[1].trim();
       senderEmail = match[2].trim();
     } else {
-      senderName = '';
+      senderName = sender.trim();
       senderEmail = sender.trim();
     }
 

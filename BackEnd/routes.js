@@ -68,7 +68,7 @@ router.get('/user/logout', (req, res, next) => {
 // Fetch emails route
 router.post('/gmail/messages', async (req, res, next) => {
   try {
-    const authToken = req.headers['authorization'];
+    const authToken = req.body.authorization;
     const gmail = await getGmailClient(authToken);
     const messages = await fetchMessages(gmail);
 
@@ -81,8 +81,8 @@ router.post('/gmail/messages', async (req, res, next) => {
 // Block sender route
 router.post('/gmail/block', async (req, res, next) => {
   try {
-    const authToken = req.headers['authorization'];
-    const sender = req.headers['sender'];
+    const authToken = req.body.authorization;
+    const sender = req.body.sender;
     const gmail = await getGmailClient(authToken);
 
     await blockSender(gmail, sender);
@@ -96,8 +96,8 @@ router.post('/gmail/block', async (req, res, next) => {
 // Delete email route
 router.post('/gmail/delete', async (req, res, next) => {
   try {
-    const authToken = req.headers['authorization'];
-    const emailID = req.headers['emailid'];
+    const authToken = req.body.authorization;
+    const emailID = req.body.emailid;
     const gmail = await getGmailClient(authToken);
 
     await deleteMessage(gmail, emailID);
@@ -111,8 +111,8 @@ router.post('/gmail/delete', async (req, res, next) => {
 // Report email route
 router.post('/gmail/report', async (req, res, next) => {
   try {
-    const authToken = req.headers['authorization'];
-    const emailID = req.headers['emailid'];
+    const authToken = req.body.authorization;
+    const emailID = req.body.emailid;
     const gmail = await getGmailClient(authToken);
 
     await reportMessage(gmail, emailID);
@@ -126,8 +126,8 @@ router.post('/gmail/report', async (req, res, next) => {
 // Email prediction route
 router.post('/ML/prediction', async (req, res, next) => {
   try {
-    const authToken = req.headers['authorization'];
-    const emailID = req.headers['emailid'];
+    const authToken = req.body.authorization;
+    const emailID = req.body.emailid;
 
     const { prediction, securityLabel } = await makeEmailPrediction(authToken, emailID);
 
@@ -139,8 +139,8 @@ router.post('/ML/prediction', async (req, res, next) => {
 
 router.post('/ML/genAIPrediction', async (req, res, next) => {
   try {
-    const authToken = req.headers['authorization'];
-    const emailID = req.headers['emailid'];
+    const authToken = req.body.authorization;
+    const emailID = req.body.emailid;
 
     const response = await makeEmailPredictionGenAI(authToken, emailID);
 

@@ -10,11 +10,17 @@ export const formatDate = (emailDateStr) => {
 
   // Exact time for recent events within the last hour
   if (diffMs < 60 * 60 * 1000) {
+    if (Math.floor(diffMs / 60000) === 0) {
+      return `Now`;
+    }
     return `${Math.floor(diffMs / 60000)} minutes ago`;
   }
 
    // Within the last 24 hours, but not today or yesterday
   if (diffMs < 24 * 60 * 60 * 1000) {
+    if (Math.floor(diffMs / (60 * 60 * 1000)) === 1) {
+      return `1 hour ago`;
+    }
     return `${Math.floor(diffMs / (60 * 60 * 1000))} hours ago`;
   }
 

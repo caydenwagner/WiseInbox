@@ -4,27 +4,26 @@
 // Purpose: Provide some helper function to interact with the back end through its API
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { removeLastLogin } from './helpers';
-import RNFetchBlob from 'rn-fetch-blob'
 
 export const getMail = async () => {
   try {
-    const value = await AsyncStorage.getItem("User")
-    const user = JSON.parse(value)
+    const value = await AsyncStorage.getItem("User");
+    const user = JSON.parse(value);
+    const authToken = user[0].accessToken;
 
-    const response = await RNFetchBlob.config({
-      trusty : true
-    }).fetch('POST', 'https://localhost:3000/gmail/messages', {
-      'Content-Type': 'application/json',
-      'authorization': `${user[0].accessToken}`
-      }
-    );
+    const response = await fetch('https://hopelessly-summary-chow.ngrok-free.app/gmail/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ authorization: authToken })
+    });
 
-    if (!response.status === 200) {
-      return null
+    if (!response.ok) {
+      return null;
     }
-    
-    const json = await response.json();
 
+    const json = await response.json();
     return json;
   } catch (error) {
     console.error(error);
@@ -33,24 +32,23 @@ export const getMail = async () => {
 
 export const reportEmail = async (emailID) => {
   try {
-    const value = await AsyncStorage.getItem("User")
-    const user = JSON.parse(value)
+    const value = await AsyncStorage.getItem("User");
+    const user = JSON.parse(value);
+    const authToken = user[0].accessToken;
 
-    const response = await RNFetchBlob.config({
-      trusty : true
-    }).fetch('POST', 'https://localhost:3000/gmail/report', {
-      'Content-Type': 'application/json',
-      'authorization': `${user[0].accessToken}`,
-      'emailid': emailID
-      }
-    );
+    const response = await fetch('https://hopelessly-summary-chow.ngrok-free.app/gmail/report', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ authorization: authToken, emailid: emailID })
+    });
 
-    if (!response.status === 200) {
-      console.log("Report Mail Error")
+    if (!response.ok) {
+      console.log("Report Mail Error");
+    } else {
+      console.log("Report Mail Success");
     }
-    else {
-      console.log("Report Mail Success")
-    } 
   } catch (error) {
     console.error(error);
   }
@@ -58,24 +56,23 @@ export const reportEmail = async (emailID) => {
 
 export const deleteMail = async (emailID) => {
   try {
-    const value = await AsyncStorage.getItem("User")
-    const user = JSON.parse(value)
+    const value = await AsyncStorage.getItem("User");
+    const user = JSON.parse(value);
+    const authToken = user[0].accessToken;
 
-    const response = await RNFetchBlob.config({
-      trusty : true
-    }).fetch('POST', 'https://localhost:3000/gmail/delete', {
-      'Content-Type': 'application/json',
-      'authorization': `${user[0].accessToken}`,
-      'emailid': emailID
-      }
-    );
+    const response = await fetch('https://hopelessly-summary-chow.ngrok-free.app/gmail/delete', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ authorization: authToken, emailid: emailID })
+    });
 
-    if (!response.status === 200) {
-      console.log("Delete Mail Error")
-    } 
-    else {
-      console.log("Delete Mail Success")
-    } 
+    if (!response.ok) {
+      console.log("Delete Mail Error");
+    } else {
+      console.log("Delete Mail Success");
+    }
   } catch (error) {
     console.error(error);
   }
@@ -83,24 +80,23 @@ export const deleteMail = async (emailID) => {
 
 export const blockSender = async (sender) => {
   try {
-    const value = await AsyncStorage.getItem("User")
-    const user = JSON.parse(value)
+    const value = await AsyncStorage.getItem("User");
+    const user = JSON.parse(value);
+    const authToken = user[0].accessToken;
 
-    const response = await RNFetchBlob.config({
-      trusty : true
-    }).fetch('POST', 'https://localhost:3000/gmail/block', {
-      'Content-Type': 'application/json',
-      'authorization': `${user[0].accessToken}`,
-      'sender': sender
-      }
-    );
+    const response = await fetch('https://hopelessly-summary-chow.ngrok-free.app/gmail/block', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ authorization: authToken, sender })
+    });
 
-    if (!response.status === 200) {
-      console.log("Block Sender Error")
-    } 
-    else {
-      console.log("Block Sender Success")
-    } 
+    if (!response.ok) {
+      console.log("Block Sender Error");
+    } else {
+      console.log("Block Sender Success");
+    }
   } catch (error) {
     console.error(error);
   }
@@ -110,17 +106,16 @@ export const logOut = async () => {
   try {
     removeLastLogin();
 
-    const response = await RNFetchBlob.config({
-      trusty : true
-    }).fetch('GET', 'https://localhost:3000/user/logout');
+    const response = await fetch('https://hopelessly-summary-chow.ngrok-free.app/user/logout', {
+      method: 'GET'
+    });
 
-    if (!response.status === 200) {
-      console.log("Log Out Error")
-    } 
+    if (!response.ok) {
+      console.log("Log Out Error");
+    }
 
     const json = await response.json();
-
-    return json
+    return json;
   } catch (error) {
     console.error(error);
   }
@@ -128,55 +123,50 @@ export const logOut = async () => {
 
 export const getPredictionOnMail = async (emailID) => {
   try {
-    const value = await AsyncStorage.getItem("User")
-    const user = JSON.parse(value)
+    const value = await AsyncStorage.getItem("User");
+    const user = JSON.parse(value);
+    const authToken = user[0].accessToken;
 
-    const response = await RNFetchBlob.config({
-      trusty : true
-    }).fetch('POST', 'https://localhost:3000/ML/prediction', {
-      'Content-Type': 'application/json',
-      'authorization': `${user[0].accessToken}`,
-      'emailid': emailID
-      }
-    );
+    const response = await fetch('https://hopelessly-summary-chow.ngrok-free.app/ML/prediction', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ authorization: authToken, emailid: emailID })
+    });
 
-    if (!response.status === 200) {
-      throw new Error(`Prediction API request failed with status ${response.message}`); 
+    if (!response.ok) {
+      throw new Error(`Prediction API request failed with status ${response.status}`);
     }
 
     const json = await response.json();
-
-    return {securityScore: json.securityScore, securityLabel: json.securityLabel}
-
+    return { securityScore: json.securityScore, securityLabel: json.securityLabel };
   } catch (error) {
-    throw new Error('Error fetching prediction:', error); 
+    throw new Error('Error fetching prediction:', error);
   }
 };
 
 export const getGenAIPredictionOnMail = async (emailID) => {
   try {
-    const value = await AsyncStorage.getItem("User")
-    const user = JSON.parse(value)
+    const value = await AsyncStorage.getItem("User");
+    const user = JSON.parse(value);
+    const authToken = user[0].accessToken;
 
-    const response = await RNFetchBlob.config({
-      trusty : true
-    }).fetch('POST', 'https://localhost:3000/ML/genAIPrediction', {
-      'Content-Type': 'application/json',
-      'authorization': `${user[0].accessToken}`,
-      'emailid': emailID
-      }
-    );
+    const response = await fetch('https://hopelessly-summary-chow.ngrok-free.app/ML/genAIPrediction', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ authorization: authToken, emailid: emailID })
+    });
 
-    if (!response.status === 200) {
-      throw new Error(`Prediction API request failed with status ${response.message}`); 
+    if (!response.ok) {
+      throw new Error(`Prediction API request failed with status ${response.status}`);
     }
 
     const json = await response.json();
-
-    return {securityScore: json.securityScore, securityLabel: json.securityLabel, resultsArray: json.resultsArray, securityDesctiption: json.securityDesctiption}
-
+    return { securityScore: json.securityScore, securityLabel: json.securityLabel, resultsArray: json.resultsArray, securityDesctiption: json.securityDesctiption };
   } catch (error) {
-    throw new Error('Error fetching prediction:', error); 
+    throw new Error('Error fetching prediction:', error);
   }
 };
-
