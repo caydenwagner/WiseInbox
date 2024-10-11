@@ -12,8 +12,8 @@
   "dependencies": {
     "cookie-session": "^2.0.0",
     "dom-parser": "^1.1.5",
-    "express": "^4.19.2",
-    "express-session": "^1.17.3",
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
     "fs": "^0.0.1-security",
     "googleapis": "^128.0.0",
     "html-entities": "^2.4.0",
